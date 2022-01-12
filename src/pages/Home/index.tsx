@@ -9,14 +9,15 @@ const Wrapper = styled.div`
 `;
 
 const Home = () => {
-  function imgUrl(params: string) {
-    // 手动@转/src
-    return new URL(params, import.meta.url).href;
-  }
+  // function imgUrl(params: string) {
+  //   // 手动@转/src
+  //   return new URL(params, import.meta.url).href;
+  // }
 
   return (
     <Wrapper>
-      <img src={imgUrl('/src/assets/images/test.png')} alt="icon" />
+      {/* <img src={imgUrl('/src/assets/images/test.png')} alt="icon" /> */}
+      <img src={require('@/assets/images/test.png')} alt="icon" />
       <p>{t`hello word`}</p>
     </Wrapper>
   );
