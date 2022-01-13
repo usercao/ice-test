@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <Wrapper>
       {/* <img src={imgUrl('/src/assets/images/test.png')} alt="icon" /> */}
-      <img src={require('@/assets/images/test.png')} alt="icon" />
+      {/* <img src={require('@/assets/images/test.png')} alt="icon" /> */}
       <p>{t`hello word`}</p>
     </Wrapper>
   );
