@@ -6,8 +6,6 @@ export default {
   router: {
     configPath: 'src/routes/index.ts',
   },
-  babelPlugins: ['macros'],
-  babelPresets: ['@babel/preset-typescript'],
   proxy: {
     '/api': {
       enable: true,
