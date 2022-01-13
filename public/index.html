@@ -2,13 +2,120 @@
 <html lang="">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <title>mexo</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- Describe -->
+    <meta name="description" content="ICEJS" />
+    <meta name="keywords" content="ICEJS" />
+    <meta name="author" content="ICEJS" />
+    <meta name="robots" content="ICEJS" />
+    <!-- Facebook -->
+    <meta property="og:title" content="ICEJS" />
+    <meta property="og:site_name" content="ICEJS" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:image:url" content="" />
+    <meta property="og:description" content="ICEJS" />
+    <meta property="og:image:type" content="image/png" />
+    <!-- Twitter -->
+    <meta name="twitter:title" content="ICEJS" />
+    <meta name="twitter:url" content="" />
+    <meta name="twitter:creator" content="ICEJS" />
+    <meta name="twitter:card" content="app" />
+    <meta name="twitter:description" content="ICEJS" />
+    <meta name="twitter:image" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Other -->
+    <link rel="icon" href="./favicon.ico" />
+    <title>ICEJS</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.css" />
+    <style>
+      .full-center {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .full-screen {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(32, 32, 32, 1);
+      }
+      .spinner {
+        justify-content: space-between;
+        width: 60px;
+        height: 60px;
+      }
+      .spinner > li {
+        height: inherit;
+        width: 8px;
+        background: #ffc412;
+        animation: stretchDelay 1.2s infinite ease-in-out;
+        -webkit-animation: stretchDelay 1.2s infinite ease-in-out;
+      }
+      .spinner .rect2 {
+        animation-delay: -1.1s;
+        -webkit-animation-delay: -1.1s;
+      }
+      .spinner .rect3 {
+        animation-delay: -1s;
+        -webkit-animation-delay: -1s;
+      }
+      .spinner .rect4 {
+        animation-delay: -0.9s;
+        -webkit-animation-delay: -0.9s;
+      }
+      .spinner .rect5 {
+        animation-delay: -0.8s;
+        -webkit-animation-delay: -0.8s;
+      }
+      @-webkit-keyframes stretchDelay {
+        0%,
+        40%,
+        100% {
+          transform: scaleY(0.4);
+          -webkit-transform: scaleY(0.4);
+        }
+        20% {
+          transform: scaleY(1);
+          -webkit-transform: scaleY(1);
+        }
+      }
+      @keyframes stretchDelay {
+        0%,
+        40%,
+        100% {
+          transform: scaleY(0.4);
+          -webkit-transform: scaleY(0.4);
+        }
+        20% {
+          transform: scaleY(1);
+          -webkit-transform: scaleY(1);
+        }
+      }
+    </style>
   </head>
 
   <body>
-    <div id="ice-container"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="ice-container">
+      <div class="full-screen full-center">
+        <ul class="spinner full-center">
+          <li class="rect1"></li>
+          <li class="rect2"></li>
+          <li class="rect3"></li>
+          <li class="rect4"></li>
+          <li class="rect5"></li>
+        </ul>
+      </div>
+    </div>
   </body>
 </html>
