@@ -1,6 +1,6 @@
 export default {
   store: false,
-  vite: false,
+  vite: true,
   hash: true,
   dropLogLevel: 'log',
   router: {
