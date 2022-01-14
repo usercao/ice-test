@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import Header from './components/Header';
+import Header from './components/Header';
 // import Footer from './components/Footer';
 import { Scrollbar } from '@/components';
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ const Wrapper = styled.div`
 const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
   return (
     <Wrapper>
+      <Header />
       <Scrollbar>
         <div style={{ height: 2000 }}>{children}</div>
       </Scrollbar>

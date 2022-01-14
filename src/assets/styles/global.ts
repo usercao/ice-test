@@ -38,12 +38,6 @@ export const GlobalStyle = styled.createGlobalStyle`
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  /* body,
-  input,
-  button {
-    font-family: 'IBM Plex Sans', sans-serif !important;
-    font-weight: 400;
-  } */
   /* 全局消息 */
   .message-root {
     position: fixed;

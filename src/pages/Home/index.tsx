@@ -6,6 +6,19 @@ const Wrapper = styled.div`
     display: block;
     width: 60px;
   }
+  p {
+    margin-bottom: 20px;
+    font-size: 40px;
+  }
+  p:nth-child(1) {
+    font-weight: 400;
+  }
+  p:nth-child(2) {
+    font-weight: 500;
+  }
+  p:nth-child(3) {
+    font-weight: 600;
+  }
 `;
 
 const Home = () => {
@@ -15,7 +28,14 @@ const Home = () => {
   // }
 
   return (
-    <Wrapper>
+    <Wrapper className="col-center">
+      <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+      <p>abcdefghijklmnopqrstuvwxyz</p>
+      <p>1234567890</p>
+      <p>ÑñÁáÉéÍíÓóÚúÝýÜü¡¿</p>
+      <p>：；，！？。、“”</p>
+      <p>:;,!?.""\</p>
+      <p>+-*/&|=≈%</p>
       {/* <img src={imgUrl('/src/assets/images/test.png')} alt="icon" /> */}
       {/* <img src={require('@/assets/images/test.png')} alt="icon" /> */}
       <p>{t`hello word`}</p>
