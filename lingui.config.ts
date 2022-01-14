@@ -8,10 +8,6 @@ export default {
   ],
   compileNamespace: 'ts',
   format: 'po',
-  formatOptions: {
-    origins: false,
-    lineNumbers: false,
-  },
   locales: ['en-US', 'es-ES', 'pt-BR', 'zh-CN'],
   sourceLocale: 'en-US',
   fallbackLocales: {
