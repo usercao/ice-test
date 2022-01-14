@@ -1,6 +1,8 @@
 import { runApp, IAppConfig } from 'ice';
+import { RecoilRoot } from 'recoil';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import { GlobalStyle } from '@/assets/styles/global';
 
 const appConfig: IAppConfig = {
   app: {
@@ -8,9 +10,12 @@ const appConfig: IAppConfig = {
     // 可选，自定义添加 Provider
     addProvider: ({ children }) => {
       return (
-        <I18nProvider forceRenderOnLocaleChange={false} i18n={i18n}>
-          {children}
-        </I18nProvider>
+        <RecoilRoot>
+          <GlobalStyle />
+          <I18nProvider forceRenderOnLocaleChange={false} i18n={i18n}>
+            {children}
+          </I18nProvider>
+        </RecoilRoot>
       );
     },
     getInitialData: async () => {
