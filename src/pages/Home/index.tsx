@@ -32,13 +32,9 @@ const Home = () => {
       <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>
       <p>1234567890</p>
-      <p>ÑñÁáÉéÍíÓóÚúÝýÜü¡¿</p>
-      <p>：；，！？。、“”</p>
-      <p>:;,!?.""\</p>
-      <p>+-*/&|=≈%</p>
       {/* <img src={imgUrl('/src/assets/images/test.png')} alt="icon" /> */}
       {/* <img src={require('@/assets/images/test.png')} alt="icon" /> */}
-      <p>{t`hello word`}</p>
+      <p>{t`hello world`}</p>
       <p>test</p>
     </Wrapper>
   );
