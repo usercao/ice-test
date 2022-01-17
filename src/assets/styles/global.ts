@@ -22,14 +22,14 @@ export const GlobalStyle = styled.createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-  #root {
+  :root {
     overflow-x: auto;
     overflow-y: hidden;
-    /* 隐藏横向滚动条 */
-    &::-webkit-scrollbar {
-      height: 0;
-      background-color: transparent;
-    }
+  }
+  /* 隐藏横向滚动条 */
+  :root::-webkit-scrollbar {
+    height: 0;
+    background-color: transparent;
   }
   body {
     -webkit-font-smoothing: antialiased;
