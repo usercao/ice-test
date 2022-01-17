@@ -1,8 +1,8 @@
 {
-  "name": "mexo-web",
+  "name": "icejs",
   "version": "0.1.0",
   "private": true,
-  "description": "mexo",
+  "description": "icejs",
   "scripts": {
     "start": "icejs start",
     "build": "icejs build",
