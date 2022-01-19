@@ -20,7 +20,6 @@ export default {
       {
         locales: ['en-US', 'es-ES', 'pt-BR', 'zh-CN'],
         defaultLocale: 'zh-CN',
-        i18nRouting: true,
       },
     ],
   ],

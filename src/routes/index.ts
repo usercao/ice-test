@@ -8,6 +8,7 @@ const routerConfig: IRouterConfig[] = [
     children: [
       {
         path: '/user',
+        exact: true,
         component: lazy(() => import('@/pages/Home')),
         // pageConfig: {
         //   title: '主页',
