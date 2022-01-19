@@ -1,7 +1,6 @@
 import { runApp, IAppConfig } from 'ice';
 import { RecoilRoot } from 'recoil';
-import { i18n } from '@lingui/core';
-import { I18nProvider } from '@lingui/react';
+import I18nProvider from '@/locales';
 import { GlobalStyle } from '@/assets/styles/global';
 
 const appConfig: IAppConfig = {
@@ -12,9 +11,7 @@ const appConfig: IAppConfig = {
       return (
         <RecoilRoot>
           <GlobalStyle />
-          <I18nProvider forceRenderOnLocaleChange={false} i18n={i18n}>
-            {children}
-          </I18nProvider>
+          <I18nProvider>{children}</I18nProvider>
         </RecoilRoot>
       );
     },
