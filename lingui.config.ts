@@ -1,7 +1,7 @@
 export default {
   catalogs: [
     {
-      path: '<rootDir>/src/locales/{locale}/messages',
+      path: '<rootDir>/src/locales/{locale}/index',
       include: ['<rootDir>/src'],
       exclude: ['**/node_modules/**'],
     },

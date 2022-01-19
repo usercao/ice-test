@@ -29,13 +29,12 @@ const Home = () => {
 
   return (
     <Wrapper className="col-center">
-      <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+      {/* <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>
-      <p>1234567890</p>
+      <p>1234567890</p> */}
       {/* <img src={imgUrl('/src/assets/images/test.png')} alt="icon" /> */}
       {/* <img src={require('@/assets/images/test.png')} alt="icon" /> */}
-      <p>{t`hello world`}</p>
-      <p>test</p>
+      <p>{t`hello`}</p>
     </Wrapper>
   );
 };
