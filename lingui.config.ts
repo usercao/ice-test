@@ -7,10 +7,9 @@ export default {
     },
   ],
   compileNamespace: 'ts',
-  format: 'po',
   locales: ['en-US', 'es-ES', 'pt-BR', 'zh-CN'],
-  sourceLocale: 'en-US',
   fallbackLocales: {
     default: 'en-US',
   },
+  sourceLocale: 'en-US',
 };

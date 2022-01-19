@@ -7,9 +7,9 @@
     "start": "icejs start",
     "build": "icejs build",
     "build:dev": "icejs build",
-    "i18n": "yarn i18n:extract",
+    "i18n": "yarn i18n:extract && yarn i18n:compile",
     "i18n:extract": "lingui extract --clean",
-    "i18n:compile": "lingui compile",
+    "i18n:compile": "lingui compile --strict",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx ./",
     "eslint:fix": "npm run eslint -- --fix",
@@ -17,6 +17,7 @@
     "prettier": "prettier --write '@(src)/**/*.@(ts|tsx)'"
   },
   "dependencies": {
+    "@lingui/react": "^3.13.0",
     "ahooks": "^3.1.5",
     "mac-scrollbar": "^0.8.0",
     "react": "^17.0.2",
@@ -30,7 +31,6 @@
     "@lingui/cli": "^3.13.0",
     "@lingui/core": "^3.13.0",
     "@lingui/macro": "^3.13.0",
-    "@lingui/react": "^3.13.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.2",
     "@types/styled-components": "^5.1.19",
