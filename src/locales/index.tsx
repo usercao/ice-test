@@ -33,12 +33,12 @@ const I18n: React.FC = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error('Failed to activate locale', locale, error);
     }
-  }, [locale]);
+  }, [locale, setLocaleModel]);
 
   React.useEffect(() => {
     if (!locale) return;
     handleDynamicActivate();
-  }, [locale]);
+  }, [locale, handleDynamicActivate]);
 
   if (!loadLocale) return null;
 

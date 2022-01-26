@@ -2,6 +2,7 @@ export default {
   store: false,
   vite: true,
   hash: true,
+  eslint: true,
   dropLogLevel: 'log',
   router: {
     configPath: 'src/routes/index.ts',
