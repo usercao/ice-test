@@ -1,10 +1,11 @@
 import * as React from 'react';
-// import Header from './components/Header';
-// import Footer from './components/Footer';
-import { Scrollbar } from '@/components';
 import styled from 'styled-components';
-import { getAllLocales, useLocale, useHistory } from 'ice';
-import { dynamicActivate } from '@/locales';
+import { LOCALE_LABEL } from '@/config/locales';
+import { useRecoilState } from 'recoil';
+import { locale } from '@/models';
+// import { useHistory } from 'ice';
+import { useMount } from 'ahooks';
+import { Scrollbar } from '@/components';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -20,27 +21,39 @@ const Wrapper = styled.div`
   }
 `;
 
+type localeListType = Array<{ label: string; value: any }>;
+
 const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
-  const all = getAllLocales();
-  const [locale, setLocale] = useLocale();
-  const history = useHistory();
+  const [localeModel, setLocaleModel] = useRecoilState(locale);
+  const [localeModelList, setLocaleModelList] = React.useState<localeListType>([]);
+  // const history = useHistory();
+
+  const getLocaleList = React.useCallback(() => {
+    const array: localeListType = [];
+    Object.keys(LOCALE_LABEL).forEach((v) => {
+      const element = { label: v, value: LOCALE_LABEL[v] };
+      array.push(element);
+    });
+    setLocaleModelList(array);
+  }, []);
+
+  useMount(() => getLocaleList());
 
   return (
     <Wrapper>
       {/* <Header /> */}
       <header className="row-between">
-        <div>{locale}</div>
+        <div>{LOCALE_LABEL[localeModel]}</div>
         <div>
-          {all.map((ele) => (
+          {localeModelList.map((ele) => (
             <p
-              key={ele}
+              key={ele.label}
               onClick={() => {
-                dynamicActivate(ele);
-                setLocale(ele);
-                history.push('/replace');
+                setLocaleModel(ele.label);
+                // history.push('/replace');
               }}
             >
-              {ele}
+              {ele.value}
             </p>
           ))}
         </div>
