@@ -1,35 +1,46 @@
 import * as React from 'react';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import { SupportedLocale } from '@/config/locales';
+import { useActiveLocale } from '@/hooks/useActiveLocale';
+import { en, es, pt, PluralCategory } from 'make-plural/plurals';
+import { useSetRecoilState } from 'recoil';
+import { locale as localeModel } from '@/models';
 
-// import { messages as enMessages } from '@/locales/en-US/messages';
-// import { messages as csMessages } from '@/locales/zh-CN/messages';
+type LocalePlural = {
+  [key in SupportedLocale]: (n: number | string, ord?: boolean) => PluralCategory;
+};
 
-// i18n.load({
-//   'en-US': enMessages,
-//   'zh-CN': csMessages,
-// });
-// i18n.activate('en-US');
-// export const locales = {
-//   en: 'English',
-//   es: '',
-//   pt: '',
-//   zh: '',
-// };
-// export const defaultLocale = 'en';
+const plurals: LocalePlural = { 'en-US': en, 'es-ES': es, 'pt-BR': pt };
 
-export async function dynamicActivate(locale: string) {
+async function dynamicActivate(locale: SupportedLocale) {
   const { messages } = await import(`./${locale}/index.ts`);
-  i18n.load({ [locale]: messages });
+  i18n.loadLocaleData(locale, { plurals: () => plurals[locale] });
+  i18n.load(locale, messages);
   i18n.activate(locale);
 }
 
 const I18n: React.FC = ({ children }: { children: React.ReactNode }) => {
+  const locale = useActiveLocale();
+  const [loadLocale, setLoadLocale] = React.useState(false);
+  const setLocaleModel = useSetRecoilState(localeModel);
+
+  const handleDynamicActivate = React.useCallback(async () => {
+    try {
+      await dynamicActivate(locale);
+      setLocaleModel(locale);
+      setLoadLocale(true);
+    } catch (error) {
+      console.error('Failed to activate locale', locale, error);
+    }
+  }, [locale]);
+
   React.useEffect(() => {
-    dynamicActivate('zh-CN');
-    // handleI18n('zh-CN');
-  }, []);
-  // handleI18n('zh-CN');
+    if (!locale) return;
+    handleDynamicActivate();
+  }, [locale]);
+
+  if (!loadLocale) return null;
 
   // forceRenderOnLocaleChange={false}
   return <I18nProvider i18n={i18n}>{children}</I18nProvider>;
