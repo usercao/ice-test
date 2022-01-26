@@ -1,10 +1,10 @@
 import { atom, RecoilState } from 'recoil';
 import { localStorageEffect } from './_util';
-import { SupportedLocale, LOCALE_STORAGE } from '@/config/locales';
+import { SupportedLocale, DEFAULT_LOCALE, LOCALE_STORAGE } from '@/config/locales';
 
-export const locale: RecoilState<SupportedLocale | null> = atom({
+export const locale: RecoilState<SupportedLocale> = atom({
   key: 'locale',
-  default: null,
+  default: DEFAULT_LOCALE,
   effects_UNSTABLE: [localStorageEffect<string>(LOCALE_STORAGE)],
 });
 
