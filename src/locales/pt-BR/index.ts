@@ -1,1 +1,1 @@
-/*eslint-disable*/export const messages={"hello":"Olá."};
+/*eslint-disable*/ export const messages = { hello: 'Olá.' };
