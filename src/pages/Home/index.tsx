@@ -22,18 +22,12 @@ const Wrapper = styled.div`
 `;
 
 const Home = () => {
-  // function imgUrl(params: string) {
-  //   // 手动@转/src
-  //   return new URL(params, import.meta.url).href;
-  // }
-
   return (
     <Wrapper className="col-center">
       {/* <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>
       <p>1234567890</p> */}
-      {/* <img src={imgUrl('/src/assets/images/test.png')} alt="icon" /> */}
-      {/* <img src={require('@/assets/images/test.png')} alt="icon" /> */}
+      <img src={require('@/assets/images/test.png')} alt="icon" />
       <p>{t`hello`}</p>
     </Wrapper>
   );

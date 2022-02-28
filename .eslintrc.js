@@ -6,5 +6,6 @@ module.exports = getESLintConfig('react-ts', {
     'react/jsx-filename-extension': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     'no-console': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
   },
 });

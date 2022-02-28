@@ -1,3 +1,5 @@
+import vitePluginRequire from 'vite-plugin-require';
+
 export default {
   store: false,
   vite: true,
@@ -9,6 +11,7 @@ export default {
   },
   babelPlugins: ['macros'],
   babelPresets: ['@babel/preset-typescript'],
+  vitePlugins: [vitePluginRequire()],
   proxy: {
     '/api': {
       enable: true,
