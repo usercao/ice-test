@@ -58,7 +58,7 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
           ))}
         </div>
       </header>
-      <Scrollbar>
+      <Scrollbar forwardedAs='ul'>
         <div style={{ height: 2000 }}>{children}</div>
       </Scrollbar>
     </Wrapper>
