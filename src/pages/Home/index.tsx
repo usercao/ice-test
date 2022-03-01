@@ -1,5 +1,7 @@
+import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
+import { Modal } from '@/components';
 
 const Wrapper = styled.div`
   img {
@@ -22,13 +24,18 @@ const Wrapper = styled.div`
 `;
 
 const Home = () => {
+  const [modalVisible, setModalVisible] = React.useState<boolean>(false);
+
   return (
     <Wrapper className="col-center">
       {/* <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>
       <p>1234567890</p> */}
       <img src={require('@/assets/images/test.png')} alt="icon" />
-      <p>{t`hello`}</p>
+      <p onClick={() => setModalVisible(true)}>{t`hello`}</p>
+      <Modal visible={modalVisible}>
+        <div onClick={() => setModalVisible(false)}>close</div>
+      </Modal>
     </Wrapper>
   );
 };
