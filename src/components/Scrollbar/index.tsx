@@ -8,9 +8,10 @@ const Wrapper = styled(MacScrollbar)<ScrollbarProps>`
 `;
 
 const Scrollbar: React.FC<ScrollbarProps> = (props: ScrollbarProps) => {
-  const { forwardedAs, children, ...rest } = props;
+  const { as, children, ...rest } = props;
+
   return (
-    <Wrapper forwardedAs={'li'} {...rest}>
+    <Wrapper forwardedAs={as as keyof JSX.IntrinsicElements} {...rest}>
       {children}
     </Wrapper>
   );
