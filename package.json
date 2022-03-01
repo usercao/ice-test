@@ -19,12 +19,11 @@
   "dependencies": {
     "@lingui/react": "^3.13.0",
     "ahooks": "^3.1.9",
-    "mac-scrollbar": "^0.8.0",
+    "overlayscrollbars-react": "^0.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "recoil": "^0.5.2",
-    "styled-components": "^5.3.3",
-    "vite-plugin-require": "^0.0.8"
+    "recoil": "^0.6.1",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.7",
@@ -32,12 +31,14 @@
     "@lingui/cli": "^3.13.0",
     "@lingui/core": "^3.13.0",
     "@lingui/macro": "^3.13.0",
+    "@types/overlayscrollbars": "^1.12.1",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.2",
-    "@types/styled-components": "^5.1.21",
+    "@types/styled-components": "^5.1.23",
     "eslint": "^7.30.0",
     "ice.js": "^2.0.0",
-    "stylelint": "^13.7.2"
+    "stylelint": "^13.7.2",
+    "vite-plugin-require": "^0.0.8"
   },
   "resolutions": {
     "styled-components": "^5"

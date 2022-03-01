@@ -982,6 +982,11 @@
   resolved "https://registry.npmjs.org/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
+"@types/overlayscrollbars@^1.12.1":
+  version "1.12.1"
+  resolved "https://registry.npmjs.org/@types/overlayscrollbars/-/overlayscrollbars-1.12.1.tgz#fb637071b545834fb12aea94ee309a2ff4cdc0a8"
+  integrity sha512-V25YHbSoKQN35UasHf0EKD9U2vcmexRSp78qa8UglxFH8H3D+adEa9zGZwrqpH4TdvqeMrgMqVqsLB4woAryrQ==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -1040,10 +1045,10 @@
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
-"@types/styled-components@^5.1.21":
-  version "5.1.21"
-  resolved "https://registry.npmjs.org/@types/styled-components/-/styled-components-5.1.21.tgz#39f6bdc4103254d899531ef099dae5619b039cdb"
-  integrity sha512-lQzA0T6CaLXoeiOkSe2US2JfFgJV2/yJ8W1BaJubQQh2wdq7H+qScQQfbjURyLkgI1Ig+S/jRHCrWikfMHC6zA==
+"@types/styled-components@^5.1.23":
+  version "5.1.23"
+  resolved "https://registry.npmjs.org/@types/styled-components/-/styled-components-5.1.23.tgz#11e5740047f292b42a042c60c0ef16b58d5adef6"
+  integrity sha512-zt8oQGU6XB4LH1Xpq169YnAVmt22+swzHJvyKMyTZu/z8+afvgKjjg0s79aAodgNSf36ZOEG6DyVAW/JhLH2Nw==
   dependencies:
     "@types/hoist-non-react-statics" "*"
     "@types/react" "*"
@@ -4695,11 +4700,6 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-mac-scrollbar@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.npmjs.org/mac-scrollbar/-/mac-scrollbar-0.8.0.tgz#8f810a7b308e3e9859cc5ef22020ba534eeae032"
-  integrity sha512-2iyxv/PUM/oUxlJg2UnaSxf4Z1Ala18ogpoHyEvgh5pebJxi+BvMRwxvnzAN+5CEVpVRZJrCBThq4bG5C/P0lA==
-
 magic-string@^0.25.7:
   version "0.25.7"
   resolved "https://registry.npmjs.org/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
@@ -5347,6 +5347,11 @@ os-tmpdir@~1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
   integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
+
+overlayscrollbars-react@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/overlayscrollbars-react/-/overlayscrollbars-react-0.2.3.tgz#9a35adea5218c83675b756f9f02dfbd7a8835248"
+  integrity sha512-eN/JsEtJvPulOXOZXIdo1H90eriUWcgj4TwSdOcchk2M4uY2/BpsHlZ2+0viZMLXTcNQNJz+/4m47NugSBg+0g==
 
 p-limit@^1.1.0:
   version "1.3.0"
@@ -6025,10 +6030,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
-recoil@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.npmjs.org/recoil/-/recoil-0.5.2.tgz#61fecce3b4dc91127a595586cf7369e2811ba024"
-  integrity sha512-Edibzpu3dbUMLy6QRg73WL8dvMl9Xqhp+kU+f2sJtXxsaXvAlxU/GcnDE8HXPkprXrhHF2e6SZozptNvjNF5fw==
+recoil@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.npmjs.org/recoil/-/recoil-0.6.1.tgz#6fdf1ba6cb20b5a2e54ec4abcbdaa287e8a03fa2"
+  integrity sha512-J7oT3LZl2vpyFClgSUpOQjpykz84VSX/NJE/PavAtR8n7Z+whEdVBPUtwc2TEWjONeL/lJmiac2XQ+qEOQA52Q==
   dependencies:
     hamt_plus "1.0.2"
 
