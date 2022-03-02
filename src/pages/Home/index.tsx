@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal } from '@/components';
+import IconSpin from '@/assets/images/_global/IconSpin';
 
 const Wrapper = styled.div`
   height: 200px;
@@ -43,6 +44,7 @@ const Home = () => {
       >
         <div style={{ height: 200 }}>212121212121</div>
       </Scrollbar>
+      <IconSpin size={16} color="#e91818" />
       <i className="iconfont icon-phone"></i>
       <img src={require('@/assets/images/test.png')} alt="icon" />
       <p onClick={() => setModalVisible(true)}>{t`hello`}</p>
