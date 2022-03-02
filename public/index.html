@@ -55,8 +55,75 @@
       type="font/woff2"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/usercao/CDN@0.0.7/styles/font.min.css" />
-    <link rel="stylesheet" href="./transition.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/usercao/CDN@0.0.7/styles/font.min.css" />
+    <style type="text/css">
+      .full-center {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .full-screen {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(32, 32, 32, 1);
+      }
+      .spinner {
+        justify-content: space-between;
+        width: 60px;
+        height: 60px;
+      }
+      .spinner > li {
+        height: inherit;
+        width: 8px;
+        background: #ffc412;
+        animation: stretchDelay 1.2s infinite ease-in-out;
+        -webkit-animation: stretchDelay 1.2s infinite ease-in-out;
+      }
+      .spinner .rect2 {
+        animation-delay: -1.1s;
+        -webkit-animation-delay: -1.1s;
+      }
+      .spinner .rect3 {
+        animation-delay: -1s;
+        -webkit-animation-delay: -1s;
+      }
+      .spinner .rect4 {
+        animation-delay: -0.9s;
+        -webkit-animation-delay: -0.9s;
+      }
+      .spinner .rect5 {
+        animation-delay: -0.8s;
+        -webkit-animation-delay: -0.8s;
+      }
+      @-webkit-keyframes stretchDelay {
+        0%,
+        40%,
+        100% {
+          transform: scaleY(0.4);
+          -webkit-transform: scaleY(0.4);
+        }
+        20% {
+          transform: scaleY(1);
+          -webkit-transform: scaleY(1);
+        }
+      }
+      @keyframes stretchDelay {
+        0%,
+        40%,
+        100% {
+          transform: scaleY(0.4);
+          -webkit-transform: scaleY(0.4);
+        }
+        20% {
+          transform: scaleY(1);
+          -webkit-transform: scaleY(1);
+        }
+      }
+    </style>
   </head>
 
   <body>
