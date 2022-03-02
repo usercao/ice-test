@@ -1,9 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
-import { Modal } from '@/components';
+import { Scrollbar, Modal } from '@/components';
 
 const Wrapper = styled.div`
+  height: 200px;
+  background: green;
   img {
     display: block;
     width: 60px;
@@ -31,6 +33,16 @@ const Home = () => {
       {/* <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>
       <p>1234567890</p> */}
+      <Scrollbar
+        trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
+        thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 4 })}
+        onScroll={(e: React.UIEvent<HTMLDivElement>) => {
+          const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+          console.log(scrollTop + clientHeight === scrollHeight);
+        }}
+      >
+        <div style={{ height: 200 }}>212121212121</div>
+      </Scrollbar>
       <img src={require('@/assets/images/test.png')} alt="icon" />
       <p onClick={() => setModalVisible(true)}>{t`hello`}</p>
       <Modal visible={modalVisible}>
