@@ -43,6 +43,7 @@ const Home = () => {
       >
         <div style={{ height: 200 }}>212121212121</div>
       </Scrollbar>
+      <i className="iconfont icon-phone"></i>
       <img src={require('@/assets/images/test.png')} alt="icon" />
       <p onClick={() => setModalVisible(true)}>{t`hello`}</p>
       <Modal visible={modalVisible}>

@@ -2,6 +2,7 @@ import { runApp, IAppConfig } from 'ice';
 import { RecoilRoot } from 'recoil';
 import I18nProvider from '@/locales';
 import { GlobalStyle } from '@/assets/styles/global';
+import { IconfontStyle } from '@/assets/styles/iconfont';
 
 const appConfig: IAppConfig = {
   app: {
@@ -11,6 +12,7 @@ const appConfig: IAppConfig = {
       return (
         <RecoilRoot>
           <GlobalStyle />
+          <IconfontStyle />
           <I18nProvider>{children}</I18nProvider>
         </RecoilRoot>
       );

@@ -38,15 +38,6 @@ export const GlobalStyle = styled.createGlobalStyle`
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  /* 全局消息 */
-  .message-root {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 2000;
-    pointer-events: none;
-    padding-top: 48px;
-  }
   /* flex */
   .row-start {
     display: flex;

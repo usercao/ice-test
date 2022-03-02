@@ -4,5 +4,5 @@ export { lightColors } from './colors';
 export { darkColors } from './colors';
 export * from './styled.d';
 
-export { ThemedGlobalStyle } from './global';
-export { IconGlobalStyle } from './iconfont';
+// export { ThemedGlobalStyle } from './global';
+// export { IconGlobalStyle } from '../assets/icons/iconfont';
