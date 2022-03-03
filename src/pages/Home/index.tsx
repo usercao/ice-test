@@ -1,12 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
-import { Scrollbar, Modal } from '@/components';
-import IconSpin from '@/assets/images/_global/IconSpin';
+import { Scrollbar, Modal, Button } from '@/components';
 
 const Wrapper = styled.div`
-  height: 200px;
-  background: green;
+  /* height: 200px;
+  background: green; */
   img {
     display: block;
     width: 60px;
@@ -23,6 +22,11 @@ const Wrapper = styled.div`
   }
   p:nth-child(3) {
     font-weight: 600;
+  }
+  .button {
+    button + button {
+      margin-top: 20px;
+    }
   }
 `;
 
@@ -42,12 +46,38 @@ const Home = () => {
           console.log(scrollTop + clientHeight === scrollHeight);
         }}
       >
-        <div style={{ height: 200 }}>212121212121</div>
+        <div style={{ height: 400 }}>212121212121</div>
       </Scrollbar>
-      <IconSpin size={16} color="#e91818" />
       <i className="iconfont icon-phone"></i>
       <img src={require('@/assets/images/test.png')} alt="icon" />
       <p onClick={() => setModalVisible(true)}>{t`hello`}</p>
+      <div className="button">
+        <Button type="default" loading>
+          hello
+        </Button>
+        <Button type="danger" loading>
+          hello
+        </Button>
+        <Button type="primary" loading>
+          hello
+        </Button>
+        <Button type="solid" loading>
+          hello
+        </Button>
+        <Button disabled loading>
+          hello
+        </Button>
+        <Button loading>hello</Button>
+        <Button size="lg" loading>
+          hello
+        </Button>
+        <Button size="md" loading>
+          hello
+        </Button>
+        <Button size="sm" loading>
+          hello
+        </Button>
+      </div>
       <Modal visible={modalVisible}>
         <div onClick={() => setModalVisible(false)}>close</div>
       </Modal>

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as React from 'react';
-// import classNames from 'classnames';
+import useRandomId from '@/hooks/useRandomId';
 
 interface Props extends Omit<React.SVGAttributes<SVGElement>, 'color'> {
   size?: number;
@@ -8,18 +8,21 @@ interface Props extends Omit<React.SVGAttributes<SVGElement>, 'color'> {
 }
 
 const DEFAULT_STYLE: React.CSSProperties = {
-  display: 'block',
+  display: 'inline-block',
 };
 
 const getIconColor = (color: string | string[] | undefined, index: number, defaultColor: string) => {
+  console.log(color ? (typeof color === 'string' ? color : color[index] || defaultColor) : defaultColor);
+
   return color ? (typeof color === 'string' ? color : color[index] || defaultColor) : defaultColor;
 };
 
 const IconSpin: React.FC<Props> = ({ size, color, style: _style, ...rest }) => {
   const style = _style ? { ...DEFAULT_STYLE, ..._style } : DEFAULT_STYLE;
+  const uuid = useRandomId();
 
   return (
-    <svg viewBox="0 0 38 38" width={size + 'rem'} height={size + 'rem'} style={style} {...rest}>
+    <svg id={uuid} viewBox="0 0 38 38" width={size + 'px'} height={size + 'px'} style={style} {...rest}>
       <defs>
         <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
           <stop stopColor={getIconColor(color, 1, '#ffffff')} stopOpacity="0" offset="0%" />
