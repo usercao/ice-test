@@ -183,7 +183,6 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>) => {
     const { disabled, onClick } = props;
-
     if (loading || disabled) {
       e.preventDefault();
       return;
