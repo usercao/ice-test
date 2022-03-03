@@ -10,9 +10,9 @@
     "i18n": "yarn i18n:extract && yarn i18n:compile",
     "i18n:extract": "lingui extract --clean",
     "i18n:compile": "lingui compile --strict",
-    "lint": "npm run eslint && npm run stylelint",
+    "lint": "yarn eslint && yarn stylelint",
     "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx ./",
-    "eslint:fix": "npm run eslint -- --fix",
+    "eslint:fix": "yarn eslint -- --fix",
     "stylelint": "stylelint \"**/*.{css,scss,less}\"",
     "prettier": "prettier --write '@(src)/**/*.@(ts|tsx)'"
   },
