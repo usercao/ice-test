@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import 'mac-scrollbar/dist/mac-scrollbar.css';
 
 const Wrapper = styled(MacScrollbar)<ScrollbarProps>`
+  width: inherit;
   height: inherit;
 `;
 
