@@ -6,11 +6,12 @@ import { locale } from '@/models';
 // import { useHistory } from 'ice';
 import { useMount } from 'ahooks';
 import { Scrollbar } from '@/components';
+import { GlobalScrollbar } from 'mac-scrollbar';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  /* height: 100vh;
+  overflow: hidden; */
   header {
     padding: 0 100px;
     p {
@@ -41,6 +42,11 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
+      <GlobalScrollbar
+        skin="dark"
+        trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
+        thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
+      />
       {/* <Header /> */}
       <header className="row-between">
         <div>{LOCALE_LABEL[localeModel]}</div>
@@ -58,9 +64,9 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
           ))}
         </div>
       </header>
-      <Scrollbar>
-        <div style={{ height: 2000 }}>{children}</div>
-      </Scrollbar>
+      <div style={{ height: 2000 }}>{children}</div>
+      {/* <Scrollbar>
+      </Scrollbar> */}
     </Wrapper>
   );
 };
