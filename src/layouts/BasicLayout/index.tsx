@@ -42,11 +42,7 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
-      <GlobalScrollbar
-        skin="dark"
-        trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
-        thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
-      />
+      <GlobalScrollbar />
       {/* <Header /> */}
       <header className="row-between">
         <div>{LOCALE_LABEL[localeModel]}</div>
