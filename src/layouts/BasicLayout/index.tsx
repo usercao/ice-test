@@ -5,10 +5,10 @@ import { useRecoilState } from 'recoil';
 import { locale } from '@/models';
 // import { useHistory } from 'ice';
 import { useMount } from 'ahooks';
-import { GlobalScrollbar } from 'mac-scrollbar';
 
 const Wrapper = styled.div`
   width: 100%;
+  min-width: 1280px;
   /* height: 100vh;
   overflow: hidden; */
   header {
@@ -41,7 +41,6 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
-      <GlobalScrollbar suppressMacOS={false} />
       {/* <Header /> */}
       <header className="row-between">
         <div>{LOCALE_LABEL[localeModel]}</div>

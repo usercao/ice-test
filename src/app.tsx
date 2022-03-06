@@ -1,9 +1,10 @@
 import { runApp, IAppConfig } from 'ice';
 import { RecoilRoot } from 'recoil';
-import I18nProvider from '@/locales';
 import { GlobalStyle } from '@/assets/styles/global';
 import { IconfontStyle } from '@/assets/styles/iconfont';
+import { GlobalScrollbar } from 'mac-scrollbar';
 import 'mac-scrollbar/dist/mac-scrollbar.css';
+import I18nProvider from '@/locales';
 
 const appConfig: IAppConfig = {
   app: {
@@ -14,6 +15,7 @@ const appConfig: IAppConfig = {
         <RecoilRoot>
           <GlobalStyle />
           <IconfontStyle />
+          <GlobalScrollbar />
           <I18nProvider>{children}</I18nProvider>
         </RecoilRoot>
       );
