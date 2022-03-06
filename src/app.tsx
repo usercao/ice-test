@@ -3,6 +3,7 @@ import { RecoilRoot } from 'recoil';
 import I18nProvider from '@/locales';
 import { GlobalStyle } from '@/assets/styles/global';
 import { IconfontStyle } from '@/assets/styles/iconfont';
+import 'mac-scrollbar/dist/mac-scrollbar.css';
 
 const appConfig: IAppConfig = {
   app: {

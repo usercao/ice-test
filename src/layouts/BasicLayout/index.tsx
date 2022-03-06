@@ -5,7 +5,6 @@ import { useRecoilState } from 'recoil';
 import { locale } from '@/models';
 // import { useHistory } from 'ice';
 import { useMount } from 'ahooks';
-import { Scrollbar } from '@/components';
 import { GlobalScrollbar } from 'mac-scrollbar';
 
 const Wrapper = styled.div`
