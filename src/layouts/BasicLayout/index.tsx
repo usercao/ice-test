@@ -41,7 +41,7 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
-      <GlobalScrollbar />
+      <GlobalScrollbar suppressMacOS={false} />
       {/* <Header /> */}
       <header className="row-between">
         <div>{LOCALE_LABEL[localeModel]}</div>
