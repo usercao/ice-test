@@ -5,12 +5,13 @@ import { useRecoilState } from 'recoil';
 import { locale } from '@/models';
 // import { useHistory } from 'ice';
 import { useMount } from 'ahooks';
+import { Scrollbar } from '@/components';
 
 const Wrapper = styled.div`
   width: 100%;
   min-width: 1280px;
-  /* height: 100vh;
-  overflow: hidden; */
+  height: 100vh;
+  overflow: hidden;
   header {
     padding: 0 100px;
     p {
@@ -58,9 +59,9 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
           ))}
         </div>
       </header>
-      <div style={{ height: 2000 }}>{children}</div>
-      {/* <Scrollbar>
-      </Scrollbar> */}
+      <Scrollbar>
+        <div style={{ height: 2000 }}>{children}</div>
+      </Scrollbar>
     </Wrapper>
   );
 };

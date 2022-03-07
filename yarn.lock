@@ -4948,10 +4948,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-mac-scrollbar@^0.9.7:
-  version "0.9.7"
-  resolved "https://registry.npmjs.org/mac-scrollbar/-/mac-scrollbar-0.9.7.tgz#afeff92b2ed2b80d135b1f82f56c2b531a3144d5"
-  integrity sha512-vazw7X3x3nltHuUQwc0SnWUIwHr0UV69WfWdB/TKWcJnmSYWxHeplVtwlMsvFv0dE8CiMEF5/D+yAnsugKCUBg==
+mac-scrollbar@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.npmjs.org/mac-scrollbar/-/mac-scrollbar-0.10.0.tgz#3b8dea2977bcbfe5ce9ddc9cf353ff8c90c21644"
+  integrity sha512-ULU+d2/64bxFmD83NmUlUwmOqYeS5Qxylj3MvOi8IHrmR7y2/bzSWrHpbIlF8q0i+H2/kwlA9SjvxhNDKW6EPA==
 
 magic-string@^0.25.7:
   version "0.25.9"

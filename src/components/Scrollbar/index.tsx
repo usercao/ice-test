@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MacScrollbar, MacScrollbarProps } from 'mac-scrollbar';
 import styled from 'styled-components';
+import 'mac-scrollbar/dist/mac-scrollbar.css';
 
 const Wrapper = styled(MacScrollbar)<ScrollbarProps>`
   width: inherit;

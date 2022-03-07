@@ -166,6 +166,7 @@ const Portal: React.FC<DropdownProps> = (props: DropdownProps) => {
         <Scrollbar
           trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
           thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
+          trackGap={[4, 4, 4, 4]}
         >
           {children && cloneElement(children, { onClick: onClose })}
         </Scrollbar>
