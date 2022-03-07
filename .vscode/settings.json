@@ -37,6 +37,8 @@
   "path-intellisense.mappings": {
     "@": "${workspaceFolder}/src"
   },
+  "typescript.suggest.paths": false,
+  "javascript.suggest.paths": false,
   "files.associations": {
     "*.env.*": "env"
   },
