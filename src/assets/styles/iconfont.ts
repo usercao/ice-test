@@ -37,11 +37,11 @@ export const IconfontStyle = styled.createGlobalStyle`
     content: '\\e746';
   }
 
-  .icon-a-huaban2:before {
+  .icon-hide:before {
     content: '\\e741';
   }
 
-  .icon-huaban:before {
+  .icon-show:before {
     content: '\\e742';
   }
 
