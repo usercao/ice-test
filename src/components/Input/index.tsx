@@ -90,8 +90,8 @@ const Wrapper = styled.div`
     }
     img {
       margin-left: 8px;
-      width: 14px !important;
-      height: 14px !important;
+      width: 14px;
+      height: 14px;
     }
   }
   &.md {
@@ -105,8 +105,8 @@ const Wrapper = styled.div`
     }
     img {
       margin-left: 10px;
-      width: 16px !important;
-      height: 16px !important;
+      width: 16px;
+      height: 16px;
     }
   }
   &.lg {
@@ -120,8 +120,8 @@ const Wrapper = styled.div`
     }
     img {
       margin-left: 12px;
-      width: 20px !important;
-      height: 20px !important;
+      width: 20px;
+      height: 20px;
     }
   }
 `;
