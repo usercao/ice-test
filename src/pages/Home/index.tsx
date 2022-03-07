@@ -6,7 +6,7 @@ import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components'
 const Wrapper = styled.div`
   /* height: 200px;
   background: green; */
-  img {
+  .img {
     display: block;
     width: 60px;
   }
@@ -56,7 +56,7 @@ const Home = () => {
         <div>212121212121</div>
       </Scrollbar>
       {/* <i className="iconfont icon-phone"></i> */}
-      <img src={require('@/assets/images/test.png')} alt="icon" />
+      <img className="img" src={require('@/assets/images/test.png')} alt="icon" />
       <p onClick={() => setModalVisible(true)}>{t`hello`}</p>
       {/* <div className="button">
         <Button type="default" loading>
