@@ -3,6 +3,21 @@ import BasicLayout from '@/layouts/BasicLayout';
 
 const routerConfig: IRouterConfig[] = [
   {
+    path: '/forget',
+    exact: true,
+    component: lazy(() => import('@/pages/Account/contents/Forget')),
+  },
+  {
+    path: '/login',
+    exact: true,
+    component: lazy(() => import('@/pages/Account/contents/Login')),
+  },
+  {
+    path: '/signup',
+    exact: true,
+    component: lazy(() => import('@/pages/Account/contents/Signup')),
+  },
+  {
     path: '/',
     component: BasicLayout,
     children: [
