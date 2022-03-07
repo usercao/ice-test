@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
-// import { t } from '@lingui/macro';
+import Container from '@/pages/Account/container';
+import { t } from '@lingui/macro';
 
-const Wrapper = styled.div``;
+const Wrapper = styled(Container)``;
 
 const Login = () => {
-  return <Wrapper>1</Wrapper>;
+  return <Wrapper>{t`hello`}</Wrapper>;
 };
 
 export default Login;
