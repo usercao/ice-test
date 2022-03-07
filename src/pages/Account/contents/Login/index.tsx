@@ -142,7 +142,7 @@ const Login = () => {
 
   React.useEffect(() => {
     loadQRCode();
-  }, []);
+  }, [loadQRCode]);
 
   return (
     <Container>
@@ -151,14 +151,12 @@ const Login = () => {
           <h4>{t`hello`}</h4>
           <p className="tips">{t`hello`}</p>
           <div className="tabs row-start">
-            <p
-              className={`${state === 'account' ? 'active' : 'default'}`}
-              onClick={() => setState('account')}
-            >{t`hello`}</p>
-            <p
-              className={`${state === 'qrcode' ? 'active' : 'default'}`}
-              onClick={() => setState('qrcode')}
-            >{t`hello`}</p>
+            <p className={`${state === 'account' ? 'active' : 'default'}`} onClick={() => setState('account')}>
+              {t`hello`}
+            </p>
+            <p className={`${state === 'qrcode' ? 'active' : 'default'}`} onClick={() => setState('qrcode')}>
+              {t`hello`}
+            </p>
           </div>
           {state === 'account' && (
             <div className="account">
