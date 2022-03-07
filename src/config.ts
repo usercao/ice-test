@@ -1,7 +1,5 @@
 export default {
-  default: {
-    baseURL: '/api',
-  },
+  default: {},
   daily: {},
   pre: {},
   prod: {},
