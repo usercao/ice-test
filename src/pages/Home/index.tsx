@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
-import { Scrollbar, Modal, Button, Input, Select } from '@/components';
+import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
 
 const Wrapper = styled.div`
   /* height: 200px;
@@ -37,6 +37,8 @@ const Home = () => {
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const [value, setValue] = React.useState<string>('1');
   const [list, setList] = React.useState<string[]>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+
+  const [state, setState] = React.useState<boolean>(false);
 
   return (
     <Wrapper className="col-center">
@@ -110,6 +112,31 @@ const Home = () => {
           </ul>
         </Select>
       </div>
+      <Checkbox
+        checked={state}
+        onChange={(e) => {
+          setState(e);
+        }}
+      >
+        <p>
+          <span>I have read and agreed </span>
+          <a
+            onClick={() => {
+              console.log(111);
+            }}
+          >
+            Terms of Use{' '}
+          </a>
+          <span>and </span>
+          <a
+            onClick={(e) => {
+              console.log(222);
+            }}
+          >
+            Privacy Agreement
+          </a>
+        </p>
+      </Checkbox>
       <Modal visible={modalVisible}>
         <div onClick={() => setModalVisible(false)}>close</div>
       </Modal>

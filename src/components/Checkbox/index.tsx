@@ -1,113 +1,100 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import useRandomId from '@/hooks/useRandomId';
 import styled from 'styled-components';
-import { useMount } from 'ahooks';
 
 const Wrapper = styled.div`
-  cursor: pointer;
-  .radio__children {
-    cursor: pointer;
-  }
+  align-items: flex-start;
+  user-select: none;
+  /* 清除默认样式 */
   input {
     display: none;
+    opacity: 0;
   }
-  &.square {
-    label .radio__target {
-      border-radius: 2px;
-    }
-    input:checked + label {
-      .radio__target {
-        border: none;
-        background: rgba(255, 196, 18, 1);
-        position: relative;
-        &::before {
-          content: '';
-          position: absolute;
-          background: #000000;
-          width: 6px;
-          height: 2px;
-          transform: translate(1px, 7px) rotateZ(45deg);
-          border-radius: 10px;
-        }
-        &::after {
-          content: '';
-          position: absolute;
-          background: #000000;
-          width: 10px;
-          height: 2px;
-          transform: translate(4px, 6px) rotateZ(-45deg);
-          border-radius: 10px;
-        }
-      }
-    }
-  }
-  label .radio__target {
+  /* global */
+  label {
     display: block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.1581);
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.1s linear;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    transition: all 0.3s linear;
+    &::after {
+      content: '';
+      display: block;
+      margin: 4.5px 0 0 4px;
+      width: 9px;
+      height: 6px;
+      background-image: url(${require('@/assets/images/_global/check.svg')});
+      background-repeat: no-repeat;
+      background-size: 9px 6px;
+      background-position: center;
+    }
   }
-  input:checked + label .radio__target {
-    border: 4px solid rgba(255, 196, 18, 1);
+  a {
+    color: #06ceab;
+  }
+  &.checked {
+    label {
+      border: 1px solid #06ceab;
+      background: #06ceab;
+    }
+  }
+  /* base */
+  &.sm {
+  }
+  &.md {
+    label {
+      width: 18px;
+      height: 18px;
+    }
+    .text {
+      margin-left: 9px;
+      font-size: 14px;
+      line-height: 18px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+  &.lg {
   }
 `;
 
-export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix' | 'suffix'> {
+type SizeType = 'sm' | 'md' | 'lg';
+
+export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   className?: string;
-  type?: 'default' | 'square';
+  size?: SizeType;
   checked?: boolean;
   onChange?: (...args: any[]) => any;
 }
 
-const Checkbox: React.FC<RadioProps> = React.forwardRef((props: RadioProps, ref) => {
-  const { className, checked = false, type = 'default', onChange } = props;
+const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps, ref) => {
+  const { className, size = 'md', disabled = false, checked = false, children, onChange } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
-  const inputRef = (ref as any) || React.createRef<HTMLInputElement>();
-  const [UUID, setUUID] = React.useState('A');
+  const checkboxRef = (ref as any) || React.createRef<HTMLInputElement>();
+  const uuid = useRandomId();
 
   React.useEffect(() => {
-    if (!inputRef || !inputRef.current) {
+    if (!checkboxRef || !checkboxRef.current) {
       return;
     }
-  }, [inputRef]);
+  }, [checkboxRef]);
 
-  const classes = classNames(className, type, {
-    // disabled: disabled,
+  const classes = classNames(className, 'row-start', {
+    [`${size}`]: size,
+    checked: checked,
+    disabled: disabled,
   });
 
-  function randomRangeId(num = 8) {
-    const charStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let returnStr = '';
-    for (let i = 0; i < num; i++) {
-      const index = Math.round(Math.random() * (charStr.length - 1));
-      returnStr += charStr.substring(index, index + 1);
-    }
-    return returnStr;
-  }
-
-  useMount(() => {
-    const uuid = randomRangeId();
-    setUUID(uuid);
-  });
+  const handleChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if ((e.target as HTMLInputElement).localName === 'a') return;
+    onChange?.(!checked, 'checkbox');
+  };
 
   return (
-    <Wrapper className={classes}>
-      <input
-        type="checkbox"
-        id={UUID}
-        checked={checked}
-        ref={inputRef}
-        onChange={(e) => onChange?.(e.target.checked)}
-      />
-      <label htmlFor={UUID} className="row-start">
-        <div className="radio__target"></div>
-        <div className="radio__children">{props.children}</div>
-      </label>
+    <Wrapper className={classes} onClick={handleChange}>
+      <input ref={checkboxRef} type="checkbox" id={uuid} />
+      <label htmlFor={uuid} />
+      {children && <div className="text row-start">{children}</div>}
     </Wrapper>
   );
 });
