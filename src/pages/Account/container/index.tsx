@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Settings from '@/components/_global/Settings';
-// import { t } from '@lingui/macro';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -10,6 +9,7 @@ const Wrapper = styled.div`
   > .moon {
     width: 50%;
     height: inherit;
+    background: #6bd4bc;
     img {
       width: 100%;
       height: 100%;
@@ -29,8 +29,15 @@ const Wrapper = styled.div`
   }
 `;
 
-const Container: React.FC = (props) => {
-  const { children } = props;
+export type ContainerType = 'account' | 'verify' | 'success';
+
+interface ContainerProps {
+  verification: ContainerType;
+  children: React.ReactNode;
+}
+
+const Container: React.FC<ContainerProps> = (props: ContainerProps) => {
+  const { verification = 'account', children } = props;
 
   return (
     <Wrapper className="row-center">
@@ -39,7 +46,9 @@ const Container: React.FC = (props) => {
       </div>
       <div className="base">
         <Settings />
-        {children}
+        {verification === 'account' && children}
+        {verification === 'verify' && <div>212</div>}
+        {verification === 'success' && <div>212</div>}
       </div>
     </Wrapper>
   );
