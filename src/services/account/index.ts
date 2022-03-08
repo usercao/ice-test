@@ -9,6 +9,15 @@ interface ILoginParams {
   captcha_id: string;
   challenge: string;
 }
+interface ILoginVerifyParams {
+  type: 0; // 0 邮箱
+  username: string;
+  password: string;
+  request_id: string; // 第一步返回
+  auth_type: 2 | 3; // ga: 3, email: 2,
+  verify_code: string;
+  order_id?: string; // 验证码发送成功后的id
+}
 
 interface ISignUpParams {
   type: 0; // 0邮箱
@@ -21,28 +30,32 @@ interface ISignUpParams {
 }
 
 export default {
-  // 用户名密码登录
+  // 登录
   async loginByUserName(params: ILoginParams) {
-    const data: {
-      bindGA: boolean;
-      bindMobile: boolean;
-      bindEmail: boolean;
-    } = await request({
+    const data = await request({
       method: 'POST',
-      url: api.login_qrcode,
+      url: api.usernameLogin,
       params,
     });
     return data;
   },
 
-  // 验证码登录
-  async getLoginQrCode() {
-    return await request(api.login_qrcode);
+  async loginVerify(params: ILoginVerifyParams) {
+    const data = await request({
+      method: 'POST',
+      url: api.loginVerify,
+      params,
+    });
+    return data;
   },
 
-  async getLoginQrCodeResult(ticket: string) {
+  async getloginQrCode() {
+    await request(api.loginQrCode);
+  },
+
+  async getloginqrCodeResult(ticket: string) {
     return await request({
-      url: api.qrcode_result,
+      url: api.qrCodeResult,
       params: { ticket },
     });
   },
@@ -51,7 +64,7 @@ export default {
   async signUp(params: ISignUpParams) {
     return await request({
       method: 'POST',
-      url: api.sign_up,
+      url: api.signUp,
       params,
     });
   },

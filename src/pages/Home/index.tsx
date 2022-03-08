@@ -44,11 +44,17 @@ const Home = () => {
 
   const [state, setState] = React.useState<boolean>(false);
 
-  const req1 = useRequest(accountService.getLoginQrCode);
+  const req1 = useRequest(accountService.loginByUserName);
 
   useMount(() => {
-    req1.request();
+    req1.request({});
   });
+
+  React.useEffect(() => {
+    if (req1.error) {
+      console.log(req1.error);
+    }
+  }, [req1.error]);
 
   return (
     <Wrapper className="col-center">
