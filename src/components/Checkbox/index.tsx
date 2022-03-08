@@ -5,8 +5,7 @@ import useRandomId from '@/hooks/useRandomId';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  align-items: flex-start;
-  user-select: none;
+  display: flex;
   /* 清除默认样式 */
   input {
     display: none;
@@ -30,6 +29,10 @@ const Wrapper = styled.div`
       background-position: center;
     }
   }
+  .text {
+    flex: 1;
+    user-select: none;
+  }
   p,
   span {
     color: rgba(0, 0, 0, 0.6);
@@ -37,6 +40,10 @@ const Wrapper = styled.div`
   a {
     color: #06ceab;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: rgba(6, 206, 171, 0.6);
+    }
   }
   &:not(.disabled):hover {
     label {
@@ -99,7 +106,7 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps
     }
   }, [checkboxRef]);
 
-  const classes = classNames(className, 'row-start', {
+  const classes = classNames(className, {
     [`${size}`]: size,
     checked: checked,
     disabled: disabled,
@@ -114,7 +121,7 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps
     <Wrapper className={classes}>
       <input ref={checkboxRef} type="checkbox" id={uuid} disabled={disabled} onClick={handleChange} />
       <label htmlFor={uuid} />
-      {children && cloneElement(children, { onClick: handleChange })}
+      {children && cloneElement(children, { className: 'text', onClick: handleChange })}
     </Wrapper>
   );
 });

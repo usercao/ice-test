@@ -1,6 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { containerType, verifyType } from '@/models/account';
 import Settings from '@/components/_global/Settings';
+import { Input, Button } from '@/components';
+import { t } from '@lingui/macro';
+import { useHistory } from 'ice';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -26,18 +31,133 @@ const Wrapper = styled.div`
       top: 0;
       right: 0;
     }
+    > .verify {
+      align-items: flex-start;
+      padding-left: 84px;
+      height: inherit;
+      > .inner {
+        width: 330px;
+        h4 {
+          font-weight: 600;
+          font-size: 26px;
+          line-height: 34px;
+          color: #000000;
+        }
+        .tips {
+          margin: 10px 0 45px 0;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          color: rgba(0, 0, 0, 0.4);
+        }
+        .label {
+          span {
+            font-size: 12px;
+            line-height: 17px;
+            color: #384442;
+          }
+          span:first-child {
+            font-weight: 500;
+          }
+        }
+        .input + .label {
+          margin-top: 16px;
+        }
+        .lg {
+          height: 46px;
+          input {
+            font-size: 14px;
+          }
+        }
+        .error {
+          padding: 8px 0;
+          font-size: 12px;
+          line-height: 16px;
+          color: #ff7878;
+        }
+        .send {
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 17px;
+          color: #06ceab;
+          user-select: none;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          &:hover {
+            color: rgba(6, 206, 171, 0.6);
+          }
+        }
+      }
+    }
+    > .success {
+      /* align-items: flex-start;
+      padding-left: 84px; */
+      height: inherit;
+      > .inner {
+        h4 {
+          text-align: center;
+          font-weight: 600;
+          font-size: 26px;
+          line-height: 34px;
+          color: #000000;
+        }
+        .tips {
+          margin: 10px 0 56px 0;
+          text-align: center;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          color: rgba(0, 0, 0, 0.4);
+        }
+        .success {
+          width: 392px;
+          height: 292px;
+        }
+        button {
+          display: block;
+          margin: 80px auto 0 auto;
+          width: 330px;
+        }
+      }
+    }
   }
 `;
 
-export type ContainerType = 'account' | 'verify' | 'success';
+const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
+  const [type, setType] = useRecoilState(containerType);
+  const verify = useRecoilValue(verifyType);
+  const history = useHistory();
 
-interface ContainerProps {
-  verification: ContainerType;
-  children: React.ReactNode;
-}
+  const handleForget = React.useCallback(async () => {
+    if (verify === 'email') {
+      return;
+    }
+    if (verify === 'mobile') {
+      return;
+    }
+    // is google?
+    // if (verify === '') {
+    //   return;
+    // }
+    setType('default');
+  }, [verify, setType]);
 
-const Container: React.FC<ContainerProps> = (props: ContainerProps) => {
-  const { verification = 'account', children } = props;
+  const handleLogin = React.useCallback(async () => {
+    if (verify === 'email') {
+      return;
+    }
+    if (verify === 'mobile') {
+      return;
+    }
+    // if (verify === 'google') {
+    //   return;
+    // }
+    console.log('login');
+  }, [verify]);
+
+  const handleSignup = React.useCallback(async () => {
+    history.replace('/home');
+  }, [history]);
 
   return (
     <Wrapper className="row-center">
@@ -46,9 +166,66 @@ const Container: React.FC<ContainerProps> = (props: ContainerProps) => {
       </div>
       <div className="base">
         <Settings />
-        {verification === 'account' && children}
-        {verification === 'verify' && <div>212</div>}
-        {verification === 'success' && <div>212</div>}
+        {type === 'default' && children}
+        {type === 'forget' && (
+          <div className="verify col-center">
+            <div className="inner">
+              <h4>{t`hello`}</h4>
+              <p className="tips">{t`hello`}</p>
+              <p className="label row-between">
+                <span>Email / Phone Number</span>
+                <span>Email / Phone Number</span>
+              </p>
+              <Input
+                className="input"
+                size="lg"
+                placeholder="21212"
+                maxLength={6}
+                suffix={verify !== 'google' && <p className="send">Send</p>}
+                clear
+              />
+              <p className="error">{''}</p>
+              <Button size="lg" onClick={handleForget}>
+                Continue
+              </Button>
+            </div>
+          </div>
+        )}
+        {type === 'login' && (
+          <div className="verify col-center">
+            <div className="inner">
+              <h4>{t`hello`}</h4>
+              <p className="tips">{t`hello`}</p>
+              <p className="label row-between">
+                <span>Email / Phone Number</span>
+              </p>
+              <Input
+                className="input"
+                size="lg"
+                placeholder="21212"
+                maxLength={6}
+                suffix={verify !== 'google' && <p className="send">Send</p>}
+                clear
+              />
+              <p className="error">{''}</p>
+              <Button size="lg" onClick={handleLogin}>
+                Continue
+              </Button>
+            </div>
+          </div>
+        )}
+        {type === 'signup' && (
+          <div className="success col-center">
+            <div className="inner">
+              <h4>{t`hello`}</h4>
+              <p className="tips">{t`hello`}</p>
+              <img className="success" src={require('@/assets/images/account/successfully.webp')} alt="success" />
+              <Button size="lg" onClick={handleSignup}>
+                Continue
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </Wrapper>
   );
