@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Container, { ContainerType } from '@/pages/Account/container';
+import { useSetRecoilState } from 'recoil';
+import { containerType, verifyType } from '@/models/account';
+import Container from '@/pages/Account/container';
 import { Input, Button } from '@/components';
 import QRCode from 'qrcode';
 import { t } from '@lingui/macro';
@@ -49,19 +51,20 @@ const Wrapper = styled.div`
     }
     > .account {
       .label {
+        margin-bottom: 5px;
         font-weight: 500;
         font-size: 12px;
         line-height: 17px;
         color: #384442;
+      }
+      .input + .label {
+        margin-top: 16px;
       }
       .lg {
         height: 46px;
         input {
           font-size: 14px;
         }
-      }
-      .input {
-        margin: 5px 0 16px 0;
       }
       .iconfont {
         color: #384442;
@@ -70,6 +73,12 @@ const Wrapper = styled.div`
         &:hover {
           color: #06ceab;
         }
+      }
+      .error {
+        padding: 8px 0;
+        font-size: 12px;
+        line-height: 16px;
+        color: #ff7878;
       }
       .forget {
         margin: 17px 0;
@@ -168,6 +177,8 @@ const Wrapper = styled.div`
 `;
 
 const Login = () => {
+  const setType = useSetRecoilState(containerType);
+  const setVerify = useSetRecoilState(verifyType);
   const history = useHistory();
 
   const [state, setState] = React.useState<'account' | 'qrcode'>('account');
@@ -187,10 +198,8 @@ const Login = () => {
     loadQRCode();
   }, [loadQRCode]);
 
-  const [verification, setVerification] = React.useState<ContainerType>('account');
-
   return (
-    <Container verification={verification}>
+    <Container>
       <Wrapper className="col-center">
         <div className="inner">
           <h4>{t`hello`}</h4>
@@ -216,7 +225,14 @@ const Login = () => {
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
-              <Button size="lg" onClick={() => setVerification('verify')}>
+              <p className="error">{''}</p>
+              <Button
+                size="lg"
+                onClick={() => {
+                  setType('login');
+                  setVerify('google');
+                }}
+              >
                 Continue
               </Button>
               <p className="forget" onClick={() => history.push('/forget')}>
