@@ -16,6 +16,7 @@ export default {
     '/api/v1': {
       enable: true,
       target: 'https://test-senior.mexo.io',
+      // target: 'https://senior.mexo.io', // 正式
     },
     '/api': {
       enable: true,

@@ -1,7 +1,11 @@
 import * as React from 'react';
+import { useMount } from 'ahooks';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
+
+import { useRequest } from 'ice';
+import accountService from '@/services/account';
 
 const Wrapper = styled.div`
   /* height: 200px;
@@ -39,6 +43,12 @@ const Home = () => {
   const [list, setList] = React.useState<string[]>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
 
   const [state, setState] = React.useState<boolean>(false);
+
+  const req1 = useRequest(accountService.getLoginQrCode);
+
+  useMount(() => {
+    req1.request();
+  });
 
   return (
     <Wrapper className="col-center">
