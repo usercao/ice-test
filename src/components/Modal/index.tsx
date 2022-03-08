@@ -1,12 +1,12 @@
-import * as React from 'react'
-import { createPortal } from 'react-dom'
-import { AnimatePresence, motion } from 'framer-motion'
-import { RemoveScroll } from 'react-remove-scroll'
-import styled from 'styled-components'
-import { fadeConfig } from '../../config/motion'
-import { Scrollbar, } from '../index'
-import { tuple } from '../_type/type'
-import classNames from 'classnames'
+import * as React from 'react';
+import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import { RemoveScroll } from 'react-remove-scroll';
+import styled from 'styled-components';
+import { fadeConfig } from '../../config/motion';
+import { Scrollbar } from '../index';
+import { tuple } from '../_type/type';
+import classNames from 'classnames';
 
 const PortalWrapper = styled(motion.div)`
   position: fixed;
@@ -102,29 +102,29 @@ const PortalWrapper = styled(motion.div)`
       }
     }
   }
-`
+`;
 
-const ModalTypes = tuple('info', 'success', 'error', 'warning', 'confirm')
-type SizeTypes = 'default' | 'middle'
+const ModalTypes = tuple('info', 'success', 'error', 'warning', 'confirm');
+type SizeTypes = 'default' | 'middle';
 
-export type ModalType = typeof ModalTypes[number]
+export type ModalType = typeof ModalTypes[number];
 
 export interface ModalProps {
-  className?: string
-  visible?: boolean
-  away?: boolean // 点击事件
-  type?: ModalType
-  onBack?: (...args: any[]) => any
-  title?: React.ReactNode
-  closable?: boolean
-  onClose?: (...args: any[]) => any
-  cancel?: React.ReactNode
-  onCancel?: (...args: any[]) => any
-  ok?: React.ReactNode
-  onOk?: (...args: any[]) => any
-  children?: React.ReactNode
-  size?: SizeTypes
-  footer?: React.ReactNode
+  className?: string;
+  visible?: boolean;
+  away?: boolean; // 点击事件
+  type?: ModalType;
+  onBack?: (...args: any[]) => any;
+  title?: React.ReactNode;
+  closable?: boolean;
+  onClose?: (...args: any[]) => any;
+  cancel?: React.ReactNode;
+  onCancel?: (...args: any[]) => any;
+  ok?: React.ReactNode;
+  onOk?: (...args: any[]) => any;
+  children?: React.ReactNode;
+  size?: SizeTypes;
+  footer?: React.ReactNode;
 }
 
 const Portal: React.FC<ModalProps> = (props: ModalProps) => {
@@ -145,24 +145,24 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
     size,
     footer,
     ...rest
-  } = props
+  } = props;
 
   const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { onCancel } = props
-    onCancel?.(e)
-  }
+    const { onCancel } = props;
+    onCancel?.(e);
+  };
 
   const handleOk = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { onOk } = props
-    onOk?.(e)
-  }
+    const { onOk } = props;
+    onOk?.(e);
+  };
 
   const renderHeader = (
     <div className="header row-between">
       <h4
         className={`row-start ${onBack ? 'back' : ''}`.trimEnd()}
         onClick={() => {
-          onBack?.()
+          onBack?.();
         }}
       >
         {onBack && <i className="iconfont icon-arrow_right" style={{ marginLeft: '-6px' }} />}
@@ -172,7 +172,7 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         {closable && <i className="iconfont icon-close" />}
       </div>
     </div>
-  )
+  );
 
   const renderFooter = (
     <div className={`footer row-end ${type}`.trimEnd()}>
@@ -187,7 +187,7 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         </Button>
       )} */}
     </div>
-  )
+  );
 
   return createPortal(
     <RemoveScroll>
@@ -195,8 +195,8 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         className={className}
         {...fadeConfig}
         onClick={(e) => {
-          if (away) return
-          e.stopPropagation()
+          if (away) return;
+          e.stopPropagation();
         }}
       >
         <div className={classNames('inner', size)}>
@@ -208,14 +208,14 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         </div>
       </PortalWrapper>
     </RemoveScroll>,
-    document.body
-  )
-}
+    document.body,
+  );
+};
 
 const Modal: React.FC<ModalProps> = (props: ModalProps) => {
-  const { visible = false } = props
+  const { visible = false } = props;
 
-  return <AnimatePresence>{visible && <Portal {...props} />}</AnimatePresence>
-}
+  return <AnimatePresence>{visible && <Portal {...props} />}</AnimatePresence>;
+};
 
-export default Modal
+export default Modal;

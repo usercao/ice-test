@@ -1,13 +1,13 @@
-import React from 'react'
-import { NotificationProps, NotificationIcon } from './PropsType'
-import styled, { keyframes } from 'styled-components/macro'
+import React from 'react';
+import { NotificationProps, NotificationIcon } from './PropsType';
+import styled, { keyframes } from 'styled-components/macro';
 import {
   ColorIconToastNor as IconToastInfo,
   ColorIconToastLoading as IconToastLoading,
   ColorIconToastSuccess as IconToastSuccess,
   ColorIconToastFail as IconToastFail,
   ColorIconToastWarning as IconToastWarning,
-} from 'apex-icon/color'
+} from 'apex-icon/color';
 
 const Wrapper = styled.div`
   /* margin: 0 auto; */
@@ -66,7 +66,7 @@ const Wrapper = styled.div`
       }
     }
   }
-`
+`;
 
 const rotate = keyframes`
   from {
@@ -75,57 +75,57 @@ const rotate = keyframes`
   to {
     transform: rotate(360deg);
   }
-`
+`;
 
 const RotateImg = styled.div`
   animation: ${rotate} 5s linear infinite;
-`
+`;
 
 function getIcon(icon: NotificationIcon | React.ReactElement | undefined) {
   switch (icon) {
     case 'info':
-      return <IconToastInfo size={21.5} />
+      return <IconToastInfo size={21.5} />;
     case 'warning':
-      return <IconToastWarning size={21.5} />
+      return <IconToastWarning size={21.5} />;
     case 'success':
-      return <IconToastSuccess size={21.5} />
+      return <IconToastSuccess size={21.5} />;
     case 'error':
-      return <IconToastFail size={21.5} />
+      return <IconToastFail size={21.5} />;
     case 'loading':
       return (
         <RotateImg>
           <IconToastLoading size={21.5} />
         </RotateImg>
-      )
+      );
     default:
-      return null
+      return null;
   }
 }
 
 function getText(icon: NotificationIcon | React.ReactElement) {
   switch (icon) {
     case 'info':
-      return 'Information'
+      return 'Information';
     case 'warning':
-      return 'Warning'
+      return 'Warning';
     case 'success':
-      return 'Success'
+      return 'Success';
     case 'error':
-      return 'Failure'
+      return 'Failure';
     case 'loading':
-      return 'Transaction submitted'
+      return 'Transaction submitted';
   }
 }
 
 export class Notification extends React.Component<NotificationProps, {}> {
   static defaultProps: NotificationProps = {
     content: '',
-  }
+  };
 
   render() {
-    const { icon, content, onMouseEnter, onMouseLeave, onClick } = this.props
+    const { icon, content, onMouseEnter, onMouseLeave, onClick } = this.props;
 
-    const iconToText = icon ? getText(icon) : null
+    const iconToText = icon ? getText(icon) : null;
 
     return (
       <Wrapper className={`row-end`.trimEnd()} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -141,8 +141,8 @@ export class Notification extends React.Component<NotificationProps, {}> {
           {/* <div onClick={onClose}>close</div> */}
         </div>
       </Wrapper>
-    )
+    );
   }
 }
 
-export default Notification
+export default Notification;

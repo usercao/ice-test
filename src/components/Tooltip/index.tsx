@@ -1,10 +1,10 @@
-import * as React from 'react'
-import { createPortal } from 'react-dom'
-import { fadeConfig } from '../../config/motion'
-import { AnimatePresence, motion } from 'framer-motion'
-import { cloneElement } from '../_util/reactNode'
-import styled, { createGlobalStyle } from 'styled-components'
-import { useHover } from 'ahooks'
+import * as React from 'react';
+import { createPortal } from 'react-dom';
+import { fadeConfig } from '../../config/motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { cloneElement } from '../_util/reactNode';
+import styled, { createGlobalStyle } from 'styled-components';
+import { useHover } from 'ahooks';
 
 const TooltipGlobalStyle = createGlobalStyle`
   .tooltip {
@@ -20,7 +20,7 @@ const TooltipGlobalStyle = createGlobalStyle`
     left: 0;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.365);
   }
-`
+`;
 
 const PortalWrapper = styled(motion.div)<{ width: number }>`
   position: fixed;
@@ -77,49 +77,49 @@ const PortalWrapper = styled(motion.div)<{ width: number }>`
     backdrop-filter: blur(60px);
     z-index: -1;
   }
-`
+`;
 
 export interface TooltipProps {
-  placement?: 'top' | 'bottom'
-  widthSize?: number
-  dashed?: boolean
-  children?: React.ReactElement
-  overlay?: React.ReactNode
+  placement?: 'top' | 'bottom';
+  widthSize?: number;
+  dashed?: boolean;
+  children?: React.ReactElement;
+  overlay?: React.ReactNode;
 }
 
 interface InternalTooltipProps {
-  domRef: React.RefObject<HTMLDivElement>
+  domRef: React.RefObject<HTMLDivElement>;
 }
 
 const Portal: React.FC<TooltipProps & InternalTooltipProps> = (props) => {
-  const { domRef, placement = 'top', widthSize = 320, overlay } = props
-  const innerRef = React.createRef<HTMLDivElement>()
+  const { domRef, placement = 'top', widthSize = 320, overlay } = props;
+  const innerRef = React.createRef<HTMLDivElement>();
 
   const [position, setPosition] = React.useState<{ width: number; top: number; left: number }>({
     width: 0,
     top: 0,
     left: 0,
-  })
+  });
 
-  const [topSize, setTopSize] = React.useState<number>(0)
-
-  React.useEffect(() => {
-    if (!innerRef.current) return
-
-    const { height } = innerRef.current.getBoundingClientRect()
-    setTopSize(height)
-  }, [innerRef, position])
+  const [topSize, setTopSize] = React.useState<number>(0);
 
   React.useEffect(() => {
-    if (!domRef.current) return
+    if (!innerRef.current) return;
 
-    const { top, bottom, left, width } = domRef.current.getBoundingClientRect()
-    const leftSize = Number((width / 2 + left - widthSize / 2).toFixed(4))
-    const site = { width: widthSize, top: placement === 'top' ? top - topSize : bottom, left: leftSize }
+    const { height } = innerRef.current.getBoundingClientRect();
+    setTopSize(height);
+  }, [innerRef, position]);
+
+  React.useEffect(() => {
+    if (!domRef.current) return;
+
+    const { top, bottom, left, width } = domRef.current.getBoundingClientRect();
+    const leftSize = Number((width / 2 + left - widthSize / 2).toFixed(4));
+    const site = { width: widthSize, top: placement === 'top' ? top - topSize : bottom, left: leftSize };
     // console.log(site)
 
-    setPosition(site)
-  }, [domRef, topSize, placement, widthSize])
+    setPosition(site);
+  }, [domRef, topSize, placement, widthSize]);
 
   return createPortal(
     <PortalWrapper {...fadeConfig} width={100} onClick={(e) => e.stopPropagation()}>
@@ -127,16 +127,16 @@ const Portal: React.FC<TooltipProps & InternalTooltipProps> = (props) => {
         <div className="core">{cloneElement(overlay)}</div>
       </div>
     </PortalWrapper>,
-    document.body
-  )
-}
+    document.body,
+  );
+};
 
 const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
-  const { dashed = true, children } = props
+  const { dashed = true, children } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
-  const domRef = React.createRef<HTMLDivElement>()
-  const isHovering = useHover(domRef)
+  const domRef = React.createRef<HTMLDivElement>();
+  const isHovering = useHover(domRef);
 
   return (
     <React.Fragment>
@@ -145,7 +145,7 @@ const Tooltip: React.FC<TooltipProps> = (props: TooltipProps) => {
       <AnimatePresence>{isHovering && <Portal {...props} domRef={domRef} />}</AnimatePresence>
       {/* <Portal {...props} domRef={domRef} /> */}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Tooltip
+export default Tooltip;

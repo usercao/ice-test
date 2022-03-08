@@ -1,26 +1,26 @@
-import * as React from 'react'
+import * as React from 'react';
 
-export type BasicTarget<T = HTMLElement> = (() => T | null) | T | null | React.MutableRefObject<T | null | undefined>
+export type BasicTarget<T = HTMLElement> = (() => T | null) | T | null | React.MutableRefObject<T | null | undefined>;
 
-type TargetElement = HTMLElement | Element | Document | Window
+type TargetElement = HTMLElement | Element | Document | Window;
 
 export function getTargetElement(
   target?: BasicTarget<TargetElement>,
-  defaultElement?: TargetElement
+  defaultElement?: TargetElement,
 ): TargetElement | undefined | null {
   if (!target) {
-    return defaultElement
+    return defaultElement;
   }
 
-  let targetElement: TargetElement | undefined | null
+  let targetElement: TargetElement | undefined | null;
 
   if (typeof target === 'function') {
-    targetElement = target()
+    targetElement = target();
   } else if ('current' in target) {
-    targetElement = target.current
+    targetElement = target.current;
   } else {
-    targetElement = target
+    targetElement = target;
   }
 
-  return targetElement
+  return targetElement;
 }

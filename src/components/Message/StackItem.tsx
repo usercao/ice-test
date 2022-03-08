@@ -1,8 +1,8 @@
-import React from 'react'
-import { NotificationStackItemProps } from './PropsType'
-import { fadeConfig } from '../../config/motion'
-import { AnimatePresence, motion } from 'framer-motion'
-import styled from 'styled-components'
+import React from 'react';
+import { NotificationStackItemProps } from './PropsType';
+import { fadeConfig } from '../../config/motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import styled from 'styled-components';
 
 const PortalWrapper = styled(motion.div)`
   /* position: absolute;
@@ -20,68 +20,68 @@ const PortalWrapper = styled(motion.div)`
     border-radius: 4px;
   } */
   pointer-events: auto;
-`
+`;
 // interface MyState extends NotificationStackItemProps, NotificationPropsBase {
 //   visible: boolean
 // }
 
 export default class StackItem extends React.Component<NotificationStackItemProps, any> {
-  private timeout: number = 3000
+  private timeout: number = 3000;
 
   static defaultProps = {
     stayTime: 3000,
-  }
+  };
 
   constructor(props) {
-    super(props)
-    this.state = { visible: false }
+    super(props);
+    this.state = { visible: false };
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.icon !== state.icon && state.visible) {
-      return { ...props, ...state }
+      return { ...props, ...state };
     }
-    return null
+    return null;
   }
 
   componentDidMount() {
-    this.setState({ visible: true })
-    this.startTimer()
+    this.setState({ visible: true });
+    this.startTimer();
   }
 
   componentDidUpdate(prevProps: NotificationStackItemProps) {
-    const { stayTime } = prevProps
-    const { stayTime: newTime } = this.state
+    const { stayTime } = prevProps;
+    const { stayTime: newTime } = this.state;
     if (stayTime !== newTime) {
-      this.stopTimer()
-      this.startTimer()
+      this.stopTimer();
+      this.startTimer();
     }
   }
 
   componentWillUnmount() {
-    clearInterval(this.timeout)
+    clearInterval(this.timeout);
   }
 
   close = () => {
-    this.stopTimer()
-    this.setState({ visible: false }, this.props.onClose)
-  }
+    this.stopTimer();
+    this.setState({ visible: false }, this.props.onClose);
+  };
 
   startTimer = () => {
     // state中的stayTime需要通过update更新
-    const stayTime = this.state?.stayTime || this.props?.stayTime
+    const stayTime = this.state?.stayTime || this.props?.stayTime;
     if (stayTime) {
-      this.timeout = window.setTimeout(this.close, stayTime)
+      this.timeout = window.setTimeout(this.close, stayTime);
     }
-  }
+  };
 
   stopTimer = () => {
-    clearInterval(this.timeout)
-  }
+    clearInterval(this.timeout);
+  };
 
   render() {
-    const { Component, name, willUnmount, stayTime, onClose, ...rest } = this.state
-    const { visible } = this.state
+    const { Component, name, willUnmount, stayTime, onClose, ...rest } = this.state;
+    const { visible } = this.state;
 
     return (
       <AnimatePresence>
@@ -91,6 +91,6 @@ export default class StackItem extends React.Component<NotificationStackItemProp
           </PortalWrapper>
         )}
       </AnimatePresence>
-    )
+    );
   }
 }
