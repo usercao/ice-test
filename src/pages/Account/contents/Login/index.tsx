@@ -1,9 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import Container from '@/pages/Account/container';
+import Container, { ContainerType } from '@/pages/Account/container';
 import { Input, Button } from '@/components';
 import QRCode from 'qrcode';
 import { t } from '@lingui/macro';
+import { useHistory } from 'ice';
 
 const Wrapper = styled.div`
   align-items: flex-start;
@@ -78,6 +79,10 @@ const Wrapper = styled.div`
         color: #06ceab;
         user-select: none;
         cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        &:hover {
+          color: rgba(6, 206, 171, 0.6);
+        }
       }
       .jump {
         span {
@@ -90,6 +95,10 @@ const Wrapper = styled.div`
           color: #06ceab;
           user-select: none;
           cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          &:hover {
+            color: rgba(6, 206, 171, 0.6);
+          }
         }
       }
     }
@@ -106,12 +115,44 @@ const Wrapper = styled.div`
         color: #000000;
       }
       .code {
+        position: relative;
         margin: 12px auto 16px auto;
         width: 162px;
         height: 162px;
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 4px;
         overflow: hidden;
+        .remake,
+        .success {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 162px;
+          height: 162px;
+          z-index: 1;
+        }
+        .remake {
+          background: rgba(255, 255, 255, 0.8);
+          img {
+            width: 37px;
+            height: 37px;
+            cursor: pointer;
+          }
+        }
+        .success {
+          background: rgba(0, 0, 0, 0.7);
+          img {
+            width: 60px;
+            height: 60px;
+          }
+          p {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 16px;
+            color: #ffffff;
+          }
+        }
       }
       .scan {
         font-size: 12px;
@@ -127,6 +168,8 @@ const Wrapper = styled.div`
 `;
 
 const Login = () => {
+  const history = useHistory();
+
   const [state, setState] = React.useState<'account' | 'qrcode'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
 
@@ -144,8 +187,10 @@ const Login = () => {
     loadQRCode();
   }, [loadQRCode]);
 
+  const [verification, setVerification] = React.useState<ContainerType>('account');
+
   return (
-    <Container>
+    <Container verification={verification}>
       <Wrapper className="col-center">
         <div className="inner">
           <h4>{t`hello`}</h4>
@@ -171,11 +216,15 @@ const Login = () => {
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
-              <Button size="lg">Continue</Button>
-              <p className="forget">Forget Password</p>
+              <Button size="lg" onClick={() => setVerification('verify')}>
+                Continue
+              </Button>
+              <p className="forget" onClick={() => history.push('/forget')}>
+                Forget Password
+              </p>
               <p className="jump">
                 <span>Not a member ? </span>
-                <span>Sign Up</span>
+                <span onClick={() => history.push('/signup')}>Sign Up</span>
               </p>
             </div>
           )}
@@ -184,6 +233,17 @@ const Login = () => {
               <h6>Scan to Log In</h6>
               <div className="code">
                 <img src={qrcode} alt="qrcode" />
+                {false && (
+                  <div className="remake col-center">
+                    <img src={require('@/assets/images/account/remake.svg')} alt="icon" />
+                  </div>
+                )}
+                {true && (
+                  <div className="success col-center">
+                    <img src={require('@/assets/images/account/success.svg')} alt="icon" />
+                    <p>Confirm on App</p>
+                  </div>
+                )}
               </div>
               <p className="scan">
                 Open and Login <span> App</span>
