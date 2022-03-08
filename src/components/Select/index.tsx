@@ -127,6 +127,7 @@ export interface SelectProps {
   size?: SizeType;
   disabled?: boolean;
   followID?: string;
+  followWidth?: number;
   placeholder?: string;
   overlay?: React.ReactNode;
 }
@@ -138,7 +139,16 @@ interface DropdownProps extends SelectProps {
 }
 
 const Portal: React.FC<DropdownProps> = (props: DropdownProps) => {
-  const { dropdownClassName, followID, followRef, type = 'primary', size = 'md', children, onClose } = props;
+  const {
+    dropdownClassName,
+    followID,
+    followRef,
+    followWidth,
+    type = 'primary',
+    size = 'md',
+    children,
+    onClose,
+  } = props;
 
   const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
@@ -156,9 +166,9 @@ const Portal: React.FC<DropdownProps> = (props: DropdownProps) => {
   React.useEffect(() => {
     if (!followRef.current) return;
     const { offsetTop, offsetHeight, offsetLeft, offsetWidth } = followRef.current;
-    const site = { top: offsetTop + offsetHeight + 4, left: offsetLeft, width: offsetWidth };
+    const site = { top: offsetTop + offsetHeight + 4, left: offsetLeft, width: followWidth || offsetWidth };
     setPosition(site);
-  }, [followRef]);
+  }, [followWidth, followRef]);
 
   const memoizedOption = React.useMemo(
     () => (
