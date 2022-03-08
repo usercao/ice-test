@@ -40,6 +40,10 @@ const Wrapper = styled.div`
   a {
     color: #06ceab;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: rgba(6, 206, 171, 0.6);
+    }
   }
   &:not(.disabled):hover {
     label {

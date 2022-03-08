@@ -90,6 +90,35 @@ const Wrapper = styled.div`
       }
     }
     > .success {
+      /* align-items: flex-start;
+      padding-left: 84px; */
+      height: inherit;
+      > .inner {
+        h4 {
+          text-align: center;
+          font-weight: 600;
+          font-size: 26px;
+          line-height: 34px;
+          color: #000000;
+        }
+        .tips {
+          margin: 10px 0 56px 0;
+          text-align: center;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          color: rgba(0, 0, 0, 0.4);
+        }
+        .success {
+          width: 392px;
+          height: 292px;
+        }
+        button {
+          display: block;
+          margin: 80px auto 0 auto;
+          width: 330px;
+        }
+      }
     }
   }
 `;
@@ -127,7 +156,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   }, [verify]);
 
   const handleSignup = React.useCallback(async () => {
-    history.push('/home');
+    history.replace('/home');
   }, [history]);
 
   return (
@@ -186,10 +215,15 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
           </div>
         )}
         {type === 'signup' && (
-          <div className="success">
-            <Button size="lg" onClick={handleSignup}>
-              Continue
-            </Button>
+          <div className="success col-center">
+            <div className="inner">
+              <h4>{t`hello`}</h4>
+              <p className="tips">{t`hello`}</p>
+              <img className="success" src={require('@/assets/images/account/successfully.webp')} alt="success" />
+              <Button size="lg" onClick={handleSignup}>
+                Continue
+              </Button>
+            </div>
           </div>
         )}
       </div>
