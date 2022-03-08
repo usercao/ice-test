@@ -7,7 +7,7 @@ import { tuple } from '../_type/type';
 import { cloneElement } from '../_util/reactNode';
 import Scrollbar from '../Scrollbar';
 import { useClickAway } from 'ahooks';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   /* global */

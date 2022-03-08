@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { LOCALE_LABEL } from '@/config/locales';
-import { useRecoilState } from 'recoil';
-import { locale } from '@/models';
+// import { LOCALE_LABEL } from '@/config/locales';
+// import { useRecoilState } from 'recoil';
+// import { locale } from '@/models';
 // import { useHistory } from 'ice';
-import { useMount } from 'ahooks';
+// import { useMount } from 'ahooks';
 import { Scrollbar } from '@/components';
 
 const Wrapper = styled.div`
@@ -22,29 +22,29 @@ const Wrapper = styled.div`
   }
 `;
 
-type localeListType = Array<{ label: string; value: any }>;
+// type localeListType = Array<{ label: string; value: any }>;
 
 const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
-  const [localeModel, setLocaleModel] = useRecoilState(locale);
-  const [localeModelList, setLocaleModelList] = React.useState<localeListType>([]);
-  // const history = useHistory();
+  // const [localeModel, setLocaleModel] = useRecoilState(locale);
+  // const [localeModelList, setLocaleModelList] = React.useState<localeListType>([]);
+  // // const history = useHistory();
 
-  const getLocaleList = React.useCallback(() => {
-    const array: localeListType = [];
-    Object.keys(LOCALE_LABEL).forEach((v) => {
-      const element = { label: v, value: LOCALE_LABEL[v] };
-      array.push(element);
-    });
-    setLocaleModelList(array);
-  }, []);
+  // const getLocaleList = React.useCallback(() => {
+  //   const array: localeListType = [];
+  //   Object.keys(LOCALE_LABEL).forEach((v) => {
+  //     const element = { label: v, value: LOCALE_LABEL[v] };
+  //     array.push(element);
+  //   });
+  //   setLocaleModelList(array);
+  // }, []);
 
-  useMount(() => getLocaleList());
+  // useMount(() => getLocaleList());
 
   return (
     <Wrapper>
       {/* <Header /> */}
       <header className="row-between">
-        <div>{LOCALE_LABEL[localeModel]}</div>
+        {/* <div>{LOCALE_LABEL[localeModel]}</div>
         <div>
           {localeModelList.map((ele) => (
             <p
@@ -57,7 +57,7 @@ const BasicLayout: React.FC = ({ children }: { children: React.ReactNode }) => {
               {ele.value}
             </p>
           ))}
-        </div>
+        </div> */}
       </header>
       <Scrollbar>
         <div style={{ height: 2000 }}>{children}</div>
