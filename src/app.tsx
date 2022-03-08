@@ -1,5 +1,6 @@
-import { runApp, IAppConfig } from 'ice';
+import { runApp, IAppConfig, config } from 'ice';
 import { RecoilRoot } from 'recoil';
+import Cookies from 'js-cookie';
 import { GlobalStyle } from '@/assets/styles/global';
 import { IconfontStyle } from '@/assets/styles/iconfont';
 import I18nProvider from '@/locales';
@@ -56,14 +57,17 @@ const appConfig: IAppConfig = {
     },
   },
   request: {
-    baseURL: '/api',
+    baseURL: '',
     headers: {},
     interceptors: {
       request: {
-        onConfig: (config) => {
-          // 发送请求前：可以对 RequestConfig 做一些统一处理
-          config.headers = { a: 1 };
-          return config;
+        onConfig: (config2) => {
+          const __temp = config2;
+          const locale: string = Cookies.get('locale') || 'es-es';
+          __temp.headers = {
+            'accept-language': locale,
+          };
+          return __temp;
         },
         onError: (error) => {
           return Promise.reject(error);
@@ -71,18 +75,17 @@ const appConfig: IAppConfig = {
       },
       response: {
         onConfig: (response) => {
-          // 请求成功：可以做全局的 toast 展示，或者对 response 做一些格式化
-          console.log(!response.data.status);
-          // if (!response.data.status !== 1) {
-          //   alert('请求失败');
-          // }
+          if (response.data.code !== 0) {
+            // todo: 添加失败提示
+            // console.log(response.data.msg);
+          }
           return response;
         },
         onError: (error: any) => {
           // 请求出错：服务端返回错误状态码
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
           return Promise.reject(error);
         },
       },
