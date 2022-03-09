@@ -4,10 +4,10 @@ const { ICE_OLD_API_URI, ICE_FEW_API_URI, ICE_NEW_API_URI } = config;
 
 export default {
   // send code
-  SendEmailNotLogin: `${ICE_FEW_API_URI}/common/send_email_verify_code`,
+  SendEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
 
   // forget
-  countries: `${ICE_OLD_API_URI}/basic/countries`,
+  countries: `${ICE_FEW_API_URI}/basic/countries`,
 
   // login
   usernameLogin: `${ICE_OLD_API_URI}/user/authorize`,
