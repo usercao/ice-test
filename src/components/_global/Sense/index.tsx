@@ -1,12 +1,72 @@
+import { useState, useImperativeHandle } from 'react';
 import { SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
-import { useMount } from 'ahooks';
+import { useMount, useUpdateEffect, useExternal } from 'ahooks';
 
-const Sense: React.FC = () => {
+interface ISenseProps {
+  onSuccess: (payload: { challenge: string; captcha_response: string; captcha_id: string }) => any;
+  onError?: () => any;
+  wrapRef: any;
+}
+
+const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
+  const { onSuccess, onError, wrapRef } = props;
+  const [senseConfig, setSenseConfig] = useState({
+    challenge: '',
+    gt: '',
+    new_captcha: true,
+    success: 1,
+  });
+
+  const [sense, setSense] = useState<any>(null);
+
+  const status = useExternal('https://static.geetest.com/static/tools/gt.js', {
+    js: {
+      async: true,
+    },
+  });
+
   useMount(async () => {
     const data = await getGeetestInfo(SENSE_ID);
-    console.log(data);
+    setSenseConfig(data);
   });
+
+  useImperativeHandle(wrapRef, () => {
+    return {
+      sense,
+    };
+  });
+
+  useUpdateEffect(() => {
+    if (status === 'ready' && senseConfig.gt) {
+      window.initGeetest(
+        {
+          lang: window.localStorage.lang ? window.localStorage.lang : 'en',
+          gt: senseConfig.gt,
+          challenge: senseConfig.challenge,
+          offline: !senseConfig.success,
+          new_captcha: senseConfig.new_captcha,
+          product: 'bind',
+          width: '300px',
+        },
+        (ret) => {
+          setSense(ret);
+          ret.onSuccess(() => {
+            const geeResult = ret.getValidate();
+            onSuccess({
+              challenge: geeResult.geetest_challenge,
+              captcha_response: geeResult.geetest_validate,
+              captcha_id: SENSE_ID,
+            });
+          });
+          ret.onError((e) => {
+            console.error(e);
+            onError && onError();
+          });
+        },
+      );
+    }
+  }, [status, senseConfig]);
 
   return <span />;
 };

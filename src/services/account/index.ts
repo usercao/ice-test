@@ -1,7 +1,6 @@
 import { request } from 'ice';
 import api from '@/config/api';
 import { ILoginParams, ILoginVerifyParams, ISignUpParams, CountriesReturnType, GeetestReturn } from './PropsType';
-import qs from 'qs';
 
 // 获取极验配置数据
 export const getGeetestInfo = (captcha_id: string) => {

@@ -181,6 +181,7 @@ const Login = () => {
   const setType = useSetRecoilState(containerType);
   const setVerify = useSetRecoilState(verifyType);
   const history = useHistory();
+  const senseRef = React.useRef<HTMLElement | any>(null);
 
   const [state, setState] = React.useState<'account' | 'qrcode'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
@@ -199,8 +200,16 @@ const Login = () => {
     loadQRCode();
   }, [loadQRCode]);
 
+  const senseVerify = () => {
+    senseRef.current.sense && senseRef.current.sense.verify();
+  };
+  const senseReset = () => {
+    senseRef.current.sense && senseRef.current.sense.reset();
+  };
+
   return (
     <Container>
+      {/* <button onClick={ccc}>验证人机</button> */}
       <Wrapper className="col-center">
         <div className="inner">
           <h4>{t`hello`}</h4>
@@ -271,7 +280,12 @@ const Login = () => {
           )}
         </div>
       </Wrapper>
-      <Sense />
+      <Sense
+        onSuccess={(data) => {
+          console.log(data);
+        }}
+        wrapRef={senseRef}
+      />
     </Container>
   );
 };
