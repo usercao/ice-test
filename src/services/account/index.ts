@@ -1,10 +1,11 @@
 import { request } from 'ice';
 import api from '@/config/api';
 import { ILoginParams, ILoginVerifyParams, ISignUpParams, CountriesReturnType, GeetestReturn } from './PropsType';
+import qs from 'qs';
 
 // 获取极验配置数据
 export const getGeetestInfo = (captcha_id: string) => {
-  return request.post<GeetestReturn>(api.geetest, { captcha_id }).then((res) => res);
+  return request.post<GeetestReturn>(`${api.geetest}?captcha_id=${captcha_id}`).then((res) => res);
 };
 
 // 忘记密码

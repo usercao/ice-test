@@ -7,7 +7,7 @@ export default {
   endEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
 
   // 极验
-  geetest: `${ICE_NEW_API_URI}/basic/geev3/register`,
+  geetest: `${ICE_OLD_API_URI}/v1/basic/geev3/register`,
 
   // forget
   countries: `${ICE_FEW_API_URI}/basic/countries`,
