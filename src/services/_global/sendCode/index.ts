@@ -13,12 +13,11 @@ interface ISignUpCodeParams extends ICaptcha {
 }
 
 export default {
-  async sendSignUpCode(params: ISignUpCodeParams) {
-    const data = await request({
+  sendSignUpCode(params: ISignUpCodeParams) {
+    return request({
       method: 'POST',
       url: api.SendEmailNotLogin,
       params,
     });
-    return data;
   },
 };

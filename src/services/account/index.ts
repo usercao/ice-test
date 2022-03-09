@@ -31,38 +31,36 @@ interface ISignUpParams {
 
 export default {
   // 登录
-  async loginByUserName(params: ILoginParams) {
-    const data = await request({
+  loginByUserName(params: ILoginParams) {
+    return request({
       method: 'POST',
       url: api.usernameLogin,
       params,
     });
-    return data;
   },
 
-  async loginVerify(params: ILoginVerifyParams) {
-    const data = await request({
+  loginVerify(params: ILoginVerifyParams) {
+    return request({
       method: 'POST',
       url: api.loginVerify,
       params,
     });
-    return data;
   },
 
-  async getloginQrCode() {
-    await request(api.loginQrCode);
+  getLoginQrCode() {
+    return request(api.loginQrCode);
   },
 
-  async getloginqrCodeResult(ticket: string) {
-    return await request({
+  getLoginQrCodeResult(ticket: string) {
+    return request({
       url: api.qrCodeResult,
       params: { ticket },
     });
   },
 
   // 注册
-  async signUp(params: ISignUpParams) {
-    return await request({
+  signUp(params: ISignUpParams) {
+    return request({
       method: 'POST',
       url: api.signUp,
       params,

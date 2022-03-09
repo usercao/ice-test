@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
 
-import { useRequest } from 'ice';
 import accountService from '@/services/account';
 
 const Wrapper = styled.div`
@@ -44,17 +43,23 @@ const Home = () => {
 
   const [state, setState] = React.useState<boolean>(false);
 
-  const req1 = useRequest(accountService.getloginQrCode);
+  // const req1 = useRequest(accountService.getLoginQrCode);
 
-  useMount(() => {
-    req1.request();
-  });
+  // useMount(() => {
+  //   req1.request();
+  // });
 
   React.useEffect(() => {
-    if (req1.error) {
-      console.log(req1.error);
-    }
-  }, [req1.error]);
+    const a = async () => {
+      try {
+        const data = await accountService.getLoginQrCode();
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    a();
+  }, []);
 
   return (
     <Wrapper className="col-center">
