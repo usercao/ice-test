@@ -38,6 +38,7 @@ export type CountriesReturnType = Array<{
   countryName: 'Mexico';
   id: '148';
   indexName: 'Mexico';
+  logo: 'https://d1ezf9tghjkrb1.cloudfront.net/country/MX.png';
   nationalCode: '52';
   shortName: 'MX';
 }>;

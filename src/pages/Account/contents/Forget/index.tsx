@@ -147,7 +147,6 @@ const Forget = () => {
   useMount(async () => {
     try {
       const data = await getCountries();
-      console.log(data[0]);
       setCountriesList(data);
       const defaultValue = data.find((ele) => ele.nationalCode === '52');
       setCountriesValue(defaultValue);
@@ -198,7 +197,7 @@ const Forget = () => {
                   placeholder="2121313"
                   overlay={
                     <p className="overlay row-start">
-                      <img src={require('@/assets/images/account/flag.svg')} alt="flag" />
+                      <img src={countriesValue?.logo || require('@/assets/images/account/flag.svg')} alt="flag" />
                       <span>+{countriesValue?.nationalCode}</span>
                     </p>
                   }
@@ -207,7 +206,7 @@ const Forget = () => {
                     {countriesList.map((ele) => (
                       <li className="row-between" key={ele.id} onClick={() => setCountriesValue(ele)}>
                         <p className="row-start">
-                          <img src={require('@/assets/images/account/flag.svg')} alt="flag" />
+                          <img src={ele.logo || require('@/assets/images/account/flag.svg')} alt="flag" />
                           <span>{ele.countryName}</span>
                         </p>
                         <span className="code">+{ele.nationalCode}</span>
