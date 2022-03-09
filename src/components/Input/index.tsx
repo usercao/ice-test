@@ -193,12 +193,11 @@ const Input: React.FC<InputProps> = React.forwardRef((props: InputProps, ref) =>
   const inputRef = (ref as any) || React.createRef<HTMLInputElement>();
   const uuid = useRandomId();
 
-  React.useEffect(() => {
-    if (!inputRef || !inputRef.current) {
-      return;
-    }
-    console.log('To Do');
-  }, [inputRef]);
+  // React.useEffect(() => {
+  //   if (!inputRef || !inputRef.current) {
+  //     return;
+  //   }
+  // }, [inputRef]);
 
   const classes = classNames(className, 'row-between', {
     [`${size}`]: size,

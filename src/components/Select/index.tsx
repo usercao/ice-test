@@ -196,12 +196,11 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const followRef = React.createRef<HTMLDivElement>();
 
-  React.useEffect(() => {
-    if (!followRef || !followRef.current) {
-      return;
-    }
-    console.log('To Do');
-  }, [followRef]);
+  // React.useEffect(() => {
+  //   if (!followRef || !followRef.current) {
+  //     return;
+  //   }
+  // }, [followRef]);
 
   const [visible, setVisible] = React.useState<boolean>(false);
 

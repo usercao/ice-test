@@ -100,12 +100,11 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps
   const checkboxRef = (ref as any) || React.createRef<HTMLInputElement>();
   const uuid = useRandomId();
 
-  React.useEffect(() => {
-    if (!checkboxRef || !checkboxRef.current) {
-      return;
-    }
-    console.log('To Do');
-  }, [checkboxRef]);
+  // React.useEffect(() => {
+  //   if (!checkboxRef || !checkboxRef.current) {
+  //     return;
+  //   }
+  // }, [checkboxRef]);
 
   const classes = classNames(className, {
     [`${size}`]: size,
