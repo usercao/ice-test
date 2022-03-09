@@ -48,7 +48,7 @@ const Home = () => {
       <button
         onClick={() => {
           startCountDown('emailSetPwd', () => {
-            console.log('jieshuhahah');
+            console.log('overover');
           });
         }}
       >
