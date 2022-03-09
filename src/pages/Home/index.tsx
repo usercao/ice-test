@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
 
-import accountService from '@/services/account';
-
 const Wrapper = styled.div`
   /* height: 200px;
   background: green; */
@@ -49,17 +47,17 @@ const Home = () => {
   //   req1.request();
   // });
 
-  React.useEffect(() => {
-    const a = async () => {
-      try {
-        const data = await accountService.getLoginQrCode();
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    a();
-  }, []);
+  // React.useEffect(() => {
+  //   const a = async () => {
+  //     try {
+  //       const data = await accountService.getLoginQrCode();
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   a();
+  // }, []);
 
   return (
     <Wrapper className="col-center">
