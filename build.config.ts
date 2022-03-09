@@ -4,8 +4,8 @@ export default {
   store: false,
   vite: true,
   hash: true,
-  eslint: true,
-  tsChecker: true,
+  // eslint: true,
+  // tsChecker: true,
   dropLogLevel: 'log',
   router: {
     configPath: 'src/routes/index.ts',
