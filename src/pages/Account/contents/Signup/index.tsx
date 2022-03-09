@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { containerType, verifyType } from '@/models/account';
+import { containerType } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button, Checkbox } from '@/components';
-import QRCode from 'qrcode';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 
@@ -118,7 +117,6 @@ const Wrapper = styled.div`
 
 const Signup = () => {
   const setType = useSetRecoilState(containerType);
-  const setVerify = useSetRecoilState(verifyType);
   const history = useHistory();
 
   const [state, setState] = React.useState<'account' | 'email'>('account');
