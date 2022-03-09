@@ -1,10 +1,10 @@
 import { request } from 'ice';
 import api from '@/config/api';
-import { ILoginParams, ILoginVerifyParams, ISignUpParams, ValidationReturnType } from './PropsType';
+import { ILoginParams, ILoginVerifyParams, ISignUpParams, CountriesReturnType } from './PropsType';
 
 // 忘记密码
 export const getCountries = () => {
-  return request.get(api.countries, { params: { for_area_code: true } }).then((res) => res.data);
+  return request.get<CountriesReturnType>(api.countries, { params: { for_area_code: true } }).then((res) => res);
 };
 
 // 登录

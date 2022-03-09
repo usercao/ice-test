@@ -30,4 +30,14 @@ export interface ISignUpParams {
 // ===========================================
 // ============= Response ====================
 // ===========================================
-export type ValidationReturnType = string | boolean;
+export type CountriesReturnType = Array<{
+  allowBindMobile: 1;
+  allowKyc: 1;
+  allowLogin: 1;
+  allowRegister: 1;
+  countryName: 'Mexico';
+  id: '148';
+  indexName: 'Mexico';
+  nationalCode: '52';
+  shortName: 'MX';
+}>;
