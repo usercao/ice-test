@@ -168,12 +168,11 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref)
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const buttonRef = (ref as any) || React.createRef<HTMLElement>();
 
-  React.useEffect(() => {
-    if (!buttonRef || !buttonRef.current) {
-      return;
-    }
-    console.log('To Do');
-  }, [buttonRef]);
+  // React.useEffect(() => {
+  //   if (!buttonRef || !buttonRef.current) {
+  //     return;
+  //   }
+  // }, [buttonRef]);
 
   const classes = classNames(className, {
     [`${type}`]: type,

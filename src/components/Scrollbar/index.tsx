@@ -8,7 +8,7 @@ const Wrapper = styled(MacScrollbar)<ScrollbarProps>`
   height: inherit;
 `;
 
-export interface ScrollbarProps extends MacScrollbarProps {}
+export type ScrollbarProps = MacScrollbarProps;
 
 const Scrollbar: React.FC<ScrollbarProps> = (props: ScrollbarProps) => {
   const { as, children, ...rest } = props;

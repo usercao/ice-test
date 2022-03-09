@@ -8,6 +8,7 @@ import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 import { useMount } from 'ahooks';
 import { getCountries } from '@/services/account';
+import { CountriesReturnType } from '@/services/account/PropsType';
 
 const Wrapper = styled.div`
   align-items: flex-start;
@@ -81,8 +82,21 @@ const Wrapper = styled.div`
       color: #ff7878;
     }
     .select {
-      width: 88px;
+      width: 100px;
       font-size: 14px;
+    }
+    .overlay {
+      img {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      span {
+        margin-left: 6px;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.8);
+      }
     }
     .input-inner {
       flex: 1;
@@ -92,7 +106,31 @@ const Wrapper = styled.div`
 `;
 
 const AreaCode = styled.ul`
-  /* width: 330px; */
+  li {
+    height: 32px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background: rgba(0, 0, 0, 0.02);
+    }
+    p {
+      img {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      span {
+        margin-left: 6px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.8);
+      }
+    }
+    .code {
+      font-size: 12px;
+      color: #384442;
+    }
+  }
 `;
 
 const Forget = () => {
@@ -103,12 +141,19 @@ const Forget = () => {
   const [state, setState] = React.useState<'account' | 'mobile' | 'password'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
 
-  const [value, setValue] = React.useState<string>('1');
-  const [list, setList] = React.useState<string[]>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+  const [countriesValue, setCountriesValue] = React.useState<CountriesReturnType[number]>();
+  const [countriesList, setCountriesList] = React.useState<CountriesReturnType>([]);
 
   useMount(async () => {
-    const data = await getCountries();
-    console.log(data);
+    try {
+      const data = await getCountries();
+      console.log(data[0]);
+      setCountriesList(data);
+      const defaultValue = data.find((ele) => ele.nationalCode === '52');
+      setCountriesValue(defaultValue);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   return (
@@ -150,12 +195,21 @@ const Forget = () => {
                   followWidth={330}
                   size="lg"
                   placeholder="2121313"
-                  overlay={<p className="overlay">{value}</p>}
+                  overlay={
+                    <p className="overlay row-start">
+                      <img src="" alt="flag" />
+                      <span>+{countriesValue?.nationalCode}</span>
+                    </p>
+                  }
                 >
                   <AreaCode>
-                    {list.map((ele) => (
-                      <li className="row-between" key={ele} onClick={() => setValue(ele)}>
-                        {ele}
+                    {countriesList.map((ele) => (
+                      <li className="row-between" key={ele.id} onClick={() => setCountriesValue(ele)}>
+                        <p className="row-start">
+                          <img src="" alt="flag" />
+                          <span>{ele.countryName}</span>
+                        </p>
+                        <span className="code">+{ele.nationalCode}</span>
                       </li>
                     ))}
                   </AreaCode>
