@@ -1,69 +1,25 @@
 import { request } from 'ice';
 import api from '@/config/api';
+import { ILoginParams, ILoginVerifyParams, ISignUpParams, ValidationReturnType } from './PropsType';
 
-interface ILoginParams {
-  type: 0; // 0邮箱
-  username: string;
-  password: string;
-  captcha_response: string;
-  captcha_id: string;
-  challenge: string;
-}
-interface ILoginVerifyParams {
-  type: 0; // 0 邮箱
-  username: string;
-  password: string;
-  request_id: string; // 第一步返回
-  auth_type: 2 | 3; // ga: 3, email: 2,
-  verify_code: string;
-  order_id?: string; // 验证码发送成功后的id
-}
+// 登录
+export const loginByUserName = (params: ILoginParams) => {
+  return request.post(api.usernameLogin, params).then((res) => res.data);
+};
 
-interface ISignUpParams {
-  type: 0; // 0邮箱
-  email: string;
-  password1: string;
-  password2: string;
-  verify_code: string;
-  order_id: string;
-  invite_code?: string;
-}
+export const loginVerify = (params: ILoginVerifyParams) => {
+  return request.post(api.loginVerify, params).then((res) => res.data);
+};
 
-export default {
-  // 登录
-  loginByUserName(params: ILoginParams) {
-    return request({
-      method: 'POST',
-      url: api.usernameLogin,
-      params,
-    });
-  },
+export const getloginQrCode = () => {
+  return request.get(api.loginQrCode).then((res) => res.data);
+};
 
-  loginVerify(params: ILoginVerifyParams) {
-    return request({
-      method: 'POST',
-      url: api.loginVerify,
-      params,
-    });
-  },
+export const getloginqrCodeResult = (ticket: string) => {
+  return request.get(api.qrCodeResult, { params: ticket }).then((res) => res.data);
+};
 
-  getLoginQrCode() {
-    return request(api.loginQrCode);
-  },
-
-  getLoginQrCodeResult(ticket: string) {
-    return request({
-      url: api.qrCodeResult,
-      params: { ticket },
-    });
-  },
-
-  // 注册
-  signUp(params: ISignUpParams) {
-    return request({
-      method: 'POST',
-      url: api.signUp,
-      params,
-    });
-  },
+// 注册
+export const signUp = (params: ISignUpParams) => {
+  return request.post(api.signUp, params).then((res) => res.data);
 };
