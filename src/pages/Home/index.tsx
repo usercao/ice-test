@@ -44,10 +44,10 @@ const Home = () => {
 
   const [state, setState] = React.useState<boolean>(false);
 
-  const req1 = useRequest(accountService.loginByUserName);
+  const req1 = useRequest(accountService.getloginQrCode);
 
   useMount(() => {
-    req1.request({});
+    req1.request();
   });
 
   React.useEffect(() => {

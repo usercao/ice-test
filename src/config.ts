@@ -1,10 +1,10 @@
 export default {
   default: {
-    api: '/api',
-    apiV1: '/api/v1',
+    VITE_BASE_URL: '/api',
+    VITE_BASE_URL_V1: '/api/v1',
   },
   prod: {
-    api: '/api',
-    apiV1: '/api/v1',
+    VITE_BASE_URL: '/api',
+    VITE_BASE_URL_V1: '/api/v1',
   },
 };
