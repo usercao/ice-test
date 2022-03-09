@@ -6,8 +6,7 @@ import { locale } from '@/models';
 function parseLocale(maybeSupportedLocale: string): SupportedLocale | undefined {
   const lowerMaybeSupportedLocale = maybeSupportedLocale.toLowerCase();
   return SUPPORTED_LOCALES.find(
-    (locale: string) =>
-      locale.toLowerCase() === lowerMaybeSupportedLocale || locale.split('-')[0] === lowerMaybeSupportedLocale,
+    (ele: string) => ele.toLowerCase() === lowerMaybeSupportedLocale || ele.split('-')[0] === lowerMaybeSupportedLocale,
   );
 }
 

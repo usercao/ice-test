@@ -6,7 +6,7 @@ import Container from '@/pages/Account/container';
 import { Input, Button } from '@/components';
 import Sense from '@/components/_global/Sense';
 import QRCode from 'qrcode';
-import { t } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
 
 const Wrapper = styled.div`
@@ -203,26 +203,26 @@ const Login = () => {
     <Container>
       <Wrapper className="col-center">
         <div className="inner">
-          <h4>{t`hello`}</h4>
-          <p className="tips">{t`hello`}</p>
+          <h4>{t`欢迎来到Mexo`}</h4>
+          <p className="tips">{t`使用邮箱，手机号或者二维码登录`}</p>
           <div className="tabs row-start">
             <p className={`${state === 'account' ? 'active' : 'default'}`} onClick={() => setState('account')}>
-              {t`hello`}
+              {t`账户`}
             </p>
             <p className={`${state === 'qrcode' ? 'active' : 'default'}`} onClick={() => setState('qrcode')}>
-              {t`hello`}
+              {t`二维码`}
             </p>
           </div>
           {state === 'account' && (
             <div className="account">
-              <p className="label">Email / Phone Number</p>
-              <Input className="input" size="lg" placeholder="21212" clear />
-              <p className="label">Login Password</p>
+              <p className="label">{t`邮箱/手机号`}</p>
+              <Input className="input" size="lg" placeholder={t`请输入邮箱/手机号`} clear />
+              <p className="label">{t`登录密码`}</p>
               <Input
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
-                placeholder="21212"
+                placeholder={t`请输入登录密码`}
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
@@ -234,14 +234,16 @@ const Login = () => {
                   setVerify('google');
                 }}
               >
-                Continue
+                {t`继续`}
               </Button>
               <p className="forget" onClick={() => history.push('/forget')}>
-                Forget Password
+                {t`忘记密码`}
               </p>
               <p className="jump">
-                <span>Not a member ? </span>
-                <span onClick={() => history.push('/signup')}>Sign Up</span>
+                <Trans>你好{<span>21212</span>}</Trans>
+                {/* {t`还不是用户？${(<span onClick={() => history.push('/signup')}>Sign Up</span>)}`} */}
+                {/* <span>Not a member ? </span>
+                <span onClick={() => history.push('/signup')}>Sign Up</span> */}
               </p>
             </div>
           )}
