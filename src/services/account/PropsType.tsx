@@ -41,3 +41,10 @@ export type CountriesReturnType = Array<{
   nationalCode: '52';
   shortName: 'MX';
 }>;
+
+export interface GeetestReturn {
+  challenge: string;
+  gt: string;
+  new_captcha: boolean;
+  success: number;
+}

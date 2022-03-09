@@ -4,7 +4,10 @@ const { ICE_OLD_API_URI, ICE_FEW_API_URI, ICE_NEW_API_URI } = config;
 
 export default {
   // send code
-  SendEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
+  endEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
+
+  // 极验
+  geetest: `${ICE_NEW_API_URI}/basic/geev3/register`,
 
   // forget
   countries: `${ICE_FEW_API_URI}/basic/countries`,
