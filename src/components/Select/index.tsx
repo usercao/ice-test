@@ -200,6 +200,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
     if (!followRef || !followRef.current) {
       return;
     }
+    console.log('To Do');
   }, [followRef]);
 
   const [visible, setVisible] = React.useState<boolean>(false);
@@ -208,7 +209,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
     [`${type}`]: type,
     [`${size}`]: size,
     focus: visible,
-    disabled: disabled,
+    disabled,
   });
 
   const handleOpen: React.MouseEventHandler<HTMLDivElement> = () => {
@@ -230,6 +231,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
             <path
               fillRule="evenodd"
               clipRule="evenodd"
+              // eslint-disable-next-line
               d="M0.707105 1.70711C0.0771402 1.07714 0.523309 0 1.41421 0H6.58579C7.47669 0 7.92286 1.07714 7.29289 1.70711L4.70711 4.29289C4.31658 4.68342 3.68342 4.68342 3.29289 4.29289L0.707105 1.70711Z"
             />
           </svg>

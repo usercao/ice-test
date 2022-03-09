@@ -163,7 +163,7 @@ export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonE
 }
 
 const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref) => {
-  const { className, type = 'primary', size = 'md', disabled, loading, children, ...rest } = props;
+  const { className, type = 'primary', size = 'md', disabled, loading, children, onClick, ...rest } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const buttonRef = (ref as any) || React.createRef<HTMLElement>();
@@ -172,17 +172,17 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref)
     if (!buttonRef || !buttonRef.current) {
       return;
     }
+    console.log('To Do');
   }, [buttonRef]);
 
   const classes = classNames(className, {
     [`${type}`]: type,
     [`${size}`]: size,
-    disabled: disabled,
-    loading: loading,
+    disabled,
+    loading,
   });
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>) => {
-    const { disabled, onClick } = props;
     if (loading || disabled) {
       e.preventDefault();
       return;

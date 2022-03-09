@@ -126,6 +126,7 @@ const Wrapper = styled.div`
   }
 `;
 
+/* eslint-disable */
 type inputType = LiteralUnion<
   | 'button'
   | 'checkbox'
@@ -151,6 +152,7 @@ type inputType = LiteralUnion<
   | 'week',
   string
 >;
+/* eslint-enable */
 
 type SizeType = 'sm' | 'md' | 'lg';
 
@@ -195,12 +197,13 @@ const Input: React.FC<InputProps> = React.forwardRef((props: InputProps, ref) =>
     if (!inputRef || !inputRef.current) {
       return;
     }
+    console.log('To Do');
   }, [inputRef]);
 
   const classes = classNames(className, 'row-between', {
     [`${size}`]: size,
-    danger: danger,
-    disabled: disabled,
+    danger,
+    disabled,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

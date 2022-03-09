@@ -104,12 +104,13 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps
     if (!checkboxRef || !checkboxRef.current) {
       return;
     }
+    console.log('To Do');
   }, [checkboxRef]);
 
   const classes = classNames(className, {
     [`${size}`]: size,
-    checked: checked,
-    disabled: disabled,
+    checked,
+    disabled,
   });
 
   const handleChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
