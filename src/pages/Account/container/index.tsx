@@ -15,7 +15,16 @@ const Wrapper = styled.div`
     width: 50%;
     height: inherit;
     background: #6bd4bc;
-    img {
+    .logo {
+      position: absolute;
+      top: 22px;
+      left: 32px;
+      width: 110px;
+      height: 26px;
+      user-select: none;
+      cursor: pointer;
+    }
+    .backyard {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -162,7 +171,13 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   return (
     <Wrapper className="row-center">
       <div className="moon">
-        <img src={require('@/assets/images/account/moon.webp')} alt="moon" />
+        <img
+          className="logo"
+          src={require('@/assets/images/account/logo.svg')}
+          alt="moon"
+          onClick={() => window.open('https://mexo.io', '_self')}
+        />
+        <img className="backyard" src={require('@/assets/images/account/moon.webp')} alt="moon" />
       </div>
       <div className="base">
         <Settings />
