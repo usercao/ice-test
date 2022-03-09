@@ -1,17 +1,20 @@
 import { config } from 'ice';
 
-const { VITE_BASE_URL, VITE_BASE_URL_V1 } = config;
+const { ICE_OLD_API_URI, ICE_FEW_API_URI, ICE_NEW_API_URI } = config;
 
 export default {
   // send code
-  SendEmailNotLogin: `${VITE_BASE_URL}/common/send_email_verify_code`,
+  SendEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
+
+  // forget
+  countries: `${ICE_FEW_API_URI}/basic/countries`,
 
   // login
-  usernameLogin: `${VITE_BASE_URL}/user/authorize`,
-  loginVerify: `${VITE_BASE_URL}/user/authorize_advance`,
-  loginQrCode: `${VITE_BASE_URL}/user/get_loginQrCode`,
-  qrCodeResult: `${VITE_BASE_URL}/user/get_scan_login_qrcode_result`,
+  usernameLogin: `${ICE_OLD_API_URI}/user/authorize`,
+  loginVerify: `${ICE_OLD_API_URI}/user/authorize_advance`,
+  loginQrCode: `${ICE_OLD_API_URI}/user/get_loginQrCode`,
+  qrCodeResult: `${ICE_OLD_API_URI}/user/get_scan_login_qrcode_result`,
 
-  // sign up
-  signUp: `${VITE_BASE_URL}/user/email_signUp`,
+  // signup
+  signUp: `${ICE_OLD_API_URI}/user/email_signUp`,
 };

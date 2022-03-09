@@ -6,6 +6,8 @@ import Container from '@/pages/Account/container';
 import { Input, Button, Select } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
+import { useMount } from 'ahooks';
+import { getCountries } from '@/services/account';
 
 const Wrapper = styled.div`
   align-items: flex-start;
@@ -103,6 +105,11 @@ const Forget = () => {
 
   const [value, setValue] = React.useState<string>('1');
   const [list, setList] = React.useState<string[]>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
+
+  useMount(async () => {
+    const data = await getCountries();
+    console.log(data);
+  });
 
   return (
     <Container>

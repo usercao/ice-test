@@ -1,10 +1,12 @@
 export default {
   default: {
-    VITE_BASE_URL: '/api',
-    VITE_BASE_URL_V1: '/api/v1',
+    ICE_OLD_API_URI: '/api',
+    ICE_FEW_API_URI: '/s_api',
+    ICE_NEW_API_URI: '/api/v1',
   },
   prod: {
-    VITE_BASE_URL: '/api',
-    VITE_BASE_URL_V1: '/api/v1',
+    ICE_OLD_API_URI: '/api',
+    ICE_FEW_API_URI: '/s_api',
+    ICE_NEW_API_URI: '/api/v1',
   },
 };
