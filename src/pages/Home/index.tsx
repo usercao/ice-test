@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { useMount } from 'ahooks';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
+import useCountDown from '@/hooks/useCountDown';
 
 const Wrapper = styled.div`
   /* height: 200px;
@@ -41,26 +41,19 @@ const Home = () => {
 
   const [state, setState] = React.useState<boolean>(false);
 
-  // const req1 = useRequest(accountService.getLoginQrCode);
-
-  // useMount(() => {
-  //   req1.request();
-  // });
-
-  // React.useEffect(() => {
-  //   const a = async () => {
-  //     try {
-  //       const data = await accountService.getLoginQrCode();
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   a();
-  // }, []);
+  const [countDown, isOver, startCountDown] = useCountDown('emailAuth');
 
   return (
     <Wrapper className="col-center">
+      <button
+        onClick={() => {
+          startCountDown('emailSetPwd', () => {
+            console.log('jieshuhahah');
+          });
+        }}
+      >
+        {isOver ? '开始' : `${countDown}s`}
+      </button>
       {/* <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>
       <p>1234567890</p> */}

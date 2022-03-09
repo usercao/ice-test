@@ -11,11 +11,11 @@ export const loginVerify = (params: ILoginVerifyParams) => {
   return request.post(api.loginVerify, params).then((res) => res.data);
 };
 
-export const getloginQrCode = () => {
+export const getLoginQrCode = () => {
   return request.get(api.loginQrCode).then((res) => res.data);
 };
 
-export const getloginqrCodeResult = (ticket: string) => {
+export const getLoginQrCodeResult = (ticket: string) => {
   return request.get(api.qrCodeResult, { params: ticket }).then((res) => res.data);
 };
 
