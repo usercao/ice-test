@@ -139,7 +139,7 @@ const Forget = () => {
   const history = useHistory();
 
   const [state, setState] = React.useState<'account' | 'mobile' | 'password'>('account');
-  const [eye, setEye] = React.useState<boolean>(false);
+  const [eye, setEye] = React.useState<boolean[]>([false, false]);
 
   const [countriesValue, setCountriesValue] = React.useState<CountriesReturnType[number]>();
   const [countriesList, setCountriesList] = React.useState<CountriesReturnType>([]);
@@ -180,6 +180,7 @@ const Forget = () => {
                 onClick={() => {
                   setType('forget');
                   setVerify('google');
+                  setState('password');
                 }}
               >
                 Continue
@@ -197,7 +198,7 @@ const Forget = () => {
                   placeholder="2121313"
                   overlay={
                     <p className="overlay row-start">
-                      <img src="" alt="flag" />
+                      <img src={require('@/assets/images/account/flag.svg')} alt="flag" />
                       <span>+{countriesValue?.nationalCode}</span>
                     </p>
                   }
@@ -206,7 +207,7 @@ const Forget = () => {
                     {countriesList.map((ele) => (
                       <li className="row-between" key={ele.id} onClick={() => setCountriesValue(ele)}>
                         <p className="row-start">
-                          <img src="" alt="flag" />
+                          <img src={require('@/assets/images/account/flag.svg')} alt="flag" />
                           <span>{ele.countryName}</span>
                         </p>
                         <span className="code">+{ele.nationalCode}</span>
@@ -222,6 +223,7 @@ const Forget = () => {
                 onClick={() => {
                   setType('forget');
                   setVerify('google');
+                  setState('password');
                 }}
               >
                 Continue
@@ -231,24 +233,35 @@ const Forget = () => {
           {state === 'password' && (
             <div className="password">
               <p className="label">Email / Phone Number</p>
-              <Input className="input" size="lg" placeholder="21212" clear />
+              <Input
+                className="input"
+                type={eye[0] ? 'text' : 'password'}
+                size="lg"
+                placeholder="21212"
+                suffix={
+                  <i
+                    className={`iconfont icon-${eye[0] ? 'show' : 'hide'}`}
+                    onClick={() => setEye((v) => [!v[0], v[1]])}
+                  />
+                }
+                clear
+              />
               <p className="label">Email / Phone Number</p>
               <Input
                 className="input"
-                type={eye ? 'text' : 'password'}
+                type={eye[1] ? 'text' : 'password'}
                 size="lg"
                 placeholder="21212"
-                suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
+                suffix={
+                  <i
+                    className={`iconfont icon-${eye[1] ? 'show' : 'hide'}`}
+                    onClick={() => setEye((v) => [v[0], !v[1]])}
+                  />
+                }
                 clear
               />
               <p className="error">{''}</p>
-              <Button
-                size="lg"
-                onClick={() => {
-                  setType('login');
-                  setVerify('google');
-                }}
-              >
+              <Button size="lg" onClick={() => history.replace('/login')}>
                 Continue
               </Button>
             </div>
