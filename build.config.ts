@@ -14,6 +14,15 @@ export default {
   babelPresets: ['@babel/preset-typescript'],
   vitePlugins: [vitePluginRequire()],
   proxy: {
+    '/s_api': {
+      target: 'https://www.mexo.io',
+      changeOrigin: true,
+      secure: false,
+      headers: {
+        Referer: 'https://www.mexo.io',
+      },
+      cookieDomainRewrite: 'localhost',
+    },
     '/api/v1': {
       enable: true,
       target: 'https://test-senior.mexo.io',
