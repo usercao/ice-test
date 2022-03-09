@@ -4,6 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { containerType, verifyType } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button } from '@/components';
+import Sense from '@/components/_global/Sense';
 import QRCode from 'qrcode';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
@@ -216,7 +217,7 @@ const Login = () => {
             <div className="account">
               <p className="label">Email / Phone Number</p>
               <Input className="input" size="lg" placeholder="21212" clear />
-              <p className="label">Email / Phone Number</p>
+              <p className="label">Login Password</p>
               <Input
                 className="input"
                 type={eye ? 'text' : 'password'}
@@ -270,6 +271,7 @@ const Login = () => {
           )}
         </div>
       </Wrapper>
+      <Sense />
     </Container>
   );
 };
