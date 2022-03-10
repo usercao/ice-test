@@ -2,14 +2,14 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import StackItem from './StackItem';
-import { NotificationPropsBase, NotificationReturnInstance } from './PropsType';
+import { NotificationProps, NotificationReturnInstance } from './PropsType';
 
 export default class StackManager {
-  private notifyList: Array<React.ComponentElement<NotificationPropsBase, StackItem>> = [];
-  private component: React.FunctionComponent<NotificationPropsBase>;
+  private notifyList: Array<React.ComponentElement<NotificationProps, StackItem>> = [];
+  private component: React.FunctionComponent<NotificationProps>;
   private keySeed = 0;
 
-  constructor(component: React.FunctionComponent<NotificationPropsBase>) {
+  constructor(component: React.FunctionComponent<NotificationProps>) {
     this.component = component;
   }
 
@@ -29,7 +29,7 @@ export default class StackManager {
   }
 
   // To display a new StackItem
-  open(props: NotificationPropsBase): NotificationReturnInstance {
+  open(props: NotificationProps): NotificationReturnInstance {
     const newKey = props.key || String((this.keySeed += 1));
     const newRef = React.createRef<StackItem>();
     const stackItem = <StackItem {...props} key={newKey} ref={newRef} Component={this.component} />;
