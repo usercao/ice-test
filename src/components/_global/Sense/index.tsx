@@ -5,7 +5,7 @@ import { useMount, useUpdateEffect, useExternal } from 'ahooks';
 
 interface ISenseProps {
   onSuccess: (payload: { challenge: string; captcha_response: string; captcha_id: string }) => any;
-  onError?: () => any;
+  onError?: (e) => any;
   wrapRef: any;
 }
 
@@ -60,8 +60,7 @@ const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
             });
           });
           ret.onError((e) => {
-            console.error(e);
-            onError && onError();
+            onError && onError(e);
           });
         },
       );

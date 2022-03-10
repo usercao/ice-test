@@ -3,11 +3,12 @@ import { config } from 'ice';
 const { ICE_OLD_API_URI, ICE_FEW_API_URI, ICE_NEW_API_URI } = config;
 
 export default {
-  // send code
-  endEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
-
   // 极验
   geetest: `${ICE_OLD_API_URI}/v1/basic/geev3/register`,
+
+  // send code
+  sendEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
+  sendEmailForLogin: `${ICE_OLD_API_URI}/user/send_email_verify_code/authorize_advance`,
 
   // forget
   countries: `${ICE_FEW_API_URI}/basic/countries`,

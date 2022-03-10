@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
-import useCountDown from '@/hooks/useCountDown';
+import useSendCode from '@/hooks/useSendCode';
 
 const Wrapper = styled.div`
   /* height: 200px;
@@ -41,14 +41,20 @@ const Home = () => {
 
   const [state, setState] = React.useState<boolean>(false);
 
-  const [countDown, isOver, startCountDown] = useCountDown('emailAuth');
+  const [countDown, isOver, startCountDown] = useSendCode('emailAuth');
 
   return (
     <Wrapper className="col-center">
       <button
         onClick={() => {
-          startCountDown('emailSetPwd', () => {
-            console.log('overover');
+          startCountDown({
+            sendType: 'emailAuth',
+            payload: {
+              type: 2,
+            },
+            onError(e) {
+              console.log(e);
+            },
           });
         }}
       >

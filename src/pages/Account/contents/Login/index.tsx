@@ -203,9 +203,21 @@ const Login = () => {
   const senseVerify = () => {
     senseRef.current.sense && senseRef.current.sense.verify();
   };
+
   const senseReset = () => {
     senseRef.current.sense && senseRef.current.sense.reset();
   };
+
+  // 账号密码登录
+  const [userName, setUsername] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [senseData, setSenseData] = React.useState<{ challenge: string; captcha_response: string; captcha_id: string }>(
+    {
+      challenge: '',
+      captcha_response: '',
+      captcha_id: '',
+    },
+  );
 
   return (
     <Container>
@@ -225,9 +237,18 @@ const Login = () => {
           {state === 'account' && (
             <div className="account">
               <p className="label">{t`邮箱/手机号`}</p>
-              <Input className="input" size="lg" placeholder={t`请输入邮箱/手机号`} clear />
+              <Input
+                value={userName}
+                onChange={setUsername}
+                className="input"
+                size="lg"
+                placeholder={t`请输入邮箱/手机号`}
+                clear
+              />
               <p className="label">{t`登录密码`}</p>
               <Input
+                value={password}
+                onChange={setPassword}
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
@@ -239,8 +260,11 @@ const Login = () => {
               <Button
                 size="lg"
                 onClick={() => {
-                  setType('login');
-                  setVerify('google');
+                  if (userName && password) {
+                    senseVerify();
+                  }
+                  // setType('login');
+                  // setVerify('google');
                 }}
               >
                 {t`继续`}
@@ -283,8 +307,9 @@ const Login = () => {
         </div>
       </Wrapper>
       <Sense
-        onSuccess={(data) => {
-          console.log(data);
+        onSuccess={setSenseData}
+        onError={(e) => {
+          console.log(e);
         }}
         wrapRef={senseRef}
       />
