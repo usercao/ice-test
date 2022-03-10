@@ -41,8 +41,6 @@ const I18n: React.FC = ({ children }: { children: React.ReactNode }) => {
   }, [locale, handleDynamicActivate]);
 
   if (!loadLocale) return null;
-
-  // forceRenderOnLocaleChange={false}
   return <I18nProvider i18n={i18n}>{children}</I18nProvider>;
 };
 
