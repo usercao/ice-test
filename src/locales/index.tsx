@@ -5,7 +5,7 @@ import { SupportedLocale } from '@/config/locales';
 import { useActiveLocale } from '@/hooks/useActiveLocale';
 import { en, es, pt, PluralCategory } from 'make-plural/plurals';
 import { useSetRecoilState } from 'recoil';
-import { locale as localeModel } from '@/models';
+import { locale as localeModel } from '@/models/_global';
 
 type LocalePlural = {
   [key in SupportedLocale]: (n: number | string, ord?: boolean) => PluralCategory;

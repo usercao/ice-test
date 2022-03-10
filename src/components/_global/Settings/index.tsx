@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { LOCALE_LABEL } from '@/config/locales';
 import { useRecoilState } from 'recoil';
-import { locale } from '@/models';
+import { Dropdown } from '@/components';
+import { locale } from '@/models/_global';
 import { useMount } from 'ahooks';
 import styled from 'styled-components';
 
@@ -87,6 +88,9 @@ const Settings: React.FC = () => {
           ))}
         </ul>
       </div>
+      <Dropdown overlay={24162126}>
+        <p>2121</p>
+      </Dropdown>
     </Wrapper>
   );
 };

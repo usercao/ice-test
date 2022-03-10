@@ -99,8 +99,6 @@ const Wrapper = styled.div`
       }
     }
     > .success {
-      /* align-items: flex-start;
-      padding-left: 84px; */
       height: inherit;
       > .inner {
         h4 {

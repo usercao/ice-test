@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SupportedLocale, DEFAULT_LOCALE, SUPPORTED_LOCALES } from '@/config/locales';
 import { useRecoilValue } from 'recoil';
-import { locale } from '@/models';
+import { locale } from '@/models/_global';
 
 function parseLocale(maybeSupportedLocale: string): SupportedLocale | undefined {
   const lowerMaybeSupportedLocale = maybeSupportedLocale.toLowerCase();

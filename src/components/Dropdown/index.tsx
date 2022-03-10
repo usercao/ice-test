@@ -6,67 +6,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { tuple } from '../_type/type';
 import { cloneElement } from '../_util/reactNode';
 import Scrollbar from '../Scrollbar';
-import { useClickAway } from 'ahooks';
+import { useHover, useClickAway } from 'ahooks';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
   /* global */
-  font-weight: 500;
-  transition: all 0.3s ease-in-out;
-  .holder {
-    color: rgba(56, 68, 66, 0.4);
-    transition: all 0.3s ease-in-out;
-  }
-  .arrow {
-    width: 8px;
-    height: 8px;
-    svg {
-      fill: rgba(0, 0, 0, 0.25);
-      transition: all 0.3s ease-in-out;
-    }
-  }
-  &.focus {
-    border: 1px solid #06ceab !important;
-    svg {
-      fill: #06ceab !important;
-    }
-  }
-  /* base */
-  &.danger {
-    color: #ff7878;
-    border: 1px solid #ff7878;
-    cursor: pointer;
-  }
-  &.primary {
-    color: #384442;
-    border: 1px solid #e8e8e8;
-    cursor: pointer;
-  }
-  &.disabled {
-    color: #849a96;
-    background: #f1f1f1;
-    user-select: none;
-    cursor: not-allowed;
-  }
-  &.sm {
-    padding: 8px;
-    min-width: 80px;
-    height: 30px;
-    font-size: 12px;
-    border-radius: 4px;
-  }
-  &.md {
-    padding: 10px;
-    height: 38px;
-    font-size: 12px;
-    border-radius: 5px;
-  }
-  &.lg {
-    padding: 12px;
-    height: 42px;
-    font-size: 16px;
-    border-radius: 6px;
-  }
 `;
 
 const Trigger = styled(motion.div)`
@@ -80,38 +24,6 @@ const Trigger = styled(motion.div)`
   .ms-container {
     max-height: 20vh;
   }
-  li {
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      background: #fafafa;
-    }
-  }
-  /* base */
-  &.sm {
-    border-radius: 4px;
-    li {
-      padding: 8px;
-      height: 30px;
-      font-size: 12px;
-    }
-  }
-  &.md {
-    border-radius: 5px;
-    li {
-      padding: 10px;
-      height: 38px;
-      font-size: 12px;
-    }
-  }
-  &.lg {
-    border-radius: 6px;
-    li {
-      padding: 12px;
-      height: 42px;
-      font-size: 16px;
-    }
-  }
 `;
 
 const DropdownTypes = tuple('danger', 'primary');
@@ -122,7 +34,7 @@ type SizeType = 'sm' | 'md' | 'lg';
 
 export interface DropdownProps {
   className?: string;
-  dropdownClassName?: string;
+  triggerClassName?: string;
   type?: DropdownType;
   size?: SizeType;
   disabled?: boolean;
@@ -135,12 +47,13 @@ export interface DropdownProps {
 interface TriggerProps extends DropdownProps {
   followRef: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
+  onOpen: (...args: any[]) => any;
   onClose: (...args: any[]) => any;
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
   const {
-    dropdownClassName,
+    triggerClassName,
     followID,
     followRef,
     followWidth,
@@ -152,7 +65,7 @@ const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
 
   const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
-  const classes = classNames(dropdownClassName, 'row-between', {
+  const classes = classNames(triggerClassName, 'row-between', {
     [`${type}`]: type,
     [`${size}`]: size,
   });
@@ -190,7 +103,7 @@ const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
 };
 
 const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
-  const { className, type = 'primary', size = 'md', disabled = false, placeholder, overlay } = props;
+  const { disabled = false, overlay } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const followRef = React.createRef<HTMLDivElement>();
@@ -201,14 +114,10 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
   //   }
   // }, [followRef]);
 
-  const [visible, setVisible] = React.useState<boolean>(false);
+  const isHovering = useHover(followRef);
+  console.log(isHovering);
 
-  const classes = classNames(className, 'row-between', {
-    [`${type}`]: type,
-    [`${size}`]: size,
-    focus: visible,
-    disabled,
-  });
+  const [visible, setVisible] = React.useState<boolean>(false);
 
   const handleOpen: React.MouseEventHandler<HTMLDivElement> = () => {
     if (disabled) return;
@@ -222,20 +131,10 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   return (
     <React.Fragment>
-      <Wrapper className={classes} ref={followRef} onClick={handleOpen}>
-        {overlay ? cloneElement(overlay) : <span className="holder">{placeholder}</span>}
-        <div className="arrow row-center">
-          <svg width="8" height="5" viewBox="0 0 8 5" style={{ transform: `rotateZ(${visible ? -180 : 0}deg)` }}>
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              // eslint-disable-next-line
-              d="M0.707105 1.70711C0.0771402 1.07714 0.523309 0 1.41421 0H6.58579C7.47669 0 7.92286 1.07714 7.29289 1.70711L4.70711 4.29289C4.31658 4.68342 3.68342 4.68342 3.29289 4.29289L0.707105 1.70711Z"
-            />
-          </svg>
-        </div>
-      </Wrapper>
-      <AnimatePresence>{visible && <Portal {...props} followRef={followRef} onClose={handleClose} />}</AnimatePresence>
+      <Wrapper ref={followRef}>{cloneElement(overlay)}</Wrapper>
+      <AnimatePresence>
+        {visible && <Portal {...props} followRef={followRef} onOpen={handleOpen} onClose={handleClose} />}
+      </AnimatePresence>
     </React.Fragment>
   );
 };

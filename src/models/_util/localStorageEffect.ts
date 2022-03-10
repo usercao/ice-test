@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import { AtomEffect, DefaultValue } from 'recoil';
 
 export const localStorageEffect: <T>(key: string) => AtomEffect<T> =
