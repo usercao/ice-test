@@ -1,14 +1,14 @@
-import React, { ComponentClass, ComponentElement, RefObject } from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import StackItem from './StackItem';
 import { NotificationPropsBase, NotificationReturnInstance } from './PropsType';
 
 export default class StackManager {
-  private notifyList: Array<ComponentElement<NotificationPropsBase, StackItem>> = [];
-  private component: ComponentClass<NotificationPropsBase, {}>;
+  private notifyList: Array<React.ComponentElement<NotificationPropsBase, StackItem>> = [];
+  private component: React.FunctionComponent<NotificationPropsBase>;
   private keySeed = 0;
 
-  constructor(component: ComponentClass<NotificationPropsBase, {}>) {
+  constructor(component: React.FunctionComponent<NotificationPropsBase>) {
     this.component = component;
   }
 
@@ -46,7 +46,7 @@ export default class StackManager {
   close(key: string) {
     const notify = this.notifyList.find((item) => item.key === key);
     if (notify) {
-      const { current } = notify.ref as RefObject<StackItem>;
+      const { current } = notify.ref as React.RefObject<StackItem>;
       current && current.close();
     }
   }
@@ -54,7 +54,7 @@ export default class StackManager {
   // To close all
   closeAll() {
     this.notifyList.forEach((notify) => {
-      const { current } = notify.ref as RefObject<StackItem>;
+      const { current } = notify.ref as React.RefObject<StackItem>;
       current && current.close();
     });
   }
