@@ -7,6 +7,9 @@ export type { InputProps } from './Input';
 export { default as Select } from './Select';
 export type { SelectProps } from './Select';
 
+export { default as Dropdown } from './Dropdown';
+export type { DropdownProps } from './Dropdown';
+
 export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
 
