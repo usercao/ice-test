@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/member-ordering */
+/* eslint-disable @iceworks/best-practices/recommend-functional-component */
 import * as React from 'react';
 import { fadeConfig } from '@/config/motion';
 import { AnimatePresence, motion } from 'framer-motion';

@@ -22,4 +22,4 @@ export type { ModalProps } from './Modal';
 // export { default as Tooltip } from './Tooltip';
 // export type { TooltipProps } from './Tooltip';
 
-// export { default as message } from './Message'
+export { default as message } from './Message';

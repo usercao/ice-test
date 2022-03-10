@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
-import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
+import { Scrollbar, Modal, Button, Input, Select, Checkbox, message } from '@/components';
 import useSendCode from '@/hooks/useSendCode';
 
 const Wrapper = styled.div`
@@ -47,13 +47,17 @@ const Home = () => {
     <Wrapper className="col-center">
       <button
         onClick={() => {
+          message.error('212121');
+        }}
+      >
+        message
+      </button>
+      <button
+        onClick={() => {
           startCountDown({
             sendType: 'emailAuth',
             payload: {
-              type: 2,
-            },
-            onError(e) {
-              console.log(e);
+              type: 0,
             },
           });
         }}
