@@ -122,7 +122,6 @@ type SizeType = 'sm' | 'md' | 'lg';
 
 export interface SelectProps {
   className?: string;
-  triggerClassName?: string;
   type?: SelectType;
   size?: SizeType;
   disabled?: boolean;
@@ -139,20 +138,10 @@ interface TriggerProps extends SelectProps {
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const {
-    triggerClassName,
-    followID,
-    followRef,
-    followWidth,
-    type = 'primary',
-    size = 'md',
-    children,
-    onClose,
-  } = props;
-
+  const { followID, followRef, followWidth, type = 'primary', size = 'md', children, onClose } = props;
   const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
-  const classes = classNames(triggerClassName, 'row-between', {
+  const classes = classNames('row-between', {
     [`${type}`]: type,
     [`${size}`]: size,
   });
