@@ -35,11 +35,6 @@ const Wrapper = styled.div`
   > .base {
     width: 50%;
     height: inherit;
-    > .settings {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
     > .verify {
       align-items: flex-start;
       padding-left: 84px;
