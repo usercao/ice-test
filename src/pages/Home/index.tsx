@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { t } from '@lingui/macro';
-import { Scrollbar, Modal, Button, Input, Select, Checkbox } from '@/components';
+import { Scrollbar, Modal, Button, Input, Select, Checkbox, message } from '@/components';
 import useCountDown from '@/hooks/useCountDown';
 
 const Wrapper = styled.div`
@@ -45,6 +45,13 @@ const Home = () => {
 
   return (
     <Wrapper className="col-center">
+      <button
+        onClick={() => {
+          message.error('212121');
+        }}
+      >
+        message
+      </button>
       <button
         onClick={() => {
           startCountDown('emailSetPwd', () => {

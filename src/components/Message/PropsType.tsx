@@ -4,18 +4,24 @@ import * as React from 'react';
 // ============= Notification ================
 // ===========================================
 export type NotificationIcon = 'success' | 'warning' | 'info' | 'error' | 'loading';
-export interface NotificationProps {
-  key?: string;
-  icon?: React.ReactElement | NotificationIcon;
-  content: React.ReactNode;
+
+export interface NotificationOptions {
+  content: string | React.ReactNode;
   stayTime?: number;
+}
+
+export interface NotificationProps extends NotificationOptions {
+  key?: string;
+  icon?: NotificationIcon;
   onClose?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
+
 export interface NotificationReturnInstance {
   close: () => void;
 }
+
 export interface NotificationInstance {
   open: (props: NotificationProps) => NotificationReturnInstance;
   success: (options: NotificationOptions) => NotificationReturnInstance;
@@ -26,6 +32,7 @@ export interface NotificationInstance {
   closeAll: () => void;
   destroy: () => void;
 }
+
 export interface NotificationStackItemProps extends NotificationProps {
   Component: React.FunctionComponent<NotificationProps>;
 }
@@ -33,10 +40,16 @@ export interface NotificationStackItemProps extends NotificationProps {
 // ===========================================
 // ============= Message =====================
 // ===========================================
-export type MessageOptions = string | MessageProps | React.ReactNode;
-export interface MessageProps extends NotificationProps {
-  icon?: NotificationIcon;
-}
-export interface MessageInstance extends Omit<NotificationInstance, 'open'> {
+export type MessageIcon = NotificationIcon;
+
+export type MessageProps = NotificationProps;
+
+export type MessageOptions = MessageProps | React.ReactNode;
+
+export interface MessageInstance {
   loading: (props: MessageOptions) => NotificationReturnInstance;
+  success: (options: string) => NotificationReturnInstance;
+  warning: (options: string) => NotificationReturnInstance;
+  info: (options: string) => NotificationReturnInstance;
+  error: (options: string) => NotificationReturnInstance;
 }
