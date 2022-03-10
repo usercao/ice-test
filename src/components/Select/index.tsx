@@ -69,7 +69,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Dropdown = styled(motion.div)`
+const Trigger = styled(motion.div)`
   /* global */
   position: absolute;
   background: #ffffff;
@@ -132,13 +132,13 @@ export interface SelectProps {
   overlay?: React.ReactNode;
 }
 
-interface DropdownProps extends SelectProps {
+interface TriggerProps extends SelectProps {
   followRef: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
   onClose: (...args: any[]) => any;
 }
 
-const Portal: React.FC<DropdownProps> = (props: DropdownProps) => {
+const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
   const {
     dropdownClassName,
     followID,
@@ -172,7 +172,7 @@ const Portal: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   const memoizedOption = React.useMemo(
     () => (
-      <Dropdown className={classes} style={position} onClick={(e) => e.stopPropagation()} {...fadeConfig}>
+      <Trigger className={classes} style={position} onClick={(e) => e.stopPropagation()} {...fadeConfig}>
         <Scrollbar
           trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
           thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
@@ -180,11 +180,10 @@ const Portal: React.FC<DropdownProps> = (props: DropdownProps) => {
         >
           {children && cloneElement(children, { onClick: onClose })}
         </Scrollbar>
-      </Dropdown>
+      </Trigger>
     ),
     [classes, position, children, onClose],
   );
-
   useClickAway(() => onClose?.(), followRef);
 
   return createPortal(memoizedOption, DOM);
