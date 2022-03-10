@@ -1,57 +1,42 @@
-import React from 'react';
+import * as React from 'react';
 
-export type NotificationIcon = 'default' | 'error' | 'success' | 'warning' | 'info' | 'loading';
-
-export enum NotificationPositions {
-  topLeft = 'topLeft',
-  topRight = 'topRight',
-  topCenter = 'topCenter',
-  bottomLeft = 'bottomLeft',
-  bottomRight = 'bottomRight',
-}
-
-export interface NotificationPropsBase {
-  prefixCls?: string;
-
-  style?: React.CSSProperties;
-  className?: string;
-
-  stayTime?: number;
-  position?: NotificationPositions;
-
+// ===========================================
+// ============= Notification ================
+// ===========================================
+export type NotificationIcon = 'success' | 'warning' | 'info' | 'error' | 'loading';
+export interface NotificationProps {
+  key?: string;
   icon?: React.ReactElement | NotificationIcon;
   content: React.ReactNode;
-
-  onClick?: (e?: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  stayTime?: number;
   onClose?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-
-  key?: string;
-  top?: number | string;
-  bottom?: number | string;
 }
-
-export interface NotificationProps extends NotificationPropsBase {}
-
 export interface NotificationReturnInstance {
-  close(): void;
+  close: () => void;
 }
-
 export interface NotificationInstance {
-  open(props: NotificationProps): NotificationReturnInstance;
-  success(options: NotificationOptions): NotificationReturnInstance;
-  warning(options: NotificationOptions): NotificationReturnInstance;
-  info(options: NotificationOptions): NotificationReturnInstance;
-  error(options: NotificationOptions): NotificationReturnInstance;
-  close(key: string): void;
-  closeAll(): void;
-  destroy(): void;
+  open: (props: NotificationProps) => NotificationReturnInstance;
+  success: (options: NotificationOptions) => NotificationReturnInstance;
+  warning: (options: NotificationOptions) => NotificationReturnInstance;
+  info: (options: NotificationOptions) => NotificationReturnInstance;
+  error: (options: NotificationOptions) => NotificationReturnInstance;
+  close: (key: string) => void;
+  closeAll: () => void;
+  destroy: () => void;
+}
+export interface NotificationStackItemProps extends NotificationProps {
+  Component: React.FunctionComponent<NotificationProps>;
 }
 
-export interface NotificationStackItemProps extends NotificationPropsBase {
-  // Component: React.ComponentClass<NotificationPropsBase>;
-  Component: React.FunctionComponent<NotificationPropsBase>;
-  name?: string;
-  willUnmount?: () => void;
+// ===========================================
+// ============= Message =====================
+// ===========================================
+export type MessageOptions = string | MessageProps | React.ReactNode;
+export interface MessageProps extends NotificationProps {
+  icon?: NotificationIcon;
+}
+export interface MessageInstance extends Omit<NotificationInstance, 'open'> {
+  loading: (props: MessageOptions) => NotificationReturnInstance;
 }
