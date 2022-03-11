@@ -15,7 +15,7 @@ import md5 from 'md5';
 
 const Wrapper = styled.div`
   align-items: flex-start;
-  padding-left: 84px;
+  padding: 0 0 60px 84px;
   height: inherit;
   > .inner {
     width: 330px;
