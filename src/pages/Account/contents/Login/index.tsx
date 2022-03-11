@@ -296,7 +296,7 @@ const Login = () => {
   return (
     <Container>
       <Wrapper className="col-center">
-        <div className="inner" id="inner">
+        <div className="inner">
           <h4>{t`welcomeToMexo`}</h4>
           <p className="tips">{t`signWithAccountOrCode`}</p>
           <div className="tabs row-start">
@@ -333,7 +333,7 @@ const Login = () => {
               />
               <p className="error">{errorInfo}</p>
 
-              <Button
+              {/* <Button
                 loading={loading1}
                 size="lg"
                 onClick={() => {
@@ -344,13 +344,36 @@ const Login = () => {
                 }}
               >
                 {t`continue`}
-              </Button>
+              </Button> */}
+
+              <Sense
+                onSuccess={senseSuccess}
+                onError={() => {
+                  senseReset();
+                  message.error('Please reload and try again');
+                }}
+                wrapRef={senseRef}
+              >
+                <Button
+                  id="xxxxxxxx"
+                  loading={loading1}
+                  size="lg"
+                  onClick={() => {
+                    if (verifyLoginInfo()) {
+                      setLoading1(true);
+                      senseVerify();
+                    }
+                  }}
+                >
+                  {t`continue`}
+                </Button>
+              </Sense>
 
               <p className="forget" onClick={() => history.push('/forget')}>
                 {t`forgotPassword`}
               </p>
               <p className="jump">
-                {t`你好{<span>21212</span>}`}
+                {/* {t`你好{<span>21212</span>}`} */}
                 {/* <Trans>你好{<span>21212</span>}</Trans> */}
                 {/* {t`还不是用户？${(<span onClick={() => history.push('/signup')}>Sign Up</span>)}`} */}
                 {/* <span>Not a member ? </span>
@@ -384,14 +407,14 @@ const Login = () => {
           )}
         </div>
       </Wrapper>
-      <Sense
+      {/* <Sense
         onSuccess={senseSuccess}
         onError={() => {
           senseReset();
           message.error('Please reload and try again');
         }}
         wrapRef={senseRef}
-      />
+      /> */}
     </Container>
   );
 };

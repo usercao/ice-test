@@ -2,15 +2,40 @@ import { useState, useImperativeHandle } from 'react';
 import { SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
 import { useMount, useUpdateEffect, useExternal } from 'ahooks';
+import { cloneElement } from '@/components/_util/reactNode';
+import styled from 'styled-components';
+
+const XXXX = styled.div`
+  position: relative;
+  height: 46px;
+  /* overflow: hidden; */
+  &:hover {
+    /* 重写button hover效果 */
+  }
+  .底部 {
+    position: relative;
+    z-index: 1;
+  }
+  .geetest_holder,
+  .geetest_wind,
+  .geetest_radar_click_ready {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    /* opacity: 0; */
+    z-index: 2;
+  }
+`;
 
 interface ISenseProps {
   onSuccess: (payload: { challenge: string; captcha_response: string; captcha_id: string }) => any;
   onError?: (e) => any;
   wrapRef: any;
+  children?: React.ReactNode;
 }
 
 const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
-  const { onSuccess, onError, wrapRef } = props;
+  const { onSuccess, onError, wrapRef, children } = props;
   const [senseConfig, setSenseConfig] = useState({
     challenge: '',
     gt: '',
@@ -51,15 +76,16 @@ const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
         },
         (ret) => {
           setSense(ret);
-          ret.appendTo('#inner');
+          ret.appendTo('#xxxxxxxx');
           ret.onSuccess(() => {
-            const geeResult = ret.getValidate();
-            return;
-            onSuccess({
-              challenge: geeResult.geetest_challenge,
-              captcha_response: geeResult.geetest_validate,
-              captcha_id: SENSE_ID,
-            });
+            ret.getValidate();
+            // const geeResult = ret.getValidate();
+            // return;
+            // onSuccess({
+            //   challenge: geeResult.geetest_challenge,
+            //   captcha_response: geeResult.geetest_validate,
+            //   captcha_id: SENSE_ID,
+            // });
           });
           ret.onError((e) => {
             onError && onError(e);
@@ -69,7 +95,7 @@ const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
     }
   }, [status, senseConfig]);
 
-  return <span />;
+  return <XXXX>{children && cloneElement(children, { className: '底部' })}</XXXX>;
 };
 
 export default Sense;
