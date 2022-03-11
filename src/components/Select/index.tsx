@@ -125,9 +125,9 @@ export interface SelectProps {
   type?: SelectType;
   size?: SizeType;
   disabled?: boolean;
+  placeholder?: string;
   followID?: string;
   followWidth?: number;
-  placeholder?: string;
   overlay?: React.ReactNode;
 }
 
@@ -138,7 +138,7 @@ interface TriggerProps extends SelectProps {
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const { followID, followRef, followWidth, type = 'primary', size = 'md', children, onClose } = props;
+  const { followRef, followID, followWidth, type = 'primary', size = 'md', children, onClose } = props;
   const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
   const classes = classNames('row-between', {

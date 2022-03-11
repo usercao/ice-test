@@ -7,25 +7,11 @@ import { useMount } from 'ahooks';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  padding: 22px 32px;
+  padding: 0 32px;
+  height: 60px;
   > .download {
-    font-size: 18px;
-    color: #c8c8c8;
-    user-select: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      color: #06ceab;
-    }
-  }
-  > .language {
-    position: relative;
-    width: 76px;
-    text-align: right;
-    h6 {
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 18px;
+    .iconfont {
+      font-size: 18px;
       color: #c8c8c8;
       user-select: none;
       cursor: pointer;
@@ -34,24 +20,49 @@ const Wrapper = styled.div`
         color: #06ceab;
       }
     }
-    &:hover {
-      ul {
-        display: block;
+  }
+  > .language {
+    h6 {
+      width: 76px;
+      text-align: right;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 34px;
+      color: #c8c8c8;
+      user-select: none;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        color: #06ceab;
       }
     }
-    ul {
-      display: none;
-      position: absolute;
-      top: 28px;
-      right: 0;
-      background: #ffffff;
-      box-shadow: 0px 4px 10px rgba(208, 208, 208, 0.5);
-      border-radius: 6px;
-      li {
-        user-select: none;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
-      }
+  }
+`;
+
+const DropdownLanguage = styled.ul`
+  padding: 6px;
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(208, 208, 208, 0.5);
+  border-radius: 6px;
+  li {
+    padding: 0 12px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 36px;
+    border-radius: 4px;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: #06ceab;
+      background: #fafafa;
+    }
+    &.active {
+      color: #06ceab;
+      background: #fafafa;
+    }
+    &.default {
+      color: #384442;
     }
   }
 `;
@@ -76,21 +87,23 @@ const Settings: React.FC = () => {
   return (
     <Wrapper className="settings row-end">
       <div className="download">
-        <i className="iconfont icon-phone" />
+        <Dropdown overlay={<i className="iconfont icon-phone" />}>111</Dropdown>
       </div>
       <div className="language">
-        <h6>{LOCALE_LABEL[localeModel]}</h6>
-        <ul>
-          {localeModelList.map((ele) => (
-            <li key={ele.label} onClick={() => setLocaleModel(ele.label)}>
-              {ele.value}
-            </li>
-          ))}
-        </ul>
+        <Dropdown followWidth={120} placement="right" overlay={<h6>{LOCALE_LABEL[localeModel]}</h6>}>
+          <DropdownLanguage>
+            {localeModelList.map((ele) => (
+              <li
+                className={`${ele.label === localeModel ? 'active' : 'default'}`}
+                key={ele.label}
+                onClick={() => setLocaleModel(ele.label)}
+              >
+                {ele.value}
+              </li>
+            ))}
+          </DropdownLanguage>
+        </Dropdown>
       </div>
-      <Dropdown overlay={24162126}>
-        <p>2121</p>
-      </Dropdown>
     </Wrapper>
   );
 };

@@ -19,9 +19,9 @@ const Wrapper = styled.div`
     background: #6bd4bc;
     .logo {
       position: absolute;
-      top: 22px;
+      top: 17px;
       left: 32px;
-      width: 110px;
+      width: 111px;
       height: 26px;
       user-select: none;
       cursor: pointer;

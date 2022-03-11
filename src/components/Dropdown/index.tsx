@@ -3,60 +3,63 @@ import { createPortal } from 'react-dom';
 import { fadeConfig } from '@/config/motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cloneElement } from '../_util/reactNode';
-import { useHover, useDebounceEffect } from 'ahooks';
+import useRandomId from '@/hooks/useRandomId';
+import { useBoolean, useHover, useDebounceEffect } from 'ahooks';
 import styled from 'styled-components';
 
 const Trigger = styled(motion.div)`
   position: absolute;
-  background: #ffffff;
-  border: 1px solid #e8e8e8;
-  box-shadow: 0px 4px 10px rgba(208, 208, 208, 0.5);
-  overflow: hidden;
   z-index: 1;
 `;
 
 export interface DropdownProps {
   followID?: string;
   followWidth?: number;
+  placement?: 'left' | 'right';
   overlay?: React.ReactNode;
-  onChange?: (...args: any[]) => any;
 }
 
 interface TriggerProps extends DropdownProps {
   followRef: React.RefObject<HTMLDivElement>;
-  trigger?: boolean;
-  visible?: boolean;
+  menuID?: string;
   children?: React.ReactNode;
-  onOpen: (...args: any[]) => any;
   onClose: (...args: any[]) => any;
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const { followRef, followWidth, children, onClose } = props;
+  const { followRef, followID, followWidth, placement = 'left', menuID, children, onClose } = props;
+  const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
   const [position, setPosition] = React.useState<{
+    right?: number;
     top: number;
-    left: number;
+    left?: number;
     width: number;
-  }>({ top: 0, left: 0, width: 160 });
+  }>({ top: 0, width: 160 });
 
   React.useEffect(() => {
     if (!followRef.current) return;
     const { offsetTop, offsetHeight, offsetLeft, offsetWidth } = followRef.current;
-    const site = { top: offsetTop + offsetHeight, left: offsetLeft, width: followWidth || offsetWidth };
-    setPosition(site);
-  }, [followWidth, followRef]);
+    const { innerWidth } = window;
+
+    const about = {
+      [`${placement}`]: placement === 'left' ? offsetLeft : innerWidth - (offsetLeft + offsetWidth),
+    };
+    const site = { top: offsetTop + offsetHeight, width: followWidth || offsetWidth };
+
+    setPosition({ ...about, ...site });
+  }, [placement, followWidth, followRef]);
 
   const memoizedOption = React.useMemo(
     () => (
-      <Trigger id="hover-dom" style={position} onClick={(e) => e.stopPropagation()} {...fadeConfig}>
+      <Trigger id={menuID} style={position} onClick={(e) => e.stopPropagation()} {...fadeConfig}>
         {children && cloneElement(children, { onClick: onClose })}
       </Trigger>
     ),
-    [position, children, onClose],
+    [menuID, position, children, onClose],
   );
 
-  return createPortal(memoizedOption, document.body as HTMLElement);
+  return createPortal(memoizedOption, DOM);
 };
 
 const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
@@ -64,43 +67,28 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const followRef = React.createRef<HTMLDivElement>();
-  const [visible, setVisible] = React.useState<boolean>(false);
+  const uuid = useRandomId();
 
-  const handleOpen: React.MouseEventHandler<HTMLDivElement> = () => {
-    setVisible(true);
-  };
+  const [state, { setTrue, setFalse }] = useBoolean(false);
 
-  const handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
-    setVisible(false);
-  };
-
-  const aaa = useHover(followRef, {
-    onEnter: () => setVisible(true),
-  });
-
-  const isHovering = useHover(() => document.getElementById('hover-dom'), {
-    onLeave: () => {
-      setVisible(false);
-    },
+  const dropTrigger = useHover(followRef, { onEnter: setTrue });
+  const dropMenu = useHover(() => document.getElementById(uuid), {
+    onLeave: setFalse,
   });
 
   useDebounceEffect(
     () => {
-      if (aaa === false && isHovering === false) {
-        setVisible(false);
-      }
+      if (dropTrigger === false && dropMenu === false) setFalse();
     },
-    [aaa, isHovering],
-    { wait: 1000 },
+    [dropTrigger, dropMenu],
+    { wait: 300 },
   );
 
   return (
     <React.Fragment>
       <div ref={followRef}>{overlay && cloneElement(overlay)}</div>
       <AnimatePresence>
-        {visible && (
-          <Portal {...props} visible={visible} followRef={followRef} onOpen={handleOpen} onClose={handleClose} />
-        )}
+        {state && <Portal {...props} followRef={followRef} menuID={uuid} onClose={setFalse} />}
       </AnimatePresence>
     </React.Fragment>
   );
