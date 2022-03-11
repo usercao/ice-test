@@ -6,7 +6,69 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: es-ES\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
-#: src/pages/Home/index.tsx:37
+#: src/pages/Account/contents/Login/index.tsx:302
+msgid "account"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:305
+msgid "codeQR"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:366
+msgid "continue"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:310
+msgid "emailOrPhone"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:317
+msgid "enterEmailOrPhone"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:328
+msgid "enterLoginPassword"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:371
+msgid "forgotPassword"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:245
+#: src/pages/Account/container/index.tsx:246
+#: src/pages/Account/container/index.tsx:269
+#: src/pages/Account/container/index.tsx:270
+#: src/pages/Account/container/index.tsx:300
+#: src/pages/Account/container/index.tsx:301
+#: src/pages/Account/contents/Forget/index.tsx:163
+#: src/pages/Account/contents/Forget/index.tsx:164
+#: src/pages/Account/contents/Forget/index.tsx:167
+#: src/pages/Account/contents/Forget/index.tsx:170
+#: src/pages/Account/contents/Signup/index.tsx:131
+#: src/pages/Account/contents/Signup/index.tsx:132
+#: src/pages/Home/index.tsx:82
 msgid "hello"
 msgstr "Hola!"
+
+#: src/pages/Account/contents/Login/index.tsx:320
+msgid "loginPassword"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:374
+msgid "notMember<0>Signup</0>"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:299
+msgid "signWithAccountOrCode"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:298
+msgid "welcomeToMexo"
+msgstr ""
