@@ -13,34 +13,42 @@ const Trigger = styled(motion.div)`
 `;
 
 export interface DropdownProps {
+  followID?: string;
+  followWidth?: number;
+  placement?: 'left' | 'right';
   overlay?: React.ReactNode;
 }
 
 interface TriggerProps extends DropdownProps {
   followRef: React.RefObject<HTMLDivElement>;
-  followID?: string;
-  followWidth?: number;
   menuID?: string;
   children?: React.ReactNode;
   onClose: (...args: any[]) => any;
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const { followRef, followID, followWidth, menuID, children, onClose } = props;
+  const { followRef, followID, followWidth, placement = 'left', menuID, children, onClose } = props;
   const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
   const [position, setPosition] = React.useState<{
+    right?: number;
     top: number;
-    left: number;
+    left?: number;
     width: number;
-  }>({ top: 0, left: 0, width: 160 });
+  }>({ top: 0, width: 160 });
 
   React.useEffect(() => {
     if (!followRef.current) return;
     const { offsetTop, offsetHeight, offsetLeft, offsetWidth } = followRef.current;
-    const site = { top: offsetTop + offsetHeight, left: offsetLeft, width: followWidth || offsetWidth };
-    setPosition(site);
-  }, [followWidth, followRef]);
+    const { innerWidth } = window;
+
+    const about = {
+      [`${placement}`]: placement === 'left' ? offsetLeft : innerWidth - (offsetLeft + offsetWidth),
+    };
+    const site = { top: offsetTop + offsetHeight, width: followWidth || offsetWidth };
+
+    setPosition({ ...about, ...site });
+  }, [placement, followWidth, followRef]);
 
   const memoizedOption = React.useMemo(
     () => (

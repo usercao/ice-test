@@ -126,13 +126,13 @@ export interface SelectProps {
   size?: SizeType;
   disabled?: boolean;
   placeholder?: string;
+  followID?: string;
+  followWidth?: number;
   overlay?: React.ReactNode;
 }
 
 interface TriggerProps extends SelectProps {
   followRef: React.RefObject<HTMLDivElement>;
-  followID?: string;
-  followWidth?: number;
   children?: React.ReactNode;
   onClose: (...args: any[]) => any;
 }
