@@ -285,29 +285,29 @@ const Login = () => {
     <Container>
       <Wrapper className="col-center">
         <div className="inner" id="inner">
-          <h4>{t`欢迎来到Mexo`}</h4>
-          <p className="tips">{t`使用邮箱，手机号或者二维码登录`}</p>
+          <h4>{t`welcomeToMexo`}</h4>
+          <p className="tips">{t`signWithAccountOrCode`}</p>
           <div className="tabs row-start">
             <p className={`${state === 'account' ? 'active' : 'default'}`} onClick={() => setState('account')}>
-              {t`账户`}
+              {t`account`}
             </p>
             <p className={`${state === 'qrcode' ? 'active' : 'default'}`} onClick={() => setState('qrcode')}>
-              {t`二维码`}
+              {t`codeQR`}
             </p>
           </div>
           {state === 'account' && (
             <div className="account">
-              <p className="label">{t`邮箱/手机号`}</p>
+              <p className="label">{t`emailOrPhone`}</p>
               <Input
                 value={userName}
                 onChange={setUsername}
                 onBlur={verifyLoginInfo}
                 className="input"
                 size="lg"
-                placeholder={t`请输入邮箱/手机号`}
+                placeholder={t`enterEmailOrPhone`}
                 clear
               />
-              <p className="label">{t`登录密码`}</p>
+              <p className="label">{t`loginPassword`}</p>
               <Input
                 value={password}
                 onChange={setPassword}
@@ -315,7 +315,7 @@ const Login = () => {
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
-                placeholder={t`请输入登录密码`}
+                placeholder={t`enterLoginPassword`}
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
@@ -330,13 +330,14 @@ const Login = () => {
                   }
                 }}
               >
-                {t`继续`}
+                {t`continue`}
               </Button>
               <p className="forget" onClick={() => history.push('/forget')}>
-                {t`忘记密码`}
+                {t`forgotPassword`}
               </p>
               <p className="jump">
-                <Trans>你好{<span>21212</span>}</Trans>
+                {t`你好{<span>21212</span>}`}
+                {/* <Trans>你好{<span>21212</span>}</Trans> */}
                 {/* {t`还不是用户？${(<span onClick={() => history.push('/signup')}>Sign Up</span>)}`} */}
                 {/* <span>Not a member ? </span>
                 <span onClick={() => history.push('/signup')}>Sign Up</span> */}
