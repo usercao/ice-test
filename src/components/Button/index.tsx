@@ -101,7 +101,6 @@ const Wrapper = styled.button`
       font-size: 12px;
       animation: ${rotate} 2s linear infinite;
     }
-
     &.default,
     &.solid {
       i {

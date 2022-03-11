@@ -70,8 +70,13 @@ const Wrapper = styled.div`
         input {
           font-size: 14px;
         }
+        span {
+          line-height: 46px;
+        }
       }
-      .iconfont {
+      .icon-show,
+      .icon-hide {
+        margin-left: 8px;
         color: #384442;
         cursor: pointer;
         transition: all 0.3s ease-in-out;

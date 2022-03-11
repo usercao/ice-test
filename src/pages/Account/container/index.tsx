@@ -127,6 +127,12 @@ const Wrapper = styled.div`
   }
 `;
 
+const VERIFY_TEXT = {
+  google: 'Google Authenticator',
+  email: 'Email Verification Code',
+  mobile: 'Phone Verification Code',
+};
+
 const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [type, setType] = useRecoilState(containerType);
   const setUser = useSetRecoilState(userInfo);
@@ -162,7 +168,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         message.error(e.response.data.msg);
       },
     });
-  }, [verify, username, requestId]);
+  }, [verify, username, requestId, startCountDown]);
 
   const handleForget = React.useCallback(async () => {
     if (verify === 'email') {
@@ -263,20 +269,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
               <h4>{t`hello`}</h4>
               <p className="tips">{t`hello`}</p>
               <p className="label row-between">
-                <span>
-                  {(() => {
-                    switch (verify) {
-                      case 'google':
-                        return 'Google Authenticator';
-                      case 'email':
-                        return 'Email Verification Code';
-                      case 'mobile':
-                        return 'Phone Verification Code';
-                      default:
-                        return '';
-                    }
-                  })()}
-                </span>
+                <span>{VERIFY_TEXT[verify]}</span>
                 {verify !== 'google' && <span>{username}</span>}
               </p>
               <Input

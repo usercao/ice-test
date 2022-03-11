@@ -67,8 +67,9 @@ const Wrapper = styled.div`
         font-size: 14px;
       }
     }
-    .iconfont {
-      color: #384442;
+    .icon-show,
+    .icon-hide {
+      margin-left: 8px;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
       &:hover {
