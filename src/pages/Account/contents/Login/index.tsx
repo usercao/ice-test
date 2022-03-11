@@ -1,8 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { containerType, verifyType, verifyUserName, verifyPassword, verifyRequestId } from '@/models/account';
+import { containerType, verifyType, verifyUserName, verifyPassword, verifyRequestId, userInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
+import { pwdVerify } from '@/utils/tools';
 import { Input, Button, message } from '@/components';
 import Sense from '@/components/_global/Sense';
 import QRCode from 'qrcode';
@@ -183,6 +184,8 @@ const Wrapper = styled.div`
 const Login = () => {
   const setType = useSetRecoilState(containerType);
   const setVerify = useSetRecoilState(verifyType);
+  const setUser = useSetRecoilState(userInfo);
+
   const setVerifyUserName = useSetRecoilState(verifyUserName);
   const setVerifyPassword = useSetRecoilState(verifyPassword);
   const setVerifyRequestId = useSetRecoilState(verifyRequestId);
@@ -219,6 +222,20 @@ const Login = () => {
   const [userName, setUsername, getUserName] = useGetState<string>('northgyh@163.com');
   const [password, setPassword, getPassword] = useGetState<string>('Guoguo789');
   const [loading1, setLoading1] = React.useState<boolean>(false);
+  const [errorInfo, setErrorInfo] = React.useState<string>('');
+
+  const verifyLoginInfo = React.useCallback((): boolean => {
+    if (!userName || !password) {
+      setErrorInfo('请输入完整信息');
+      return false;
+    }
+    if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
+      setErrorInfo('密码8-20位字符, 必须包含大小写字母和数字');
+      return false;
+    }
+    setErrorInfo('');
+    return true;
+  }, [userName, password]);
 
   const senseSuccess = React.useCallback(
     async (sense) => {
@@ -242,23 +259,27 @@ const Login = () => {
           setVerifyPassword(md5(getPassword()));
           setVerifyRequestId(data.requestId);
         } else {
-          handleLoginSuccess();
+          handleLoginSuccess(data);
         }
       } catch (e) {
+        setErrorInfo(e.response.data.msg);
         setLoading1(false);
       }
     },
     [password, userName],
   );
 
-  const handleLoginSuccess = React.useCallback(() => {
-    console.log('handleLoginSuccess');
+  const handleLoginSuccess = React.useCallback((data) => {
+    // 老项目抛弃之后修改
+    window.sessionStorage.userinfo = JSON.stringify(data);
+    // 老项目抛弃之后修改
+    setUser(data);
   }, []);
 
   return (
     <Container>
       <Wrapper className="col-center">
-        <div className="inner">
+        <div className="inner" id="inner">
           <h4>{t`欢迎来到Mexo`}</h4>
           <p className="tips">{t`使用邮箱，手机号或者二维码登录`}</p>
           <div className="tabs row-start">
@@ -275,6 +296,7 @@ const Login = () => {
               <Input
                 value={userName}
                 onChange={setUsername}
+                onBlur={verifyLoginInfo}
                 className="input"
                 size="lg"
                 placeholder={t`请输入邮箱/手机号`}
@@ -284,6 +306,7 @@ const Login = () => {
               <Input
                 value={password}
                 onChange={setPassword}
+                onBlur={verifyLoginInfo}
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
@@ -291,12 +314,12 @@ const Login = () => {
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
-              <p className="error">{''}</p>
+              <p className="error">{errorInfo}</p>
               <Button
                 loading={loading1}
                 size="lg"
                 onClick={() => {
-                  if (userName && password) {
+                  if (verifyLoginInfo()) {
                     setLoading1(true);
                     senseVerify();
                   }

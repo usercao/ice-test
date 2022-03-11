@@ -25,6 +25,7 @@ const reIsOctal = /^0o[0-7]+$/i;
 /** Built-in method references without a dependency on `root`. */
 const freeParseInt = parseInt;
 
+export const pwdVerify = (pwd) => /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(pwd);
 export const isString = (val) => typeof val === 'string';
 export const isUndefined = (value) => value === undefined;
 export const isObjectLike = (value) => !!value && typeof value == 'object';

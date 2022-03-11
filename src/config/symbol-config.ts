@@ -70,16 +70,16 @@ export const getRealPriceConfig = (baseSymbol, lpSymbol) => {
   return PRICE_CONFIG[`${getRealSymbol(baseSymbol)}/${getRealSymbol(lpSymbol)}`] || DEFAULT_PRICE;
 };
 
-export const getRealPriceConfigOfPair = (pair) => {
-  return PRICE_CONFIG[`${getPairSymbolName(pair)}/${getPairSymbolName(pair, 1)}`] || DEFAULT_PRICE;
-};
+// export const getRealPriceConfigOfPair = (pair) => {
+//   return PRICE_CONFIG[`${getPairSymbolName(pair)}/${getPairSymbolName(pair, 1)}`] || DEFAULT_PRICE;
+// };
 
 export const getSymbolConfig = (symbol) => {
   return SYMBOL_CONFIG[getRealSymbol(symbol)] || DEFAULT_CONFIG;
 };
 
-export const getSymbolConfigOfPair = (pair, idx = 0) => {
-  return SYMBOL_CONFIG[getPairSymbolName(pair, idx)] || DEFAULT_CONFIG;
-};
+// export const getSymbolConfigOfPair = (pair, idx = 0) => {
+//   return SYMBOL_CONFIG[getPairSymbolName(pair, idx)] || DEFAULT_CONFIG;
+// };
 
 export default SYMBOL_CONFIG;

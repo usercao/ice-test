@@ -46,13 +46,16 @@ const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
           challenge: senseConfig.challenge,
           offline: !senseConfig.success,
           new_captcha: senseConfig.new_captcha,
-          product: 'bind',
+          product: 'float',
           width: '300px',
         },
         (ret) => {
           setSense(ret);
+          ret.appendTo('#inner');
           ret.onSuccess(() => {
             const geeResult = ret.getValidate();
+            console.log(geeResult);
+            return;
             onSuccess({
               challenge: geeResult.geetest_challenge,
               captcha_response: geeResult.geetest_validate,

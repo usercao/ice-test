@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { containerType, verifyType, verifyRequestId, verifyUserName, verifyPassword } from '@/models/account';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { containerType, verifyType, verifyRequestId, verifyUserName, verifyPassword, userInfo } from '@/models/account';
 import Settings from '@/components/_global/Settings';
 import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
@@ -129,6 +129,7 @@ const Wrapper = styled.div`
 
 const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [type, setType] = useRecoilState(containerType);
+  const setUser = useSetRecoilState(userInfo);
   const verify = useRecoilValue(verifyType);
   const requestId = useRecoilValue(verifyRequestId);
   const username = useRecoilValue(verifyUserName);
@@ -142,7 +143,6 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   const handleSendCode = React.useCallback(() => {
     const isEmail = verify === 'email';
-    console.log(verify);
     const payload = {
       type: 2,
       request_id: requestId,
@@ -179,6 +179,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   }, [verify, setType]);
 
   const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
+  const [loginError, setLoginError] = React.useState<string>('');
   const handleLogin = React.useCallback(async () => {
     setLoginLoading(true);
     const payload = {
@@ -203,9 +204,13 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
       const data = await loginVerify(payload);
       setLoginLoading(false);
       if (data) {
-        console.log('handleLoginSuccess');
+        // 老项目抛弃之后修改
+        window.sessionStorage.userinfo = JSON.stringify(data);
+        // 老项目抛弃之后修改
+        setUser(data);
       }
-    } catch (error) {
+    } catch (e) {
+      setLoginError(e.response.data.msg);
       setLoginLoading(false);
     }
   }, [verify, username, requestId, orderId, verifyCode, password]);
@@ -272,6 +277,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                     }
                   })()}
                 </span>
+                {verify !== 'google' && <span>{username}</span>}
               </p>
               <Input
                 value={verifyCode}
@@ -288,7 +294,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 }
                 clear
               />
-              <p className="error">{''}</p>
+              <p className="error">{loginError}</p>
               <Button size="lg" onClick={handleLogin} loading={loginLoading}>
                 Continue
               </Button>

@@ -3,7 +3,6 @@ import { RecoilRoot } from 'recoil';
 import Cookies from 'js-cookie';
 import { GlobalStyle } from '@/assets/styles/global';
 import { IconfontStyle } from '@/assets/styles/iconfont';
-import { message } from '@/components';
 import I18nProvider from '@/locales';
 
 const appConfig: IAppConfig = {
@@ -64,7 +63,9 @@ const appConfig: IAppConfig = {
       request: {
         onConfig: (config2) => {
           const __temp = config2;
+          // 老项目抛弃之后修改
           const locale: string = Cookies.get('locale') || 'es-es';
+          // 老项目抛弃之后修改
           __temp.headers = {
             'accept-language': locale,
           };
@@ -82,7 +83,6 @@ const appConfig: IAppConfig = {
           return response;
         },
         onError: (error: any) => {
-          message.error(error.response.data.msg);
           // 请求出错：服务端返回错误状态码
           // console.log(error.response.data);
           // console.log(error.response.status);
