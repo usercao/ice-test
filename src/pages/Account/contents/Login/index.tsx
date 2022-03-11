@@ -228,7 +228,7 @@ const Login = () => {
   const [password, setPassword, getPassword] = useGetState<string>('');
   const [loading1, setLoading1] = React.useState<boolean>(false);
   // 点击过提交按钮才显示错误
-  const [showError, setShowError] = React.useState<boolean>(true);
+  const [showError, setShowError] = React.useState<boolean>(false);
   const [errorInfo, setErrorInfo] = React.useState<string>('');
   const [passed, setPassed] = React.useState<boolean>(false);
 
@@ -270,7 +270,7 @@ const Login = () => {
   const senseSuccess = React.useCallback(
     async (sense) => {
       setLoading1(true);
-      setShowError(false);
+      setShowError(true);
       try {
         const data = await loginByUserName({
           username: getUserName(),
@@ -346,7 +346,7 @@ const Login = () => {
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
-              <p className="error">{!showError && errorInfo}</p>
+              <p className="error">{showError && errorInfo}</p>
               <Sense
                 onSuccess={senseSuccess}
                 onError={() => {
@@ -360,7 +360,7 @@ const Login = () => {
                   loading={loading1}
                   size="lg"
                   onClick={() => {
-                    setShowError(false);
+                    setShowError(true);
                   }}
                 >
                   {t`continue`}
