@@ -11,11 +11,11 @@ export interface ILoginParams {
   challenge: string;
 }
 export interface ILoginVerifyParams {
-  type: 0; // 用户名登录 永远为0
+  type: number; // 用户名登录 永远为0
   username: string;
   password: string;
   request_id: string; // 第一步返回
-  auth_type: 1 | 2 | 3; // ga: 3, email: 2 mobile: 1,
+  auth_type: number; // ga: 3, email: 2 mobile: 1,
   verify_code: string;
   order_id?: string; // 验证码发送成功后的id
 }

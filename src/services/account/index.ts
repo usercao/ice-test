@@ -26,7 +26,7 @@ export const loginByUserName = (params: ILoginParams) => {
 };
 
 export const loginVerify = (params: ILoginVerifyParams) => {
-  return request.post(api.loginVerify, params).then((res) => res.data);
+  return request.post(`${api.loginVerify}?${qs.stringify(params)}`).then((res) => res);
 };
 
 export const getLoginQrCode = () => {

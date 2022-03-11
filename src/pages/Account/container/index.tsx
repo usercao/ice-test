@@ -7,6 +7,7 @@ import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
+import { loginVerify } from '@/services/account';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -131,7 +132,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const verify = useRecoilValue(verifyType);
   const requestId = useRecoilValue(verifyRequestId);
   const username = useRecoilValue(verifyUserName);
-  const password = useRecoilState(verifyPassword);
+  const password = useRecoilValue(verifyPassword);
   const history = useHistory();
 
   // 验证码
@@ -177,15 +178,17 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     setType('default');
   }, [verify, setType]);
 
+  const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
   const handleLogin = React.useCallback(async () => {
+    setLoginLoading(true);
     const payload = {
       type: 0,
       username,
-      password: '',
+      password,
       request_id: requestId,
       verify_code: verifyCode,
       order_id: orderId,
-      auth_type: 0,
+      auth_type: 3,
     };
     if (verify === 'email') {
       payload.auth_type = 2;
@@ -196,8 +199,16 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     if (verify === 'google') {
       payload.auth_type = 3;
     }
-    console.log('login');
-  }, [verify, username, requestId, orderId, verifyCode]);
+    try {
+      const data = await loginVerify(payload);
+      setLoginLoading(false);
+      if (data) {
+        console.log('handleLoginSuccess');
+      }
+    } catch (error) {
+      setLoginLoading(false);
+    }
+  }, [verify, username, requestId, orderId, verifyCode, password]);
 
   const handleSignup = React.useCallback(async () => {
     history.replace('/home');
@@ -247,14 +258,26 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
               <h4>{t`hello`}</h4>
               <p className="tips">{t`hello`}</p>
               <p className="label row-between">
-                <span>Email / Phone Number</span>
+                <span>
+                  {(() => {
+                    switch (verify) {
+                      case 'google':
+                        return 'Google Authenticator';
+                      case 'email':
+                        return 'Email Verification Code';
+                      case 'mobile':
+                        return 'Phone Verification Code';
+                      default:
+                        return '';
+                    }
+                  })()}
+                </span>
               </p>
               <Input
                 value={verifyCode}
                 onChange={setVerifyCode}
                 className="input"
                 size="lg"
-                placeholder="21212"
                 maxLength={6}
                 suffix={
                   verify !== 'google' && (
@@ -266,7 +289,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 clear
               />
               <p className="error">{''}</p>
-              <Button size="lg" onClick={handleLogin}>
+              <Button size="lg" onClick={handleLogin} loading={loginLoading}>
                 Continue
               </Button>
             </div>

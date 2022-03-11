@@ -216,38 +216,40 @@ const Login = () => {
   }, [senseRef]);
 
   // 账号密码登录
-  const [userName, setUsername, getUserName] = useGetState<string>('969525633@qq.com');
+  const [userName, setUsername, getUserName] = useGetState<string>('northgyh@163.com');
   const [password, setPassword, getPassword] = useGetState<string>('Guoguo789');
   const [loading1, setLoading1] = React.useState<boolean>(false);
 
-  const senseSuccess = React.useCallback(async (sense) => {
-    try {
-      const data = await loginByUserName({
-        username: getUserName(),
-        password: md5(getPassword()),
-        type: 0,
-        ...sense,
-      });
-      setLoading1(false);
-      if (data.need2FA) {
-        const type = {
-          GA: 'google',
-          EMAIl: 'email',
-          MOBILE: 'mobile',
-        };
-        setVerify(type[data.authType]);
-        setType('login');
-        setVerifyUserName(getUserName());
-        setVerifyPassword(md5(getPassword()));
-        setVerifyRequestId(data.requestId);
-      } else {
-        handleLoginSuccess();
+  const senseSuccess = React.useCallback(
+    async (sense) => {
+      try {
+        const data = await loginByUserName({
+          username: getUserName(),
+          password: md5(getPassword()),
+          type: 0,
+          ...sense,
+        });
+        setLoading1(false);
+        if (data.need2FA) {
+          const type = {
+            GA: 'google',
+            EMAIl: 'email',
+            MOBILE: 'mobile',
+          };
+          setVerify(type[data.authType]);
+          setType('login');
+          setVerifyUserName(getUserName());
+          setVerifyPassword(md5(getPassword()));
+          setVerifyRequestId(data.requestId);
+        } else {
+          handleLoginSuccess();
+        }
+      } catch (e) {
+        setLoading1(false);
       }
-    } catch (e) {
-      setLoading1(false);
-      message.error(e.response.data.msg);
-    }
-  }, []);
+    },
+    [password, userName],
+  );
 
   const handleLoginSuccess = React.useCallback(() => {
     console.log('handleLoginSuccess');
