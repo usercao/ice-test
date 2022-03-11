@@ -242,6 +242,16 @@ const Login = () => {
     return true;
   }, [userName, password]);
 
+  const handleLoginSuccess = React.useCallback(
+    (data) => {
+      // 老项目抛弃之后修改
+      window.sessionStorage.userinfo = JSON.stringify(data);
+      // 老项目抛弃之后修改
+      setUser(data);
+    },
+    [setUser],
+  );
+
   const senseSuccess = React.useCallback(
     async (sense) => {
       try {
@@ -271,15 +281,17 @@ const Login = () => {
         setLoading1(false);
       }
     },
-    [password, userName],
+    [
+      getPassword,
+      getUserName,
+      handleLoginSuccess,
+      setType,
+      setVerify,
+      setVerifyPassword,
+      setVerifyRequestId,
+      setVerifyUserName,
+    ],
   );
-
-  const handleLoginSuccess = React.useCallback((data) => {
-    // 老项目抛弃之后修改
-    window.sessionStorage.userinfo = JSON.stringify(data);
-    // 老项目抛弃之后修改
-    setUser(data);
-  }, []);
 
   return (
     <Container>
@@ -320,6 +332,7 @@ const Login = () => {
                 clear
               />
               <p className="error">{errorInfo}</p>
+
               <Button
                 loading={loading1}
                 size="lg"
@@ -332,6 +345,7 @@ const Login = () => {
               >
                 {t`continue`}
               </Button>
+
               <p className="forget" onClick={() => history.push('/forget')}>
                 {t`forgotPassword`}
               </p>
@@ -372,7 +386,7 @@ const Login = () => {
       </Wrapper>
       <Sense
         onSuccess={senseSuccess}
-        onError={(e) => {
+        onError={() => {
           senseReset();
           message.error('Please reload and try again');
         }}
