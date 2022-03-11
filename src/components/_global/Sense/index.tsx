@@ -54,8 +54,7 @@ const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
           ret.appendTo('#inner');
           ret.onSuccess(() => {
             const geeResult = ret.getValidate();
-            console.log(geeResult);
-            // return;
+            return;
             onSuccess({
               challenge: geeResult.geetest_challenge,
               captcha_response: geeResult.geetest_validate,
