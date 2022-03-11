@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { fadeConfig } from '@/config/motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cloneElement } from '../_util/reactNode';
+import useRandomId from '@/hooks/useRandomId';
 import { useHover, useDebounceEffect } from 'ahooks';
 import styled from 'styled-components';
 
@@ -24,10 +25,7 @@ export interface DropdownProps {
 
 interface TriggerProps extends DropdownProps {
   followRef: React.RefObject<HTMLDivElement>;
-  trigger?: boolean;
-  visible?: boolean;
   children?: React.ReactNode;
-  onOpen: (...args: any[]) => any;
   onClose: (...args: any[]) => any;
 }
 
@@ -64,44 +62,30 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const followRef = React.createRef<HTMLDivElement>();
+  const uuid = useRandomId();
+
   const [visible, setVisible] = React.useState<boolean>(false);
 
-  const handleOpen: React.MouseEventHandler<HTMLDivElement> = () => {
-    setVisible(true);
-  };
-
-  const handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
+  const handleClose: React.MouseEventHandler<HTMLElement> = () => {
     setVisible(false);
   };
 
-  const aaa = useHover(followRef, {
-    onEnter: () => setVisible(true),
+  const dropTrigger = useHover(followRef, { onEnter: () => setVisible(true) });
+
+  const dropMenu = useHover(() => document.getElementById('hover-dom'), {
+    onLeave: () => setVisible(false),
   });
 
-  const isHovering = useHover(() => document.getElementById('hover-dom'), {
-    onLeave: () => {
+  useDebounceEffect(() => {
+    if (dropTrigger === false && dropMenu === false) {
       setVisible(false);
-    },
-  });
-
-  useDebounceEffect(
-    () => {
-      if (aaa === false && isHovering === false) {
-        setVisible(false);
-      }
-    },
-    [aaa, isHovering],
-    { wait: 1000 },
-  );
+    }
+  }, [dropTrigger, dropMenu]);
 
   return (
     <React.Fragment>
       <div ref={followRef}>{overlay && cloneElement(overlay)}</div>
-      <AnimatePresence>
-        {visible && (
-          <Portal {...props} visible={visible} followRef={followRef} onOpen={handleOpen} onClose={handleClose} />
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{visible && <Portal {...props} followRef={followRef} onClose={handleClose} />}</AnimatePresence>
     </React.Fragment>
   );
 };
