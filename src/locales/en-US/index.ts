@@ -1,1 +1,1 @@
-/*eslint-disable*/ export const messages = { hello: 'hello', '你好{小朋友}': '我是一个{小朋友}' };
+/*eslint-disable*/export const messages={"account":"account","codeQR":"codeQR","continue":"continue","emailOrPhone":"emailOrPhone","enterEmailOrPhone":"enterEmailOrPhone","enterLoginPassword":"enterLoginPassword","forgotPassword":"forgotPassword","hello":"hello","loginPassword":"loginPassword","notMember<0>Signup</0>":"notMember<0>Signup</0>","signWithAccountOrCode":"signWithAccountOrCode","welcomeToMexo":"welcomeToMexo"};

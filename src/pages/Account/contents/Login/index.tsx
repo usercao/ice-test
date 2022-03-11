@@ -104,13 +104,11 @@ const Wrapper = styled.div`
         }
       }
       .jump {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 17px;
+        color: rgba(0, 0, 0, 0.6);
         span {
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 17px;
-          color: rgba(0, 0, 0, 0.6);
-        }
-        span:nth-child(2) {
           color: #06ceab;
           user-select: none;
           cursor: pointer;
@@ -371,11 +369,9 @@ const Login = () => {
                 {t`forgotPassword`}
               </p>
               <p className="jump">
-                {/* {t`你好{<span>21212</span>}`} */}
-                {/* <Trans>你好{<span>21212</span>}</Trans> */}
-                {/* {t`还不是用户？${(<span onClick={() => history.push('/signup')}>Sign Up</span>)}`} */}
-                {/* <span>Not a member ? </span>
-                <span onClick={() => history.push('/signup')}>Sign Up</span> */}
+                <Trans>
+                  notMember<span onClick={() => history.push('/signup')}>Signup</span>
+                </Trans>
               </p>
             </div>
           )}
