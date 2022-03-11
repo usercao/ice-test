@@ -21,7 +21,6 @@ export function navigatorLocale(): SupportedLocale | undefined {
 
 export function useActiveLocale(): SupportedLocale {
   const userLocale = useRecoilValue(locale);
-
   return React.useMemo(() => {
     return userLocale ?? navigatorLocale() ?? DEFAULT_LOCALE;
   }, [userLocale]);
