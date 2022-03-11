@@ -1,9 +1,10 @@
 import { useCountDown } from 'ahooks';
 import { useCallback, useState } from 'react';
-import { sendEmailLoginVerifyCode } from '@/services/_global/sendCode';
+import { sendEmailLoginVerifyCode, sendMobileLoginVerifyCode } from '@/services/_global/sendCode';
 
 const SEND_FUNC = {
   emailAuth: sendEmailLoginVerifyCode,
+  mobileAuth: sendMobileLoginVerifyCode,
 };
 
 const TIME = 2000;

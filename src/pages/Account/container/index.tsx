@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { containerType, verifyType } from '@/models/account';
+import { containerType, verifyType, verifyRequestId, verifyUserName, verifyPassword } from '@/models/account';
 import Settings from '@/components/_global/Settings';
-import { Input, Button } from '@/components';
+import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
+import useSendCode from '@/hooks/useSendCode';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -133,7 +134,39 @@ const Wrapper = styled.div`
 const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [type, setType] = useRecoilState(containerType);
   const verify = useRecoilValue(verifyType);
+  const requestId = useRecoilValue(verifyRequestId);
+  const username = useRecoilValue(verifyUserName);
+  const password = useRecoilState(verifyPassword);
   const history = useHistory();
+
+  // 验证码
+  const [countDown, isOver, startCountDown] = useSendCode('emailAuth');
+  const [orderId, setOrderId] = React.useState<string>('');
+  const [verifyCode, setVerifyCode] = React.useState<string>('');
+
+  const handleSendCode = React.useCallback(() => {
+    const isEmail = verify === 'email';
+    console.log(verify);
+    const payload = {
+      type: 2,
+      request_id: requestId,
+    };
+    startCountDown({
+      sendType: isEmail ? 'emailAuth' : 'mobileAuth',
+      payload: {
+        ...payload,
+        [isEmail ? 'email' : 'mobile']: username,
+        [isEmail ? '' : 'national_code']: '',
+      },
+      onSuccess: (e) => {
+        message.success('Send Success');
+        setOrderId(e.orderId);
+      },
+      onError: (e) => {
+        message.error(e.response.data.msg);
+      },
+    });
+  }, [verify, username, requestId]);
 
   const handleForget = React.useCallback(async () => {
     if (verify === 'email') {
@@ -150,17 +183,26 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   }, [verify, setType]);
 
   const handleLogin = React.useCallback(async () => {
+    const payload = {
+      type: 0,
+      username,
+      password: '',
+      request_id: requestId,
+      verify_code: verifyCode,
+      order_id: orderId,
+      auth_type: 0,
+    };
     if (verify === 'email') {
-      return;
+      payload.auth_type = 2;
     }
     if (verify === 'mobile') {
-      return;
+      payload.auth_type = 1;
     }
-    // if (verify === 'google') {
-    //   return;
-    // }
+    if (verify === 'google') {
+      payload.auth_type = 3;
+    }
     console.log('login');
-  }, [verify]);
+  }, [verify, username, requestId, orderId, verifyCode]);
 
   const handleSignup = React.useCallback(async () => {
     history.replace('/home');
@@ -213,11 +255,19 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 <span>Email / Phone Number</span>
               </p>
               <Input
+                value={verifyCode}
+                onChange={setVerifyCode}
                 className="input"
                 size="lg"
                 placeholder="21212"
                 maxLength={6}
-                suffix={verify !== 'google' && <p className="send">Send</p>}
+                suffix={
+                  verify !== 'google' && (
+                    <p className="send" onClick={handleSendCode}>
+                      {isOver ? 'SEND' : `${countDown}s`}
+                    </p>
+                  )
+                }
                 clear
               />
               <p className="error">{''}</p>

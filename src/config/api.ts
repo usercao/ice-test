@@ -9,6 +9,7 @@ export default {
   // send code
   sendEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
   sendEmailForLogin: `${ICE_OLD_API_URI}/user/send_email_verify_code/authorize_advance`,
+  sendMobileForLogin: `${ICE_OLD_API_URI}/user/send_sms_verify_code/authorize_advance`,
 
   // forget
   countries: `${ICE_FEW_API_URI}/basic/countries`,

@@ -1,3 +1,4 @@
+import { IUserInfo } from '@/models/account/PropsType';
 // ===========================================
 // ============= Params ======================
 // ===========================================
@@ -10,11 +11,11 @@ export interface ILoginParams {
   challenge: string;
 }
 export interface ILoginVerifyParams {
-  type: 0; // 0 邮箱
+  type: 0; // 用户名登录 永远为0
   username: string;
   password: string;
   request_id: string; // 第一步返回
-  auth_type: 2 | 3; // ga: 3, email: 2,
+  auth_type: 1 | 2 | 3; // ga: 3, email: 2 mobile: 1,
   verify_code: string;
   order_id?: string; // 验证码发送成功后的id
 }
@@ -48,4 +49,17 @@ export interface GeetestReturn {
   gt: string;
   new_captcha: boolean;
   success: number;
+}
+export interface ILoginUserNameReturn {
+  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
+  bindEmail: boolean;
+  bindGA: boolean;
+  bindMobile: boolean;
+  email: string;
+  mobile: string;
+  nationalCode: string;
+  requestId: string;
+  need2FA: boolean;
+  registerType: number;
+  user?: IUserInfo;
 }

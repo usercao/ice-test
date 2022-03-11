@@ -6,9 +6,11 @@ interface ICaptcha {
 
 // params
 export interface ILoginVerifyCodeParams {
-  email: string;
   type: 2;
   request_id: string;
+  email?: string;
+  national_code?: string;
+  mobile?: string;
 }
 export interface ISignUpCodeParams extends ICaptcha {
   email: string;

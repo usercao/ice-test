@@ -1,13 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
-import { containerType, verifyType } from '@/models/account';
+import { containerType, verifyType, verifyUserName, verifyPassword, verifyRequestId } from '@/models/account';
 import Container from '@/pages/Account/container';
-import { Input, Button } from '@/components';
+import { Input, Button, message } from '@/components';
 import Sense from '@/components/_global/Sense';
 import QRCode from 'qrcode';
 import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
+import { loginByUserName } from '@/services/account';
+import { useGetState } from 'ahooks';
+import md5 from 'md5';
 
 const Wrapper = styled.div`
   align-items: flex-start;
@@ -180,6 +183,10 @@ const Wrapper = styled.div`
 const Login = () => {
   const setType = useSetRecoilState(containerType);
   const setVerify = useSetRecoilState(verifyType);
+  const setVerifyUserName = useSetRecoilState(verifyUserName);
+  const setVerifyPassword = useSetRecoilState(verifyPassword);
+  const setVerifyRequestId = useSetRecoilState(verifyRequestId);
+
   const history = useHistory();
   const senseRef = React.useRef<HTMLElement | any>(null);
 
@@ -200,28 +207,54 @@ const Login = () => {
     loadQRCode();
   }, [loadQRCode]);
 
-  const senseVerify = () => {
+  const senseVerify = React.useCallback(() => {
     senseRef.current.sense && senseRef.current.sense.verify();
-  };
+  }, [senseRef]);
 
-  const senseReset = () => {
+  const senseReset = React.useCallback(() => {
     senseRef.current.sense && senseRef.current.sense.reset();
-  };
+  }, [senseRef]);
 
   // 账号密码登录
-  const [userName, setUsername] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
-  const [senseData, setSenseData] = React.useState<{ challenge: string; captcha_response: string; captcha_id: string }>(
-    {
-      challenge: '',
-      captcha_response: '',
-      captcha_id: '',
-    },
-  );
+  const [userName, setUsername, getUserName] = useGetState<string>('969525633@qq.com');
+  const [password, setPassword, getPassword] = useGetState<string>('Guoguo789');
+  const [loading1, setLoading1] = React.useState<boolean>(false);
+
+  const senseSuccess = React.useCallback(async (sense) => {
+    try {
+      const data = await loginByUserName({
+        username: getUserName(),
+        password: md5(getPassword()),
+        type: 0,
+        ...sense,
+      });
+      setLoading1(false);
+      if (data.need2FA) {
+        const type = {
+          GA: 'google',
+          EMAIl: 'email',
+          MOBILE: 'mobile',
+        };
+        setVerify(type[data.authType]);
+        setType('login');
+        setVerifyUserName(getUserName());
+        setVerifyPassword(md5(getPassword()));
+        setVerifyRequestId(data.requestId);
+      } else {
+        handleLoginSuccess();
+      }
+    } catch (e) {
+      setLoading1(false);
+      message.error(e.response.data.msg);
+    }
+  }, []);
+
+  const handleLoginSuccess = React.useCallback(() => {
+    console.log('handleLoginSuccess');
+  }, []);
 
   return (
     <Container>
-      {/* <button onClick={ccc}>验证人机</button> */}
       <Wrapper className="col-center">
         <div className="inner">
           <h4>{t`欢迎来到Mexo`}</h4>
@@ -258,13 +291,13 @@ const Login = () => {
               />
               <p className="error">{''}</p>
               <Button
+                loading={loading1}
                 size="lg"
                 onClick={() => {
                   if (userName && password) {
+                    setLoading1(true);
                     senseVerify();
                   }
-                  // setType('login');
-                  // setVerify('google');
                 }}
               >
                 {t`继续`}
@@ -307,9 +340,10 @@ const Login = () => {
         </div>
       </Wrapper>
       <Sense
-        onSuccess={setSenseData}
+        onSuccess={senseSuccess}
         onError={(e) => {
-          console.log(e);
+          senseReset();
+          message.error('Please reload and try again');
         }}
         wrapRef={senseRef}
       />

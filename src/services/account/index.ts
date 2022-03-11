@@ -1,6 +1,14 @@
 import { request } from 'ice';
 import api from '@/config/api';
-import { ILoginParams, ILoginVerifyParams, ISignUpParams, CountriesReturnType, GeetestReturn } from './PropsType';
+import {
+  ILoginParams,
+  ILoginVerifyParams,
+  ISignUpParams,
+  CountriesReturnType,
+  GeetestReturn,
+  ILoginUserNameReturn,
+} from './PropsType';
+import qs from 'qs';
 
 // 获取极验配置数据
 export const getGeetestInfo = (captcha_id: string) => {
@@ -14,7 +22,7 @@ export const getCountries = () => {
 
 // 登录
 export const loginByUserName = (params: ILoginParams) => {
-  return request.post(api.usernameLogin, params).then((res) => res.data);
+  return request.post<ILoginUserNameReturn>(`${api.usernameLogin}?${qs.stringify(params)}`).then((res) => res);
 };
 
 export const loginVerify = (params: ILoginVerifyParams) => {
