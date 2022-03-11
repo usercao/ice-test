@@ -213,7 +213,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
       setLoginError(e.response.data.msg);
       setLoginLoading(false);
     }
-  }, [verify, username, requestId, orderId, verifyCode, password]);
+  }, [verify, username, requestId, orderId, verifyCode, password, setUser]);
 
   const handleSignup = React.useCallback(async () => {
     history.replace('/home');
