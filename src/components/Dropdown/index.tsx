@@ -4,33 +4,30 @@ import { fadeConfig } from '@/config/motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cloneElement } from '../_util/reactNode';
 import useRandomId from '@/hooks/useRandomId';
-import { useHover, useDebounceEffect } from 'ahooks';
+import { useBoolean, useHover, useDebounceEffect } from 'ahooks';
 import styled from 'styled-components';
 
 const Trigger = styled(motion.div)`
   position: absolute;
-  background: #ffffff;
-  border: 1px solid #e8e8e8;
-  box-shadow: 0px 4px 10px rgba(208, 208, 208, 0.5);
-  overflow: hidden;
   z-index: 1;
 `;
 
 export interface DropdownProps {
-  followID?: string;
-  followWidth?: number;
   overlay?: React.ReactNode;
-  onChange?: (...args: any[]) => any;
 }
 
 interface TriggerProps extends DropdownProps {
   followRef: React.RefObject<HTMLDivElement>;
+  followID?: string;
+  followWidth?: number;
+  menuID?: string;
   children?: React.ReactNode;
   onClose: (...args: any[]) => any;
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const { followRef, followWidth, children, onClose } = props;
+  const { followRef, followID, followWidth, menuID, children, onClose } = props;
+  const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
   const [position, setPosition] = React.useState<{
     top: number;
@@ -47,14 +44,14 @@ const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
 
   const memoizedOption = React.useMemo(
     () => (
-      <Trigger id="hover-dom" style={position} onClick={(e) => e.stopPropagation()} {...fadeConfig}>
+      <Trigger id={menuID} style={position} onClick={(e) => e.stopPropagation()} {...fadeConfig}>
         {children && cloneElement(children, { onClick: onClose })}
       </Trigger>
     ),
-    [position, children, onClose],
+    [menuID, position, children, onClose],
   );
 
-  return createPortal(memoizedOption, document.body as HTMLElement);
+  return createPortal(memoizedOption, DOM);
 };
 
 const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
@@ -64,28 +61,27 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
   const followRef = React.createRef<HTMLDivElement>();
   const uuid = useRandomId();
 
-  const [visible, setVisible] = React.useState<boolean>(false);
+  const [state, { setTrue, setFalse }] = useBoolean(false);
 
-  const handleClose: React.MouseEventHandler<HTMLElement> = () => {
-    setVisible(false);
-  };
-
-  const dropTrigger = useHover(followRef, { onEnter: () => setVisible(true) });
-
-  const dropMenu = useHover(() => document.getElementById('hover-dom'), {
-    onLeave: () => setVisible(false),
+  const dropTrigger = useHover(followRef, { onEnter: setTrue });
+  const dropMenu = useHover(() => document.getElementById(uuid), {
+    onLeave: setFalse,
   });
 
-  useDebounceEffect(() => {
-    if (dropTrigger === false && dropMenu === false) {
-      setVisible(false);
-    }
-  }, [dropTrigger, dropMenu]);
+  useDebounceEffect(
+    () => {
+      if (dropTrigger === false && dropMenu === false) setFalse();
+    },
+    [dropTrigger, dropMenu],
+    { wait: 300 },
+  );
 
   return (
     <React.Fragment>
       <div ref={followRef}>{overlay && cloneElement(overlay)}</div>
-      <AnimatePresence>{visible && <Portal {...props} followRef={followRef} onClose={handleClose} />}</AnimatePresence>
+      <AnimatePresence>
+        {state && <Portal {...props} followRef={followRef} menuID={uuid} onClose={setFalse} />}
+      </AnimatePresence>
     </React.Fragment>
   );
 };
