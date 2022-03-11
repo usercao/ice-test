@@ -15,31 +15,31 @@ msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:302
 msgid "account"
-msgstr "account"
+msgstr "Account"
 
 #: src/pages/Account/contents/Login/index.tsx:305
 msgid "codeQR"
-msgstr "codeQR"
+msgstr "QR code"
 
 #: src/pages/Account/contents/Login/index.tsx:366
 msgid "continue"
-msgstr "continue"
+msgstr "Continue"
 
 #: src/pages/Account/contents/Login/index.tsx:310
 msgid "emailOrPhone"
-msgstr "emailOrPhone"
+msgstr "Email/Phone Number"
 
 #: src/pages/Account/contents/Login/index.tsx:317
 msgid "enterEmailOrPhone"
-msgstr "enterEmailOrPhone"
+msgstr "Enter Email or Phone Number"
 
 #: src/pages/Account/contents/Login/index.tsx:328
 msgid "enterLoginPassword"
-msgstr "enterLoginPassword"
+msgstr "Enter Password"
 
 #: src/pages/Account/contents/Login/index.tsx:371
 msgid "forgotPassword"
-msgstr "forgotPassword"
+msgstr "Forgot Password"
 
 #: src/pages/Account/container/index.tsx:245
 #: src/pages/Account/container/index.tsx:246
@@ -55,20 +55,20 @@ msgstr "forgotPassword"
 #: src/pages/Account/contents/Signup/index.tsx:132
 #: src/pages/Home/index.tsx:82
 msgid "hello"
-msgstr "hello"
+msgstr "Hello"
 
 #: src/pages/Account/contents/Login/index.tsx:320
 msgid "loginPassword"
-msgstr "loginPassword"
+msgstr "Login Password"
 
 #: src/pages/Account/contents/Login/index.tsx:374
 msgid "notMember<0>Signup</0>"
-msgstr "notMember<0>Signup</0>"
+msgstr "Not a Member? <0>Sign Up</0>"
 
 #: src/pages/Account/contents/Login/index.tsx:299
 msgid "signWithAccountOrCode"
-msgstr "signWithAccountOrCode"
+msgstr "Log In with your Email, Phone Number or QR code"
 
 #: src/pages/Account/contents/Login/index.tsx:298
 msgid "welcomeToMexo"
-msgstr "welcomeToMexo"
+msgstr "Welcome to Mexo"
