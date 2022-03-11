@@ -10,7 +10,7 @@ import QRCode from 'qrcode';
 import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
 import { loginByUserName } from '@/services/account';
-import { useGetState } from 'ahooks';
+import { useGetState, useDebounceEffect, useUpdateEffect } from 'ahooks';
 import md5 from 'md5';
 
 const Wrapper = styled.div`
@@ -215,19 +215,22 @@ const Login = () => {
     loadQRCode();
   }, [loadQRCode]);
 
-  const senseVerify = React.useCallback(() => {
-    senseRef.current.sense && senseRef.current.sense.verify();
-  }, [senseRef]);
+  // const senseVerify = React.useCallback(() => {
+  //   senseRef.current.sense && senseRef.current.sense.verify();
+  // }, [senseRef]);
 
   const senseReset = React.useCallback(() => {
     senseRef.current.sense && senseRef.current.sense.reset();
   }, [senseRef]);
 
   // 账号密码登录
-  const [userName, setUsername, getUserName] = useGetState<string>('northgyh@163.com');
-  const [password, setPassword, getPassword] = useGetState<string>('Guoguo789');
+  const [userName, setUsername, getUserName] = useGetState<string>('');
+  const [password, setPassword, getPassword] = useGetState<string>('');
   const [loading1, setLoading1] = React.useState<boolean>(false);
+  // 点击过提交按钮才显示错误
+  const [showError, setShowError] = React.useState<boolean>(true);
   const [errorInfo, setErrorInfo] = React.useState<string>('');
+  const [passed, setPassed] = React.useState<boolean>(false);
 
   const verifyLoginInfo = React.useCallback((): boolean => {
     if (!userName || !password) {
@@ -242,6 +245,18 @@ const Login = () => {
     return true;
   }, [userName, password]);
 
+  useDebounceEffect(
+    () => {
+      if (verifyLoginInfo()) {
+        setPassed(true);
+      } else {
+        setPassed(false);
+      }
+    },
+    [userName, password],
+    { wait: 500 },
+  );
+
   const handleLoginSuccess = React.useCallback(
     (data) => {
       // 老项目抛弃之后修改
@@ -254,6 +269,8 @@ const Login = () => {
 
   const senseSuccess = React.useCallback(
     async (sense) => {
+      setLoading1(true);
+      setShowError(false);
       try {
         const data = await loginByUserName({
           username: getUserName(),
@@ -313,7 +330,6 @@ const Login = () => {
               <Input
                 value={userName}
                 onChange={setUsername}
-                onBlur={verifyLoginInfo}
                 className="input"
                 size="lg"
                 placeholder={t`enterEmailOrPhone`}
@@ -323,7 +339,6 @@ const Login = () => {
               <Input
                 value={password}
                 onChange={setPassword}
-                onBlur={verifyLoginInfo}
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
@@ -331,21 +346,7 @@ const Login = () => {
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 clear
               />
-              <p className="error">{errorInfo}</p>
-
-              {/* <Button
-                loading={loading1}
-                size="lg"
-                onClick={() => {
-                  if (verifyLoginInfo()) {
-                    setLoading1(true);
-                    senseVerify();
-                  }
-                }}
-              >
-                {t`continue`}
-              </Button> */}
-
+              <p className="error">{!showError && errorInfo}</p>
               <Sense
                 onSuccess={senseSuccess}
                 onError={() => {
@@ -353,16 +354,13 @@ const Login = () => {
                   message.error('Please reload and try again');
                 }}
                 wrapRef={senseRef}
+                isShow={passed}
               >
                 <Button
-                  id="xxxxxxxx"
                   loading={loading1}
                   size="lg"
                   onClick={() => {
-                    if (verifyLoginInfo()) {
-                      setLoading1(true);
-                      senseVerify();
-                    }
+                    setShowError(false);
                   }}
                 >
                   {t`continue`}
@@ -407,14 +405,6 @@ const Login = () => {
           )}
         </div>
       </Wrapper>
-      {/* <Sense
-        onSuccess={senseSuccess}
-        onError={() => {
-          senseReset();
-          message.error('Please reload and try again');
-        }}
-        wrapRef={senseRef}
-      /> */}
     </Container>
   );
 };

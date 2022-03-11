@@ -7,7 +7,7 @@ const SEND_FUNC = {
   mobileAuth: sendMobileLoginVerifyCode,
 };
 
-const TIME = 2000;
+const TIME = 60000;
 
 type SendCodeType = 'mobile' | 'mobileAuth' | 'emailAuth' | 'emailNotLogin' | 'emailAlreadyLogin' | 'emailSetPwd';
 
