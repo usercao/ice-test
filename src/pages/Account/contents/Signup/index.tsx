@@ -9,7 +9,7 @@ import { useHistory } from 'ice';
 
 const Wrapper = styled.div`
   align-items: flex-start;
-  padding: 0 0 60px 84px;
+  padding: 0 0 120px 84px;
   height: inherit;
   > .inner {
     width: 330px;
