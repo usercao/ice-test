@@ -44,7 +44,9 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
       new_captcha: config?.new_captcha,
       product: 'float',
       width: '100%',
+      // 老项目抛弃之后修改
       lang: window.localStorage.lang ?? 'en',
+      // 老项目抛弃之后修改
     };
     window.initGeetest(option, (sense) => {
       // 兼容ES5语法
