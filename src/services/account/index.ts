@@ -7,6 +7,7 @@ import {
   CountriesReturnType,
   GeetestReturn,
   ILoginUserNameReturn,
+  IUserInfo,
 } from './PropsType';
 import qs from 'qs';
 
@@ -38,6 +39,12 @@ export const getLoginQrCodeResult = (ticket: string) => {
 };
 
 // 注册
+/* eslint-disable */
 export const signUp = (params: ISignUpParams) => {
-  return request.post<ILoginUserNameReturn>(`${api.signUp}?${qs.stringify(params)}`).then((res) => res);
+  return request
+    .post<IUserInfo>(`${api.signUp}?${qs.stringify(params)}`, {
+      Headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    .then((res) => res);
 };
+/* eslint-enable */

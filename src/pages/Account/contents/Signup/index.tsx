@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import md5 from 'md5';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useUnmountedRef, useSessionStorageState } from 'ahooks';
 import { containerType, userInfo, signUpInfo } from '@/models/account';
@@ -152,7 +153,7 @@ const SignUp = () => {
 
   const [error, setError] = React.useState<string>('');
   const [signUpForm, setSignUpForm] = useRecoilState(signUpInfo);
-  const [orderId, setOrderId] = React.useState<string>('');
+  const [orderId, setOrderId] = React.useState<string>('1111653446928566272');
   const [inviteCode, setInviteCode] = React.useState<string>('');
   const [verifyCode, setVerifyCode] = React.useState<string>('');
 
@@ -207,7 +208,8 @@ const SignUp = () => {
       setLoading(true);
       const payload = {
         ...signUpForm,
-        password2: signUpForm.password1,
+        password1: md5(signUpForm.password1),
+        password2: md5(signUpForm.password1),
         type: 0,
         order_id: orderId,
         verify_code: verifyCode,
