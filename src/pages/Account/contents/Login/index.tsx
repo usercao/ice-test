@@ -15,7 +15,7 @@ import md5 from 'md5';
 
 const Wrapper = styled.div`
   align-items: flex-start;
-  padding: 0 0 120px 84px;
+  padding: 0 0 60px 84px;
   height: inherit;
   > .inner {
     width: 330px;
@@ -345,15 +345,7 @@ const Login = () => {
                 clear
               />
               <p className="error">{showError && errorInfo}</p>
-              <Sense
-                onSuccess={senseSuccess}
-                onError={() => {
-                  senseReset();
-                  message.error('Please reload and try again');
-                }}
-                wrapRef={senseRef}
-                isShow={passed}
-              >
+              <Sense onSuccess={senseSuccess} wrapRef={senseRef} isShow={passed}>
                 <Button
                   loading={loading1}
                   size="lg"

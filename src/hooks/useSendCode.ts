@@ -1,13 +1,14 @@
 import { useCountDown } from 'ahooks';
 import { useCallback, useState } from 'react';
-import { sendEmailLoginVerifyCode, sendMobileLoginVerifyCode } from '@/services/_global/sendCode';
+import { sendEmailLoginVerifyCode, sendMobileLoginVerifyCode, sendNotLoginCode } from '@/services/_global/sendCode';
 
 const SEND_FUNC = {
   emailAuth: sendEmailLoginVerifyCode,
   mobileAuth: sendMobileLoginVerifyCode,
+  emailNotLogin: sendNotLoginCode,
 };
 
-const TIME = 60000;
+const TIME = 6000;
 
 type SendCodeType = 'mobile' | 'mobileAuth' | 'emailAuth' | 'emailNotLogin' | 'emailAlreadyLogin' | 'emailSetPwd';
 
@@ -22,7 +23,7 @@ interface SendCodePayload {
 type EndType = (() => void) | undefined;
 
 interface IRunParams {
-  sendType: SendCodeType;
+  sendType?: SendCodeType;
   payload: SendCodePayload;
   onSuccess?: (e) => void;
   onError?: (e) => void;

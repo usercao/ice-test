@@ -39,5 +39,5 @@ export const getLoginQrCodeResult = (ticket: string) => {
 
 // 注册
 export const signUp = (params: ISignUpParams) => {
-  return request.post(api.signUp, params).then((res) => res.data);
+  return request.post<ILoginUserNameReturn>(`${api.signUp}?${qs.stringify(params)}`).then((res) => res);
 };

@@ -20,7 +20,7 @@ export interface ILoginVerifyParams {
   order_id?: string; // 验证码发送成功后的id
 }
 export interface ISignUpParams {
-  type: 0; // 0邮箱
+  type: number; // 0邮箱
   email: string;
   password1: string;
   password2: string;

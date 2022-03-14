@@ -12,6 +12,7 @@ const Wrapper = styled.div<{ isShow: boolean }>`
     left: 0;
     height: 100%;
     opacity: 0;
+    min-width: unset;
     z-index: ${(props) => (props.isShow ? 1 : -1)};
   }
 `;
@@ -79,6 +80,7 @@ const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
             });
           });
           ret.onError((e) => {
+            ret.reset();
             onError && onError(e);
           });
         },

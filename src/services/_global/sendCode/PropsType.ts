@@ -6,19 +6,19 @@ interface ICaptcha {
 
 // params
 export interface ILoginVerifyCodeParams {
-  type: 2;
+  type: 2; // 登录: 2
   request_id: string;
   email?: string;
   national_code?: string;
   mobile?: string;
 }
-export interface ISignUpCodeParams extends ICaptcha {
+export interface INotLoginCodeParams extends ICaptcha {
   email: string;
-  type: 1; // 注册: 1
+  type: number; // 注册: 1
 }
 
 // response
-export interface ILoginVerifyCodeResponse {
+export interface IVerifyCodeResponse {
   index: string;
   orderId: 2;
 }

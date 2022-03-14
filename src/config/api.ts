@@ -21,5 +21,5 @@ export default {
   qrCodeResult: `${ICE_OLD_API_URI}/user/get_scan_login_qrcode_result`,
 
   // signup
-  signUp: `${ICE_OLD_API_URI}/user/email_signUp`,
+  signUp: `${ICE_OLD_API_URI}/user/email_sign_up`,
 };
