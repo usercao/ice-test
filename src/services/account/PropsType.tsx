@@ -1,9 +1,8 @@
-import { IUserInfo } from '@/models/account/PropsType';
 // ===========================================
 // ============= Params ======================
 // ===========================================
 export interface ILoginParams {
-  type: 0; // 0邮箱
+  type: number; // 0邮箱
   username: string;
   password: string;
   captcha_response: string;
@@ -50,8 +49,38 @@ export interface GeetestReturn {
   new_captcha: boolean;
   success: number;
 }
+
+export interface IUserInfo {
+  accounts: any[];
+  antiPhishingCode: string;
+  bindGA: boolean;
+  bindPassword: boolean;
+  bindTradePwd: boolean;
+  customLabelList: any[];
+  defaultAccountId: string;
+  displayLevel: string;
+  email: string;
+  inviteUserId: string;
+  isAgent: number;
+  isComplianceVerify: boolean;
+  kycLevel: number;
+  kycVerifyStatus: number;
+  lastLoginDate: string;
+  lastLoginIp: string;
+  mobile: string;
+  nationalCode: string;
+  platfrom: string;
+  registerDate: string;
+  registerType: number;
+  secondLevelInviteUserId: string;
+  source: string;
+  userId: string;
+  userType: number;
+  verifyStatus: number;
+}
+
 export interface ILoginUserNameReturn {
-  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
+  authType: 'EMAIL' | 'GA' | 'MOBILE';
   bindEmail: boolean;
   bindGA: boolean;
   bindMobile: boolean;
