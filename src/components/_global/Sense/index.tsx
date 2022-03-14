@@ -3,7 +3,7 @@ import { SENSE_URI, SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
 import { GeetestReturn } from '@/services/account/PropsType';
 import { useRecoilValue } from 'recoil';
-import { loginInfo } from '@/models/account';
+import { loginInfo, containerType } from '@/models/account';
 import useRandomId from '@/hooks/useRandomId';
 import { useExternal, useMount } from 'ahooks';
 import { pwdVerify } from '@/utils/tools';
@@ -22,13 +22,14 @@ const Wrapper = styled.div<{ level: -1 | 1 }>`
 `;
 
 interface SenseProps {
-  onSuccess: (payload: { challenge: string; captcha_response: string; captcha_id: string }) => any;
   children?: React.ReactNode;
+  onSuccess: (payload: { challenge: string; captcha_response: string; captcha_id: string }) => any;
 }
 
 const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   const { children, onSuccess } = props;
   const loginForm = useRecoilValue(loginInfo);
+  const accountType = useRecoilValue(containerType);
   const status = useExternal(SENSE_URI);
   const uuid = useRandomId();
 
@@ -56,6 +57,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
           captcha_response: result.geetest_validate,
           captcha_id: SENSE_ID,
         });
+        sense.reset();
       });
       sense.onError(() => {
         sense.reset();
@@ -69,12 +71,16 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   });
 
   React.useEffect(() => {
-    const { username, password } = loginForm;
-    if (!username || !password) return;
-    if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
-      setLevel(1);
+    if (accountType === 'login') {
+      const { username, password } = loginForm;
+      if (!username || !password) return;
+      if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
+        setLevel(1);
+      }
     }
-  }, [loginForm]);
+    // if (accountType === 'signup') {
+    // }
+  }, [accountType, loginForm]);
 
   React.useEffect(() => {
     if (status !== 'ready' || !config) return;

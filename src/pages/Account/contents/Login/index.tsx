@@ -200,25 +200,11 @@ const Login = () => {
   const [state, setState] = React.useState<'account' | 'qrcode'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
 
-  const [qrcode, setQRCode] = React.useState<string>('');
-
-  const loadQRCode = React.useCallback(async () => {
-    const qr = await QRCode.toDataURL('21212', {
-      margin: 2,
-      width: 160,
-    });
-    setQRCode(qr);
-  }, []);
-
-  React.useEffect(() => {
-    loadQRCode();
-  }, [loadQRCode]);
-
-  // 账号密码登录
+  // account
   const [senseInfo, setSenseInfo] = React.useState<senseInfoType>();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>('');
-  const [sessionInfo, setSessionInfo] = useSessionStorageState('userinfo');
+  const [, setSessionInfo] = useSessionStorageState('userinfo');
 
   const verifyPassword = React.useMemo(() => {
     const { username, password } = loginForm;
@@ -261,6 +247,21 @@ const Login = () => {
       setLoading(false);
     }
   }, [loginForm, senseInfo, setLoginInfo, setSessionInfo, setType, setUser, setVerify]);
+
+  // qrcode
+  const [qrcode, setQRCode] = React.useState<string>('');
+
+  const loadQRCode = React.useCallback(async () => {
+    const qr = await QRCode.toDataURL('21212', {
+      margin: 2,
+      width: 160,
+    });
+    setQRCode(qr);
+  }, []);
+
+  React.useEffect(() => {
+    loadQRCode();
+  }, [loadQRCode]);
 
   return (
     <Container>
