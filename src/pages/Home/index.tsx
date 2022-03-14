@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { t } from '@lingui/macro';
 import { Scrollbar, Modal, Button, Input, Select, Checkbox, message } from '@/components';
 import useSendCode from '@/hooks/useSendCode';
+import { useHistory } from 'ice';
 
 const Wrapper = styled.div`
   /* height: 200px;
@@ -35,6 +36,8 @@ const Wrapper = styled.div`
 `;
 
 const Home = () => {
+  const history = useHistory();
+
   const [modalVisible, setModalVisible] = React.useState<boolean>(false);
   const [value, setValue] = React.useState<string>('1');
   const [list, setList] = React.useState<string[]>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
@@ -54,12 +57,13 @@ const Home = () => {
       </button>
       <button
         onClick={() => {
-          startCountDown({
-            sendType: 'emailAuth',
-            payload: {
-              type: 0,
-            },
-          });
+          // startCountDown({
+          //   sendType: 'emailAuth',
+          //   payload: {
+          //     type: 0,
+          //   },
+          // });
+          history.push('/login');
         }}
       >
         {isOver ? '开始' : `${countDown}s`}
