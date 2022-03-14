@@ -92,3 +92,9 @@ export interface ILoginUserNameReturn {
   registerType: number;
   user?: IUserInfo;
 }
+
+export interface IQRCode {
+  qrcodeTimeLeft: 125;
+  success: true;
+  ticket: 'lQc0-c490e418b57c4621c5870a4ce196867b9821171fec945270285199eb18fdfba4';
+}

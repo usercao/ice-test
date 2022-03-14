@@ -17,7 +17,7 @@ export default {
   // login
   usernameLogin: `${ICE_OLD_API_URI}/user/authorize`,
   loginVerify: `${ICE_OLD_API_URI}/user/authorize_advance`,
-  loginQrCode: `${ICE_OLD_API_URI}/user/get_loginQrCode`,
+  loginQrCode: `${ICE_OLD_API_URI}/user/get_login_qrcode`,
   qrCodeResult: `${ICE_OLD_API_URI}/user/get_scan_login_qrcode_result`,
 
   // signup
