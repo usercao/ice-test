@@ -138,7 +138,6 @@ const SignUp = () => {
   const setType = useSetRecoilState(containerType);
   const setUser = useSetRecoilState(userInfo);
   const history = useHistory();
-  const senseRef = React.useRef<HTMLElement | any>(null);
 
   const [state, setState] = React.useState<'account' | 'email'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
@@ -165,10 +164,6 @@ const SignUp = () => {
     }));
   };
 
-  const senseReset = React.useCallback(() => {
-    senseRef.current.sense && senseRef.current.sense.reset();
-  }, [senseRef]);
-
   const [countDown, isOver, startCountDown] = useSendCode('emailNotLogin');
   const handleSendCode = React.useCallback(
     (sense) => {
@@ -182,17 +177,15 @@ const SignUp = () => {
       startCountDown({
         payload,
         onSuccess: (e) => {
-          senseReset();
           message.success('Send Success');
           setMailId(e.orderId);
         },
         onError: (e) => {
-          senseReset();
           message.error(e.response.data.msg);
         },
       });
     },
-    [formData.email, isOver, senseReset, startCountDown, unmountedRef],
+    [formData.email, isOver, startCountDown, unmountedRef],
   );
 
   const [errorInfo, setErrorInfo] = React.useState<string>('');
@@ -304,7 +297,7 @@ const SignUp = () => {
                 value={formData.verify_code}
                 onChange={changeFormValue}
                 suffix={
-                  <Sense onSuccess={handleSendCode} wrapRef={senseRef} isShow={isOver}>
+                  <Sense onSuccess={handleSendCode}>
                     <p className="send">{isOver ? 'SEND' : `${countDown}s`}</p>
                   </Sense>
                 }

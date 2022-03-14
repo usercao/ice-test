@@ -16,6 +16,11 @@ export const loginInfo: RecoilState<{ request_id: string; username: string; pass
   default: { request_id: '', username: '', password: '' },
 });
 
+export const signUpInfo: RecoilState<{ email: string; password: string }> = atom({
+  key: 'loginInfo',
+  default: { email: '', password: '' },
+});
+
 export const userInfo: RecoilState<IUserInfo> = atom({
   key: 'userInfo',
   default: {
