@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useUnmountedRef, useSessionStorageState } from 'ahooks';
-import { containerType, userInfo } from '@/models/account';
+import { containerType, userInfo, signUpInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button, Checkbox, message } from '@/components';
 import Sense from '@/components/_global/Sense';
@@ -143,7 +143,9 @@ const SignUp = () => {
   const [eye, setEye] = React.useState<boolean>(false);
   const [referralVisible, setReferralVisible] = React.useState<boolean>(true);
   const [checked, setChecked] = React.useState<boolean>(!false);
-  const [orderId, setMailId] = React.useState<string>('');
+
+  const [signUpForm, setSignUpForm] = useRecoilState(signUpInfo);
+  const [orderId, setOrderId] = React.useState<string>('');
 
   const [formData, setFormData] = React.useState<{
     email: string;
@@ -158,7 +160,7 @@ const SignUp = () => {
   });
 
   const changeFormValue = (value, name) => {
-    setFormData((prev) => ({
+    setSignUpForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -178,7 +180,7 @@ const SignUp = () => {
         payload,
         onSuccess: (e) => {
           message.success('Send Success');
-          setMailId(e.orderId);
+          setOrderId(e.orderId);
         },
         onError: (e) => {
           message.error(e.response.data.msg);
