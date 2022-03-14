@@ -6,6 +6,7 @@ import { containerType, userInfo, signUpInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button, Checkbox, message } from '@/components';
 import Sense from '@/components/_global/Sense';
+import { pwdVerify } from '@/utils/tools';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
@@ -131,6 +132,11 @@ const Wrapper = styled.div`
     }
   }
 `;
+interface senseInfoType {
+  challenge: string;
+  captcha_response: string;
+  captcha_id: string;
+}
 
 const SignUp = () => {
   const unmountedRef = useUnmountedRef();
@@ -142,22 +148,13 @@ const SignUp = () => {
   const [state, setState] = React.useState<'account' | 'email'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
   const [referralVisible, setReferralVisible] = React.useState<boolean>(true);
-  const [checked, setChecked] = React.useState<boolean>(!false);
+  const [senseInfo, setSenseInfo] = React.useState<senseInfoType>();
 
+  const [error, setError] = React.useState<string>('');
   const [signUpForm, setSignUpForm] = useRecoilState(signUpInfo);
   const [orderId, setOrderId] = React.useState<string>('');
-
-  const [formData, setFormData] = React.useState<{
-    email: string;
-    password1: string;
-    invite_code?: string;
-    verify_code: string;
-  }>({
-    email: '',
-    password1: '',
-    invite_code: '',
-    verify_code: '',
-  });
+  const [inviteCode, setInviteCode] = React.useState<string>('');
+  const [verifyCode, setVerifyCode] = React.useState<string>('');
 
   const changeFormValue = (value, name) => {
     setSignUpForm((prev) => ({
@@ -166,29 +163,41 @@ const SignUp = () => {
     }));
   };
 
-  const [countDown, isOver, startCountDown] = useSendCode('emailNotLogin');
-  const handleSendCode = React.useCallback(
-    (sense) => {
-      const payload = {
-        email: formData.email,
-        type: 1,
-        ...sense,
-      };
+  const verifyInput = React.useMemo(() => {
+    const { email, password1, checked } = signUpForm;
+    if (!email || !password1) return true;
+    if (password1.length < 8 || password1.length > 20 || !pwdVerify(password1)) {
+      setError('密码8-20位字符, 必须包含大小写字母和数字');
+      return true;
+    }
+    if (!checked) {
+      setError('请勾选协议');
+      return true;
+    }
+    setError('');
+    return false;
+  }, [signUpForm]);
 
-      if (unmountedRef.current || !isOver) return;
-      startCountDown({
-        payload,
-        onSuccess: (e) => {
-          message.success('Send Success');
-          setOrderId(e.orderId);
-        },
-        onError: (e) => {
-          message.error(e.response.data.msg);
-        },
-      });
-    },
-    [formData.email, isOver, startCountDown, unmountedRef],
-  );
+  const [countDown, isOver, startCountDown] = useSendCode('emailNotLogin');
+  const handleSendCode = React.useCallback(() => {
+    const payload = {
+      type: 1,
+      email: signUpForm.email,
+      ...senseInfo,
+    };
+
+    if (unmountedRef.current || !isOver) return;
+    startCountDown({
+      payload,
+      onSuccess: (e) => {
+        message.success('Send Success');
+        setOrderId(e.orderId);
+      },
+      onError: (e) => {
+        message.error(e.response.data.msg);
+      },
+    });
+  }, [signUpForm.email, senseInfo, unmountedRef, isOver, startCountDown]);
 
   const [errorInfo, setErrorInfo] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -197,10 +206,12 @@ const SignUp = () => {
     try {
       setLoading(true);
       const payload = {
-        ...formData,
+        ...signUpForm,
+        password2: signUpForm.password1,
         type: 0,
-        password2: formData.password1,
         order_id: orderId,
+        verify_code: verifyCode,
+        invite_code: inviteCode,
       };
       const data = await signUp(payload);
       if (data.user) {
@@ -214,7 +225,7 @@ const SignUp = () => {
       setErrorInfo(e.response.data.msg);
       setLoading(false);
     }
-  }, [formData, orderId, setType, setUser, setSsUserInfo]);
+  }, [signUpForm, orderId, verifyCode, inviteCode, setSsUserInfo, setUser, setType]);
 
   return (
     <Container>
@@ -228,7 +239,7 @@ const SignUp = () => {
               <Input
                 className="input"
                 name="email"
-                value={formData.email}
+                value={signUpForm.email}
                 onChange={changeFormValue}
                 size="lg"
                 placeholder="Enter Email Address"
@@ -238,7 +249,7 @@ const SignUp = () => {
               <Input
                 className="input"
                 name="password1"
-                value={formData.password1}
+                value={signUpForm.password1}
                 onChange={changeFormValue}
                 type={eye ? 'text' : 'password'}
                 size="lg"
@@ -257,14 +268,19 @@ const SignUp = () => {
               </p>
               <Input
                 className="input"
-                name="invite_code"
-                value={formData.invite_code}
-                onChange={changeFormValue}
+                value={inviteCode}
+                onChange={setInviteCode}
                 size="lg"
                 placeholder="Enter Referral ID "
                 clear
               />
-              <Checkbox className="checkbox" checked={checked} onChange={(e) => setChecked(e)}>
+              <Checkbox
+                className="checkbox"
+                checked={signUpForm.checked}
+                onChange={(e) => {
+                  changeFormValue(e, 'checked');
+                }}
+              >
                 <p>
                   <span>I have read and agreed </span>
                   <a onClick={() => console.log(111)}>Terms of Use </a>
@@ -272,15 +288,17 @@ const SignUp = () => {
                   <a onClick={() => console.log(111)}>Privacy Agreement</a>
                 </p>
               </Checkbox>
-              <p className="error">{''}</p>
-              <Button
-                size="lg"
-                onClick={() => {
+              <p className="error">{error}</p>
+              <Sense
+                onSuccess={(e) => {
+                  setSenseInfo(e);
                   setState('email');
                 }}
               >
-                Continue
-              </Button>
+                <Button size="lg" disabled={verifyInput}>
+                  Continue
+                </Button>
+              </Sense>
               <p className="jump">
                 <span>Already have an account? Log In ? </span>
                 <span onClick={() => history.push('/login')}>Log In</span>
@@ -295,13 +313,12 @@ const SignUp = () => {
                 size="lg"
                 placeholder="Enter Email Verification Code"
                 maxLength={6}
-                name="verify_code"
-                value={formData.verify_code}
-                onChange={changeFormValue}
+                value={verifyCode}
+                onChange={setVerifyCode}
                 suffix={
-                  <Sense onSuccess={handleSendCode}>
-                    <p className="send">{isOver ? 'SEND' : `${countDown}s`}</p>
-                  </Sense>
+                  <p className="send" onClick={handleSendCode}>
+                    {isOver ? 'SEND' : `${countDown}s`}
+                  </p>
                 }
                 clear
               />
