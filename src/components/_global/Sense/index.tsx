@@ -3,7 +3,7 @@ import { SENSE_URI, SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
 import { GeetestReturn } from '@/services/account/PropsType';
 import { useRecoilValue } from 'recoil';
-import { loginInfo } from '@/models/account';
+import { loginInfo, signUpInfo } from '@/models/account';
 import useRandomId from '@/hooks/useRandomId';
 import { useExternal, useMount } from 'ahooks';
 import { pwdVerify } from '@/utils/tools';
@@ -17,7 +17,7 @@ const Wrapper = styled.div<{ level: -1 | 1 }>`
     top: 0;
     right: 0;
     height: 100%;
-    /* opacity: 0; */
+    opacity: 0;
     z-index: ${(props) => props.level};
   }
 `;
@@ -30,6 +30,7 @@ interface SenseProps {
 const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   const { children, onSuccess } = props;
   const loginForm = useRecoilValue(loginInfo);
+  const signUpForm = useRecoilValue(signUpInfo);
   const status = useExternal(SENSE_URI);
   const uuid = useRandomId();
   const { pathname } = useLocation();
@@ -78,14 +79,23 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
       const { username, password } = loginForm;
       if (!username || !password) return;
       if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
+        setLevel(-1);
+      } else {
+        setLevel(1);
+      }
+    }
+    if (pathname === '/signup') {
+      const { email, password1, checked } = signUpForm;
+      if (!email || !password1) return;
+      if (email.length < 8 || password1.length > 20 || !pwdVerify(password1) || !checked) {
+        setLevel(-1);
+      } else {
         setLevel(1);
       }
     }
     // if (pathname === '/signup') {
     // }
-    // if (pathname === '/signup') {
-    // }
-  }, [pathname, loginForm]);
+  }, [pathname, loginForm, signUpForm]);
 
   React.useEffect(() => {
     if (status !== 'ready' || !config) return;
