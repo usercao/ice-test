@@ -1,5 +1,5 @@
 import { atom, RecoilState } from 'recoil';
-import { IUserInfo } from './PropsType';
+import { IUserInfo } from '@/services/account/PropsType';
 
 export const containerType: RecoilState<'default' | 'forget' | 'login' | 'signup'> = atom({
   key: 'containerType',
@@ -11,19 +11,9 @@ export const verifyType: RecoilState<'google' | 'email' | 'mobile'> = atom({
   default: 'google',
 });
 
-export const verifyUserName: RecoilState<string> = atom({
-  key: 'verifyUserName',
-  default: '',
-});
-
-export const verifyPassword: RecoilState<string> = atom({
-  key: 'verifyPassword',
-  default: '',
-});
-
-export const verifyRequestId: RecoilState<string> = atom({
-  key: 'verifyRequestId',
-  default: '',
+export const loginInfo: RecoilState<{ request_id: string; username: string; password: string }> = atom({
+  key: 'loginInfo',
+  default: { request_id: '', username: '', password: '' },
 });
 
 export const userInfo: RecoilState<IUserInfo> = atom({

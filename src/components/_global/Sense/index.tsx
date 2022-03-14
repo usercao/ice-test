@@ -1,93 +1,89 @@
-import { useState, useImperativeHandle } from 'react';
-import { SENSE_ID } from '@/config/const';
+import * as React from 'react';
+import { SENSE_URI, SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
-import { useMount, useUpdateEffect, useExternal } from 'ahooks';
+import { GeetestReturn } from '@/services/account/PropsType';
+import { useRecoilValue } from 'recoil';
+import { loginInfo } from '@/models/account';
+import useRandomId from '@/hooks/useRandomId';
+import { useExternal, useMount } from 'ahooks';
+import { pwdVerify } from '@/utils/tools';
 import styled from 'styled-components';
 
-const Wrapper = styled.div<{ isShow: boolean }>`
+const Wrapper = styled.div<{ level: -1 | 1 }>`
   position: relative;
   .geetest_holder.geetest_wind {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     height: 100%;
     opacity: 0;
-    z-index: ${(props) => (props.isShow ? 1 : -1)};
+    z-index: ${(props) => props.level};
   }
 `;
 
-interface ISenseProps {
+interface SenseProps {
   onSuccess: (payload: { challenge: string; captcha_response: string; captcha_id: string }) => any;
-  onError?: (e) => any;
-  wrapRef: any;
   children?: React.ReactNode;
-  isShow: boolean;
 }
 
-const Sense: React.FC<ISenseProps> = (props: ISenseProps) => {
-  const { onSuccess, onError, wrapRef, children, isShow } = props;
-  const [id, setId] = useState<string>('');
+const Sense: React.FC<SenseProps> = (props: SenseProps) => {
+  const { children, onSuccess } = props;
+  const loginForm = useRecoilValue(loginInfo);
+  const status = useExternal(SENSE_URI);
+  const uuid = useRandomId();
 
-  const [senseConfig, setSenseConfig] = useState({
-    challenge: '',
-    gt: '',
-    new_captcha: true,
-    success: 1,
-  });
+  const [config, setConfig] = React.useState<GeetestReturn>();
+  const [level, setLevel] = React.useState<1 | -1>(-1);
 
-  const [sense, setSense] = useState<any>(null);
-
-  const status = useExternal('https://static.geetest.com/static/tools/gt.js', {
-    js: {
-      async: true,
-    },
-  });
+  const loadSense = React.useCallback(() => {
+    const option = {
+      gt: config?.gt,
+      challenge: config?.challenge,
+      offline: !config?.success,
+      new_captcha: config?.new_captcha,
+      product: 'float',
+      width: '100%',
+      lang: window.localStorage.lang ?? 'en',
+    };
+    window.initGeetest(option, (sense) => {
+      // 兼容ES5语法
+      sense.appendTo(`#${uuid}`);
+      sense.onSuccess(() => {
+        const result = sense.getValidate();
+        setLevel(-1);
+        onSuccess({
+          challenge: result.geetest_challenge,
+          captcha_response: result.geetest_validate,
+          captcha_id: SENSE_ID,
+        });
+      });
+      sense.onError(() => {
+        sense.reset();
+      });
+    });
+  }, [config, uuid, onSuccess]);
 
   useMount(async () => {
     const data = await getGeetestInfo(SENSE_ID);
-    setSenseConfig(data);
-    setId(String(Math.floor(Math.random() * 4e20)));
+    setConfig(data);
   });
 
-  useImperativeHandle(wrapRef, () => {
-    return {
-      sense,
-    };
-  });
-
-  useUpdateEffect(() => {
-    if (status === 'ready' && senseConfig.gt && id) {
-      window.initGeetest(
-        {
-          lang: window.localStorage.lang ? window.localStorage.lang : 'en',
-          gt: senseConfig.gt,
-          challenge: senseConfig.challenge,
-          offline: !senseConfig.success,
-          new_captcha: senseConfig.new_captcha,
-          product: 'float',
-          width: '100%',
-        },
-        (ret) => {
-          setSense(ret);
-          ret.appendTo(`#${id}`);
-          ret.onSuccess(() => {
-            const geeResult = ret.getValidate();
-            onSuccess({
-              challenge: geeResult.geetest_challenge,
-              captcha_response: geeResult.geetest_validate,
-              captcha_id: SENSE_ID,
-            });
-          });
-          ret.onError((e) => {
-            onError && onError(e);
-          });
-        },
-      );
+  React.useEffect(() => {
+    const { username, password } = loginForm;
+    if (!username || !password) return;
+    if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
+      setLevel(1);
     }
-  }, [status, senseConfig, id]);
+  }, [loginForm]);
+
+  React.useEffect(() => {
+    if (status !== 'ready' || !config) return;
+    loadSense();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [config, status]);
 
   return (
-    <Wrapper id={id} isShow={isShow}>
+    <Wrapper id={uuid} level={level}>
       {children}
     </Wrapper>
   );

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { containerType, verifyType, verifyUserName, verifyPassword, verifyRequestId, userInfo } from '@/models/account';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { containerType, verifyType, loginInfo, userInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { pwdVerify } from '@/utils/tools';
-import { Input, Button, message } from '@/components';
+import { Input, Button } from '@/components';
 import Sense from '@/components/_global/Sense';
 import QRCode from 'qrcode';
 import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
 import { loginByUserName } from '@/services/account';
-import { useGetState, useDebounceEffect, useUpdateEffect } from 'ahooks';
+import { useSessionStorageState } from 'ahooks';
 import md5 from 'md5';
 
 const Wrapper = styled.div`
@@ -184,17 +184,18 @@ const Wrapper = styled.div`
   }
 `;
 
+interface senseInfoType {
+  challenge: string;
+  captcha_response: string;
+  captcha_id: string;
+}
+
 const Login = () => {
   const setType = useSetRecoilState(containerType);
   const setVerify = useSetRecoilState(verifyType);
   const setUser = useSetRecoilState(userInfo);
-
-  const setVerifyUserName = useSetRecoilState(verifyUserName);
-  const setVerifyPassword = useSetRecoilState(verifyPassword);
-  const setVerifyRequestId = useSetRecoilState(verifyRequestId);
-
+  const [loginForm, setLoginInfo] = useRecoilState(loginInfo);
   const history = useHistory();
-  const senseRef = React.useRef<HTMLElement | any>(null);
 
   const [state, setState] = React.useState<'account' | 'qrcode'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
@@ -213,100 +214,53 @@ const Login = () => {
     loadQRCode();
   }, [loadQRCode]);
 
-  // const senseVerify = React.useCallback(() => {
-  //   senseRef.current.sense && senseRef.current.sense.verify();
-  // }, [senseRef]);
-
-  const senseReset = React.useCallback(() => {
-    senseRef.current.sense && senseRef.current.sense.reset();
-  }, [senseRef]);
-
   // 账号密码登录
-  const [userName, setUsername, getUserName] = useGetState<string>('');
-  const [password, setPassword, getPassword] = useGetState<string>('');
-  const [loading1, setLoading1] = React.useState<boolean>(false);
-  // 点击过提交按钮才显示错误
-  const [showError, setShowError] = React.useState<boolean>(false);
-  const [errorInfo, setErrorInfo] = React.useState<string>('');
-  const [passed, setPassed] = React.useState<boolean>(false);
+  const [senseInfo, setSenseInfo] = React.useState<senseInfoType>();
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>('');
+  const [sessionInfo, setSessionInfo] = useSessionStorageState('userinfo');
 
-  const verifyLoginInfo = React.useCallback((): boolean => {
-    if (!userName || !password) {
-      setErrorInfo('请输入完整信息');
-      return false;
-    }
+  const verifyPassword = React.useMemo(() => {
+    const { username, password } = loginForm;
+    if (!username || !password) return true;
     if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
-      setErrorInfo('密码8-20位字符, 必须包含大小写字母和数字');
-      return false;
+      setError('密码8-20位字符, 必须包含大小写字母和数字');
+      return true;
     }
-    setErrorInfo('');
-    return true;
-  }, [userName, password]);
+    setError('');
+    return false;
+  }, [loginForm]);
 
-  useDebounceEffect(
-    () => {
-      if (verifyLoginInfo()) {
-        setPassed(true);
+  const submitLogin = React.useCallback(async () => {
+    if (!senseInfo) return;
+    setLoading(true);
+    const params = {
+      type: 0,
+      username: loginForm.username,
+      password: md5(loginForm.password) as string,
+      ...senseInfo,
+    };
+    try {
+      const data = await loginByUserName(params);
+      if (data.need2FA) {
+        const type = { GA: 'google', EMAIl: 'email', MOBILE: 'mobile' };
+        setVerify(type[data.authType]);
+        setType('login');
+        const { request_id, ...rest } = loginForm;
+        setLoginInfo({ request_id: data.requestId, ...rest });
       } else {
-        setPassed(false);
+        if (!data.user) return;
+        // 老项目抛弃之后修改
+        setSessionInfo(data.user);
+        // 老项目抛弃之后修改
+        setUser(data.user);
       }
-    },
-    [userName, password],
-    { wait: 500 },
-  );
-
-  const handleLoginSuccess = React.useCallback(
-    (data) => {
-      // 老项目抛弃之后修改
-      window.sessionStorage.userinfo = JSON.stringify(data);
-      // 老项目抛弃之后修改
-      setUser(data);
-    },
-    [setUser],
-  );
-
-  const senseSuccess = React.useCallback(
-    async (sense) => {
-      setLoading1(true);
-      setShowError(true);
-      try {
-        const data = await loginByUserName({
-          username: getUserName(),
-          password: md5(getPassword()),
-          type: 0,
-          ...sense,
-        });
-        setLoading1(false);
-        if (data.need2FA) {
-          const type = {
-            GA: 'google',
-            EMAIl: 'email',
-            MOBILE: 'mobile',
-          };
-          setVerify(type[data.authType]);
-          setType('login');
-          setVerifyUserName(getUserName());
-          setVerifyPassword(md5(getPassword()));
-          setVerifyRequestId(data.requestId);
-        } else {
-          handleLoginSuccess(data);
-        }
-      } catch (e) {
-        setErrorInfo(e.response.data.msg);
-        setLoading1(false);
-      }
-    },
-    [
-      getPassword,
-      getUserName,
-      handleLoginSuccess,
-      setType,
-      setVerify,
-      setVerifyPassword,
-      setVerifyRequestId,
-      setVerifyUserName,
-    ],
-  );
+      setLoading(false);
+    } catch (e) {
+      setError(e.response.data.msg);
+      setLoading(false);
+    }
+  }, [loginForm, senseInfo, setLoginInfo, setSessionInfo, setType, setUser, setVerify]);
 
   return (
     <Container>
@@ -326,45 +280,40 @@ const Login = () => {
             <div className="account">
               <p className="label">{t`emailOrPhone`}</p>
               <Input
-                value={userName}
-                onChange={setUsername}
                 className="input"
                 size="lg"
                 placeholder={t`enterEmailOrPhone`}
+                value={loginForm.username}
+                onChange={(e) =>
+                  setLoginInfo((v) => {
+                    const { username, ...rest } = v;
+                    return { username: e, ...rest };
+                  })
+                }
                 clear
               />
               <p className="label">{t`loginPassword`}</p>
               <Input
-                value={password}
-                onChange={setPassword}
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
                 placeholder={t`enterLoginPassword`}
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
+                value={loginForm.password}
+                onChange={(e) =>
+                  setLoginInfo((v) => {
+                    const { password, ...rest } = v;
+                    return { password: e, ...rest };
+                  })
+                }
                 clear
               />
-              <p className="error">{showError && errorInfo}</p>
-              <Sense
-                onSuccess={senseSuccess}
-                onError={() => {
-                  senseReset();
-                  message.error('Please reload and try again');
-                }}
-                wrapRef={senseRef}
-                isShow={passed}
-              >
-                <Button
-                  loading={loading1}
-                  size="lg"
-                  onClick={() => {
-                    setShowError(true);
-                  }}
-                >
+              <p className="error">{error}</p>
+              <Sense onSuccess={(v) => setSenseInfo(v)}>
+                <Button size="lg" loading={loading} disabled={verifyPassword} onClick={submitLogin}>
                   {t`continue`}
                 </Button>
               </Sense>
-
               <p className="forget" onClick={() => history.push('/forget')}>
                 {t`forgotPassword`}
               </p>

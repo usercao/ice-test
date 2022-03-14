@@ -1,13 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { containerType, verifyType, verifyRequestId, verifyUserName, verifyPassword, userInfo } from '@/models/account';
+import { containerType, verifyType, loginInfo, userInfo } from '@/models/account';
 import Settings from '@/components/_global/Settings';
 import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
 import { loginVerify } from '@/services/account';
+import md5 from 'md5';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -57,6 +58,7 @@ const Wrapper = styled.div`
           color: rgba(0, 0, 0, 0.4);
         }
         .label {
+          margin-bottom: 5px;
           span {
             font-size: 12px;
             line-height: 17px;
@@ -137,9 +139,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [type, setType] = useRecoilState(containerType);
   const setUser = useSetRecoilState(userInfo);
   const verify = useRecoilValue(verifyType);
-  const requestId = useRecoilValue(verifyRequestId);
-  const username = useRecoilValue(verifyUserName);
-  const password = useRecoilValue(verifyPassword);
+  const loginForm = useRecoilValue(loginInfo);
   const history = useHistory();
 
   // 验证码
@@ -148,10 +148,11 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [verifyCode, setVerifyCode] = React.useState<string>('');
 
   const handleSendCode = React.useCallback(() => {
+    const { username, request_id } = loginForm;
     const isEmail = verify === 'email';
     const payload = {
       type: 2,
-      request_id: requestId,
+      request_id,
     };
     startCountDown({
       sendType: isEmail ? 'emailAuth' : 'mobileAuth',
@@ -168,7 +169,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         message.error(e.response.data.msg);
       },
     });
-  }, [verify, username, requestId, startCountDown]);
+  }, [verify, loginForm, startCountDown]);
 
   const handleForget = React.useCallback(async () => {
     if (verify === 'email') {
@@ -186,13 +187,15 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
   const [loginError, setLoginError] = React.useState<string>('');
+
   const handleLogin = React.useCallback(async () => {
     setLoginLoading(true);
+    const { username, request_id } = loginForm;
     const payload = {
       type: 0,
       username,
-      password,
-      request_id: requestId,
+      password: md5(loginForm.password),
+      request_id,
       verify_code: verifyCode,
       order_id: orderId,
       auth_type: 3,
@@ -219,7 +222,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
       setLoginError(e.response.data.msg);
       setLoginLoading(false);
     }
-  }, [verify, username, requestId, orderId, verifyCode, password, setUser]);
+  }, [loginForm, verify, orderId, verifyCode, setUser]);
 
   const handleSignup = React.useCallback(async () => {
     history.replace('/home');
@@ -270,7 +273,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
               <p className="tips">{t`hello`}</p>
               <p className="label row-between">
                 <span>{VERIFY_TEXT[verify]}</span>
-                {verify !== 'google' && <span>{username}</span>}
+                {verify !== 'google' && <span>{loginForm.username}</span>}
               </p>
               <Input
                 value={verifyCode}
