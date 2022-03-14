@@ -16,7 +16,7 @@ const Wrapper = styled.div<{ level: -1 | 1 }>`
     top: 0;
     right: 0;
     height: 100%;
-    opacity: 0;
+    /* opacity: 0; */
     z-index: ${(props) => props.level};
   }
 `;
@@ -73,13 +73,14 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   });
 
   React.useEffect(() => {
-    if (accountType === 'login') {
-      const { username, password } = loginForm;
-      if (!username || !password) return;
-      if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
-        setLevel(1);
-      }
+    console.log(accountType);
+    const { username, password } = loginForm;
+    if (!username || !password) return;
+    if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
+      setLevel(1);
     }
+    // if (accountType === 'login') {
+    // }
     // if (accountType === 'signup') {
     // }
   }, [accountType, loginForm]);
