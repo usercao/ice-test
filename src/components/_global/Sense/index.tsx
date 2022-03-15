@@ -3,7 +3,7 @@ import { SENSE_URI, SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
 import { GeetestReturn } from '@/services/account/PropsType';
 import { useRecoilValue } from 'recoil';
-import { loginInfo, signUpInfo } from '@/models/account';
+import { loginInfo, signupInfo } from '@/models/account';
 import useRandomId from '@/hooks/useRandomId';
 import { useExternal, useMount, useSafeState } from 'ahooks';
 import { pwdVerify } from '@/utils/tools';
@@ -30,7 +30,7 @@ interface SenseProps {
 const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   const { children, onSuccess } = props;
   const loginForm = useRecoilValue(loginInfo);
-  const signUpForm = useRecoilValue(signUpInfo);
+  const signupForm = useRecoilValue(signupInfo);
   const status = useExternal(SENSE_URI);
   const uuid = useRandomId();
   const { pathname } = useLocation();
@@ -87,7 +87,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
       }
     }
     if (pathname === '/signup') {
-      const { email, password1, checked } = signUpForm;
+      const { email, password1, checked } = signupForm;
       if (!email || !password1) return;
       if (email.length < 8 || password1.length > 20 || !pwdVerify(password1) || !checked) {
         setLevel(-1);
@@ -97,7 +97,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
     }
     // if (pathname === '/signup') {
     // }
-  }, [pathname, loginForm, signUpForm, setLevel]);
+  }, [pathname, loginForm, signupForm, setLevel]);
 
   React.useEffect(() => {
     if (status !== 'ready' || !config) return;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { containerType, verifyType, forgetInfo, signUpInfo } from '@/models/account';
+import { containerType, verifyType, forgetInfo, signupInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button, Select } from '@/components';
 import { t } from '@lingui/macro';

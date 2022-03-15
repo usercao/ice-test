@@ -12,7 +12,7 @@ import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
 import { loginByUserName, getLoginQrCode, getLoginQrCodeResult } from '@/services/account';
 import { IQRCode } from '@/services/account/PropsType';
-import { useSessionStorageState, useInterval, useMount } from 'ahooks';
+import { useSessionStorageState, useInterval } from 'ahooks';
 import md5 from 'md5';
 
 const Wrapper = styled.div`
@@ -216,7 +216,7 @@ const Login = () => {
   const [error, setError] = React.useState<string>('');
   const [, setSessionInfo] = useSessionStorageState('userinfo');
 
-  const verifyPassword = React.useMemo(() => {
+  const verifyForm = React.useMemo(() => {
     const { username, password } = loginForm;
     if (!username || !password) return true;
     if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
@@ -226,8 +226,6 @@ const Login = () => {
     setError('');
     return false;
   }, [loginForm]);
-
-  useMount(() => {});
 
   const jumpWebsite = React.useCallback(
     (info) => {
@@ -356,12 +354,7 @@ const Login = () => {
                 size="lg"
                 placeholder={t`enterEmailOrPhone`}
                 value={loginForm.username}
-                onChange={(e) =>
-                  setLoginInfo((v) => {
-                    const { username, ...rest } = v;
-                    return { username: e, ...rest };
-                  })
-                }
+                onChange={(e) => setLoginInfo((v) => ({ ...v, username: e }))}
                 clear
               />
               <p className="label">{t`loginPassword`}</p>
@@ -372,17 +365,12 @@ const Login = () => {
                 placeholder={t`enterLoginPassword`}
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 value={loginForm.password}
-                onChange={(e) =>
-                  setLoginInfo((v) => {
-                    const { password, ...rest } = v;
-                    return { password: e, ...rest };
-                  })
-                }
+                onChange={(e) => setLoginInfo((v) => ({ ...v, password: e }))}
                 clear
               />
               <p className="error">{error}</p>
               <Sense onSuccess={(v) => setSenseInfo(v)}>
-                <Button size="lg" loading={loading} disabled={verifyPassword}>
+                <Button size="lg" loading={loading} disabled={verifyForm}>
                   {t`continue`}
                 </Button>
               </Sense>
