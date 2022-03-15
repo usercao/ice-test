@@ -50,9 +50,11 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
       lang: window.localStorage.lang ?? 'en',
       // 老项目抛弃之后修改
     };
+    const captchaBox = document.getElementById(uuid);
+    if (!captchaBox) return;
     window.initGeetest(option, (sense) => {
       // 兼容ES5语法
-      sense.appendTo(`#${uuid}`);
+      sense.appendTo(captchaBox);
       sense.onSuccess(() => {
         const result = sense.getValidate();
         setLevel(-1);
