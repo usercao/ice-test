@@ -28,33 +28,33 @@ const freeParseInt = parseInt;
 export const pwdVerify = (pwd) => /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(pwd);
 export const isString = (val) => typeof val === 'string';
 export const isUndefined = (value) => value === undefined;
-export const isObjectLike = (value) => !!value && typeof value == 'object';
+export const isObjectLike = (value) => !!value && typeof value === 'object';
 export const isPlainObject = (val) => !!val && typeof val === 'object' && val.constructor === Object;
 export const isObject = (value) => {
-  var type = typeof value;
+  const type = typeof value;
   return !!value && (type === 'object' || type === 'function');
 };
 
 export const isSymbol = (value) => {
-  return typeof value == 'symbol' || (isObjectLike(value) && objectToString.call(value) === symbolTag);
+  return typeof value === 'symbol' || (isObjectLike(value) && objectToString.call(value) === symbolTag);
 };
 
 export const toNumber = (value) => {
-  if (typeof value == 'number') {
+  if (typeof value === 'number') {
     return value;
   }
   if (isSymbol(value)) {
     return NAN;
   }
   if (isObject(value)) {
-    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-    value = isObject(other) ? other + '' : other;
+    const other = typeof value.valueOf === 'function' ? value.valueOf() : value;
+    value = isObject(other) ? `${other}` : other;
   }
-  if (typeof value != 'string') {
+  if (typeof value !== 'string') {
     return value === 0 ? value : +value;
   }
   value = value.replace(reTrim, '');
-  var isBinary = reIsBinary.test(value);
+  const isBinary = reIsBinary.test(value);
   return isBinary || reIsOctal.test(value)
     ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
     : reIsBadHex.test(value)
@@ -68,7 +68,7 @@ export const toFinite = (value) => {
   }
   value = toNumber(value);
   if (value === INFINITY || value === -INFINITY) {
-    var sign = value < 0 ? -1 : 1;
+    const sign = value < 0 ? -1 : 1;
     return sign * MAX_INTEGER;
   }
   // eslint-disable-next-line no-self-compare
@@ -76,16 +76,16 @@ export const toFinite = (value) => {
 };
 
 export const toInteger = (value) => {
-  var result = toFinite(value),
-    remainder = result % 1;
+  const result = toFinite(value);
+  const remainder = result % 1;
 
   // eslint-disable-next-line no-self-compare
   return result === result ? (remainder ? result - remainder : result) : 0;
 };
 
-export const isInteger = (value) => typeof value == 'number' && value === toInteger(value);
+export const isInteger = (value) => typeof value === 'number' && value === toInteger(value);
 
-/* 
+/*
   trunc
 */
 export const intercept = (number, decimal = 8) => {
@@ -169,7 +169,7 @@ export const toNumUnit = (num, precision = 2) => {
   return unitStr ? `${output}${unitStr}` : `${output}`;
 };
 
-/* 
+/*
   将地址处理为展示前6位和后四位
 */
 export const fuzzAddress = (str: string, before = 6, after = 4, fuzz = '....') => {
@@ -181,42 +181,42 @@ export const getSymbolImg = (symbol: string, theme: 'dark' | 'light' = 'dark') =
   return `https://t1.bycsi.com/assets/image/coins/${theme}/${symbol?.toLowerCase()}.svg`;
 };
 
-/* 
+/*
   获取交易对SYMBOL
 */
 // export const getPairSymbolName = (pair: Pair, idx = 0): string => {
 //   return idx === 0 ? getRealSymbol(pair?.token0?.symbol) : getRealSymbol(pair?.token1?.symbol);
 // };
 
-/* 
+/*
   获取Pool币种转换后SYMBOL
 */
 export const getPoolSymbolName = (name: string | undefined): string => {
   return getRealSymbol(name);
 };
 
-/* 
+/*
   获取Pool币种转换后SYMBOL_CONFIG
 */
 export const getPoolSymbolConfig = (name: string | undefined): SymbolProps => {
   return getSymbolConfig(name);
 };
 
-/* 
+/*
   获取Pool交易对转换后PRICE_CONFIG
 */
 export const getPoolRealPriceConfig = (name0: string | undefined, name1: string | undefined): number => {
   return getRealPriceConfig(name0, name1);
 };
 
-/* 
+/*
   获取交易对 logo
 */
 // export const getPairLogo = (pair: Pair, idx = 0): string => {
 //   return idx === 0 ? pair?.token0?.logo : pair?.token1?.logo;
 // };
 
-/* 
+/*
   判断是否是正确的qty/price格式
 */
 export const hasValidNumber = (val, precision = 2) => {
@@ -224,7 +224,7 @@ export const hasValidNumber = (val, precision = 2) => {
   return reg.test(val);
 };
 
-/* 
+/*
   用来矫正 value 和最大值、最大余额
 */
 export const getMaxNumber = (value = 0, max = 999_999_999_999, balance = max, precision = 2) => {
@@ -235,7 +235,7 @@ export const getMaxNumber = (value = 0, max = 999_999_999_999, balance = max, pr
   return value;
 };
 
-/* 
+/*
   根据num正负值获取需要展示颜色的className
  */
 export const getUpDownClassName = (num, upClassName = 'long', downClassName = 'short') => {
@@ -247,7 +247,7 @@ export const getUpDownClassName = (num, upClassName = 'long', downClassName = 's
   }
 };
 
-/* 
+/*
   判断多空颜色
 */
 export function isLong(type, side) {
@@ -257,16 +257,14 @@ export function isLong(type, side) {
     } else {
       return 'long';
     }
+  } else if (side === 1 || side?.toLowerCase?.() === 'short') {
+    return 'long';
   } else {
-    if (side === 1 || side?.toLowerCase?.() === 'short') {
-      return 'long';
-    } else {
-      return 'short';
-    }
+    return 'short';
   }
 }
 
 export function subAddress(address, prev = 6, last = 4) {
-  const subbedAddress = address.substring(0, prev) + '...' + address.substring(address.length - last, address.length);
+  const subbedAddress = `${address.substring(0, prev)}...${address.substring(address.length - last, address.length)}`;
   return subbedAddress.toUpperCase();
 }
