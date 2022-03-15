@@ -1,16 +1,18 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { containerType, verifyType, loginInfo, userInfo } from '@/models/account';
+import { containerType, verifyType, loginInfo, userInfo as recoilUserInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { pwdVerify } from '@/utils/tools';
-import { Input, Button } from '@/components';
+import { Input, Button, message } from '@/components';
 import Sense from '@/components/_global/Sense';
+import useSearchParam from '@/hooks/useSearchParam';
 import QRCode from 'qrcode';
 import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
-import { loginByUserName } from '@/services/account';
-import { useSessionStorageState } from 'ahooks';
+import { loginByUserName, getLoginQrCode, getLoginQrCodeResult } from '@/services/account';
+import { IQRCode } from '@/services/account/PropsType';
+import { useSessionStorageState, useInterval, useMount } from 'ahooks';
 import md5 from 'md5';
 
 const Wrapper = styled.div`
@@ -134,8 +136,8 @@ const Wrapper = styled.div`
       .code {
         position: relative;
         margin: 12px auto 16px auto;
-        width: 162px;
-        height: 162px;
+        width: 164px;
+        height: 164px;
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 4px;
         overflow: hidden;
@@ -144,8 +146,8 @@ const Wrapper = styled.div`
           position: absolute;
           top: 0;
           left: 0;
-          width: 162px;
-          height: 162px;
+          width: 164px;
+          height: 164px;
           z-index: 1;
         }
         .remake {
@@ -158,16 +160,23 @@ const Wrapper = styled.div`
         }
         .success {
           background: rgba(0, 0, 0, 0.7);
-          img {
-            width: 60px;
-            height: 60px;
-          }
           p {
-            margin-top: 10px;
-            text-align: center;
+            font-weight: 400;
             font-size: 12px;
             line-height: 16px;
+            text-align: center;
             color: #ffffff;
+          }
+          button {
+            margin-top: 10px;
+            span {
+              line-height: 22px;
+            }
+            &.sm {
+              width: auto;
+              min-width: 60px;
+              height: 22px;
+            }
           }
         }
       }
@@ -193,9 +202,10 @@ interface senseInfoType {
 const Login = () => {
   const setType = useSetRecoilState(containerType);
   const setVerify = useSetRecoilState(verifyType);
-  const setUser = useSetRecoilState(userInfo);
+  const setUser = useSetRecoilState(recoilUserInfo);
   const [loginForm, setLoginInfo] = useRecoilState(loginInfo);
   const history = useHistory();
+  const redirect = useSearchParam('redirect');
 
   const [state, setState] = React.useState<'account' | 'qrcode'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
@@ -217,6 +227,21 @@ const Login = () => {
     return false;
   }, [loginForm]);
 
+  useMount(() => {});
+
+  const jumpWebsite = React.useCallback(
+    (info) => {
+      // 老项目抛弃之后修改
+      setSessionInfo(info);
+      // 老项目抛弃之后修改
+      setUser(info);
+      // 老项目抛弃之后修改
+      window.open(redirect || 'https://mexo.io', '_self');
+      // 老项目抛弃之后修改
+    },
+    [redirect, setSessionInfo, setUser],
+  );
+
   const submitLogin = React.useCallback(async () => {
     if (!senseInfo) return;
     setLoading(true);
@@ -236,32 +261,66 @@ const Login = () => {
         setLoginInfo({ request_id: data.requestId, ...rest });
       } else {
         if (!data.user) return;
-        // 老项目抛弃之后修改
-        setSessionInfo(data.user);
-        // 老项目抛弃之后修改
-        setUser(data.user);
+        jumpWebsite(data.user);
       }
       setLoading(false);
     } catch (e) {
       setError(e.response.data.msg);
       setLoading(false);
     }
-  }, [loginForm, senseInfo, setLoginInfo, setSessionInfo, setType, setUser, setVerify]);
+  }, [loginForm, senseInfo, setLoginInfo, setType, setVerify, jumpWebsite]);
+
+  React.useEffect(() => {
+    if (!senseInfo) return;
+    submitLogin();
+  }, [senseInfo, submitLogin]);
 
   // qrcode
-  const [qrcode, setQRCode] = React.useState<string>('');
+  const [qrcodeInfo, setQRCodeInfo] = React.useState<IQRCode>();
+  const [qrcode, setQRCode] = React.useState<string>();
+  const [delay, setDelay] = React.useState<number | undefined>(undefined);
+  const [qrcodeState, setQrcodeState] = React.useState<-1 | 0 | 1>(-1);
 
   const loadQRCode = React.useCallback(async () => {
-    const qr = await QRCode.toDataURL('21212', {
-      margin: 2,
-      width: 160,
-    });
-    setQRCode(qr);
+    setQrcodeState(-1);
+    const info = await getLoginQrCode();
+    setQRCodeInfo(info);
+    const uri = await QRCode.toDataURL(info.ticket, { margin: 2, width: 160 });
+    setQRCode(uri);
+    setDelay(3000);
   }, []);
 
   React.useEffect(() => {
+    if (state !== 'qrcode') return;
     loadQRCode();
-  }, [loadQRCode]);
+  }, [state, loadQRCode]);
+
+  const loopQrCodeResult = React.useCallback(async () => {
+    if (!qrcodeInfo) return;
+    const data = await getLoginQrCodeResult(qrcodeInfo?.ticket);
+    if ('code' in data) {
+      setDelay(undefined);
+      message.error(data.msg);
+      return;
+    }
+    if ('qrcodeStatus' in data) {
+      const { qrcodeStatus, qrcodeTimeLeft, userInfo } = data;
+      if (qrcodeTimeLeft <= 3) {
+        setDelay(undefined);
+        setQrcodeState(0);
+        return;
+      }
+      if (qrcodeStatus === 1) setQrcodeState(1);
+      if (userInfo) {
+        setDelay(undefined);
+        jumpWebsite(userInfo);
+      }
+    }
+  }, [qrcodeInfo, jumpWebsite]);
+
+  useInterval(() => {
+    loopQrCodeResult();
+  }, delay);
 
   return (
     <Container>
@@ -270,10 +329,22 @@ const Login = () => {
           <h4>{t`welcomeToMexo`}</h4>
           <p className="tips">{t`signWithAccountOrCode`}</p>
           <div className="tabs row-start">
-            <p className={`${state === 'account' ? 'active' : 'default'}`} onClick={() => setState('account')}>
+            <p
+              className={`${state === 'account' ? 'active' : 'default'}`}
+              onClick={() => {
+                setState('account');
+                setDelay(undefined);
+              }}
+            >
               {t`account`}
             </p>
-            <p className={`${state === 'qrcode' ? 'active' : 'default'}`} onClick={() => setState('qrcode')}>
+            <p
+              className={`${state === 'qrcode' ? 'active' : 'default'}`}
+              onClick={() => {
+                setState('qrcode');
+                setDelay(undefined);
+              }}
+            >
               {t`codeQR`}
             </p>
           </div>
@@ -311,7 +382,7 @@ const Login = () => {
               />
               <p className="error">{error}</p>
               <Sense onSuccess={(v) => setSenseInfo(v)}>
-                <Button size="lg" loading={loading} disabled={verifyPassword} onClick={submitLogin}>
+                <Button size="lg" loading={loading} disabled={verifyPassword}>
                   {t`continue`}
                 </Button>
               </Sense>
@@ -327,18 +398,25 @@ const Login = () => {
           )}
           {state === 'qrcode' && (
             <div className="qrcode">
-              <h6>Scan to Log In</h6>
+              <h6>
+                {qrcodeState === -1 && <span>Scan to Log In</span>}
+                {qrcodeState === 0 && <span>QR code expired</span>}
+                {qrcodeState === 1 && <span>Confirm on App</span>}
+              </h6>
               <div className="code">
-                <img src={qrcode} alt="qrcode" />
-                {false && (
-                  <div className="remake col-center">
+                <img src={qrcode || require('@/assets/images/account/qrcode.png')} alt="qrcode" />
+                {qrcodeState === 0 && (
+                  <div className="remake col-center" onClick={loadQRCode}>
                     <img src={require('@/assets/images/account/remake.svg')} alt="icon" />
                   </div>
                 )}
-                {true && (
+                {qrcodeState === 1 && (
                   <div className="success col-center">
-                    <img src={require('@/assets/images/account/success.svg')} alt="icon" />
-                    <p>Confirm on App</p>
+                    <p>Scan successful</p>
+                    <p>Please confirm on App</p>
+                    <Button size="sm" onClick={loadQRCode}>
+                      Retry
+                    </Button>
                   </div>
                 )}
               </div>

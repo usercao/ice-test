@@ -98,3 +98,14 @@ export interface IQRCode {
   success: true;
   ticket: 'lQc0-c490e418b57c4621c5870a4ce196867b9821171fec945270285199eb18fdfba4';
 }
+
+export interface IQRCodeConnect {
+  qrcodeStatus: 0 | 1;
+  qrcodeTimeLeft: 121;
+  userInfo?: IUserInfo;
+}
+
+export interface IQRCodeError {
+  code: 30092;
+  msg: 'QR Code no exit or invalid, please refresh and try again';
+}
