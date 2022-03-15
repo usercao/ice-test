@@ -140,8 +140,7 @@ interface senseInfoType {
 }
 
 const SignUp = () => {
-  const unmountedRef = useUnmountedRef();
-  const [, setSsUserInfo] = useSessionStorageState('userinfo', {});
+  const [, setSsUserInfo] = useSessionStorageState('userinfo');
   const setType = useSetRecoilState(containerType);
   const setUser = useSetRecoilState(userInfo);
   const history = useHistory();
@@ -187,7 +186,7 @@ const SignUp = () => {
       ...senseInfo,
     };
 
-    if (unmountedRef.current || !isOver) return;
+    if (!isOver) return;
     startCountDown({
       payload,
       onSuccess: (e) => {
@@ -198,7 +197,7 @@ const SignUp = () => {
         message.error(e.response.data.msg);
       },
     });
-  }, [signUpForm.email, senseInfo, unmountedRef, isOver, startCountDown]);
+  }, [signUpForm.email, senseInfo, isOver, startCountDown]);
 
   const [errorInfo, setErrorInfo] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(false);

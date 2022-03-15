@@ -27,6 +27,12 @@ export interface ISignUpParams {
   order_id: string;
   invite_code?: string;
 }
+
+export interface IResetPwdCheck {
+  order_id: string;
+  verify_code: string;
+  email: string;
+}
 // ===========================================
 // ============= Response ====================
 // ===========================================
@@ -80,7 +86,7 @@ export interface IUserInfo {
 }
 
 export interface ILoginUserNameReturn {
-  authType: 'EMAIL' | 'GA' | 'MOBILE';
+  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
   bindEmail: boolean;
   bindGA: boolean;
   bindMobile: boolean;
@@ -97,4 +103,9 @@ export interface IQRCode {
   qrcodeTimeLeft: 125;
   success: true;
   ticket: 'lQc0-c490e418b57c4621c5870a4ce196867b9821171fec945270285199eb18fdfba4';
+}
+export interface IResetPwdCheckReturn {
+  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
+  need2FA: boolean;
+  requestId: string;
 }
