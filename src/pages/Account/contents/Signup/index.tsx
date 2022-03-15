@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import md5 from 'md5';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useUnmountedRef, useSessionStorageState } from 'ahooks';
 import { containerType, userInfo, signUpInfo } from '@/models/account';
@@ -139,8 +140,7 @@ interface senseInfoType {
 }
 
 const SignUp = () => {
-  const unmountedRef = useUnmountedRef();
-  const [, setSsUserInfo] = useSessionStorageState('userinfo', {});
+  const [, setSsUserInfo] = useSessionStorageState('userinfo');
   const setType = useSetRecoilState(containerType);
   const setUser = useSetRecoilState(userInfo);
   const history = useHistory();
@@ -152,7 +152,7 @@ const SignUp = () => {
 
   const [error, setError] = React.useState<string>('');
   const [signUpForm, setSignUpForm] = useRecoilState(signUpInfo);
-  const [orderId, setOrderId] = React.useState<string>('');
+  const [orderId, setOrderId] = React.useState<string>('1111653446928566272');
   const [inviteCode, setInviteCode] = React.useState<string>('');
   const [verifyCode, setVerifyCode] = React.useState<string>('');
 
@@ -186,7 +186,7 @@ const SignUp = () => {
       ...senseInfo,
     };
 
-    if (unmountedRef.current || !isOver) return;
+    if (!isOver) return;
     startCountDown({
       payload,
       onSuccess: (e) => {
@@ -197,7 +197,7 @@ const SignUp = () => {
         message.error(e.response.data.msg);
       },
     });
-  }, [signUpForm.email, senseInfo, unmountedRef, isOver, startCountDown]);
+  }, [signUpForm.email, senseInfo, isOver, startCountDown]);
 
   const [errorInfo, setErrorInfo] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -207,20 +207,19 @@ const SignUp = () => {
       setLoading(true);
       const payload = {
         ...signUpForm,
-        password2: signUpForm.password1,
+        password1: md5(signUpForm.password1),
+        password2: md5(signUpForm.password1),
         type: 0,
         order_id: orderId,
         verify_code: verifyCode,
         invite_code: inviteCode,
       };
       const data = await signUp(payload);
-      if (data.user) {
-        // 老项目抛弃之后修改
-        setSsUserInfo(data.user);
-        // 老项目抛弃之后修改
-        setUser(data.user);
-        setType('signup');
-      }
+      // 老项目抛弃之后修改
+      setSsUserInfo(data);
+      // 老项目抛弃之后修改
+      setUser(data);
+      setType('signup');
     } catch (e) {
       setErrorInfo(e.response.data.msg);
       setLoading(false);
@@ -326,6 +325,7 @@ const SignUp = () => {
               <Button
                 size="lg"
                 loading={loading}
+                disabled={!verifyCode}
                 onClick={() => {
                   handleSignUp();
                 }}

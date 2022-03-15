@@ -21,6 +21,18 @@ export const signUpInfo: RecoilState<{ email: string; password1: string; checked
   default: { email: '', password1: '', checked: false },
 });
 
+export const forgetInfo: RecoilState<{
+  email?: string;
+  national_code?: string;
+  mobile?: string;
+  type: 'email' | 'mobile' | 'password';
+}> = atom({
+  key: 'forgetInfo',
+  default: {
+    type: 'email',
+  },
+});
+
 export const userInfo: RecoilState<IUserInfo> = atom({
   key: 'userInfo',
   default: {

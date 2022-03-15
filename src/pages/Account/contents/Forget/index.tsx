@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { containerType, verifyType } from '@/models/account';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { containerType, verifyType, forgetInfo, signUpInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button, Select } from '@/components';
 import { t } from '@lingui/macro';
@@ -138,12 +138,18 @@ const Forget = () => {
   const setType = useSetRecoilState(containerType);
   const setVerify = useSetRecoilState(verifyType);
   const history = useHistory();
-
-  const [state, setState] = React.useState<'account' | 'mobile' | 'password'>('account');
+  const [forgetForm, setForgetForm] = useRecoilState(forgetInfo);
   const [eye, setEye] = React.useState<boolean[]>([false, false]);
 
   const [countriesValue, setCountriesValue] = React.useState<CountriesReturnType[number]>();
   const [countriesList, setCountriesList] = React.useState<CountriesReturnType>([]);
+
+  const changeFormValue = (value, name) => {
+    setForgetForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   useMount(async () => {
     try {
@@ -160,36 +166,53 @@ const Forget = () => {
     <Container>
       <Wrapper className="col-center">
         <div className="inner">
-          <h4>{t`hello`}</h4>
-          <p className="tips">{t`hello`}</p>
-          <div className="tabs row-start">
-            <p className={`${state === 'account' ? 'active' : 'default'}`} onClick={() => setState('account')}>
-              {t`hello`}
-            </p>
-            <p className={`${state === 'mobile' ? 'active' : 'default'}`} onClick={() => setState('mobile')}>
-              {t`hello`}
-            </p>
-          </div>
-          {state === 'account' && (
+          <h4>{forgetForm.type === 'password' ? t`Reset Login Password` : 'hello'}</h4>
+          <p className="tips">{forgetForm.type === 'password' ? t`Reset Login Password` : 'hello'}</p>
+          {forgetForm.type !== 'password' && (
+            <div className="tabs row-start">
+              <p
+                className={`${forgetForm.type === 'email' ? 'active' : 'default'}`}
+                onClick={() => changeFormValue('email', 'type')}
+              >
+                {t`Email`}
+              </p>
+              <p
+                className={`${forgetForm.type === 'mobile' ? 'active' : 'default'}`}
+                onClick={() => changeFormValue('mobile', 'type')}
+              >
+                {t`Phone Number`}
+              </p>
+            </div>
+          )}
+
+          {forgetForm.type === 'email' && (
             <div className="account">
-              <p className="label">Email / Phone Number</p>
-              <Input className="input" size="lg" placeholder="21212" clear />
+              <p className="label">Email</p>
+              <Input
+                className="input"
+                size="lg"
+                placeholder="21212"
+                name="email"
+                value={forgetForm.email}
+                onChange={changeFormValue}
+                clear
+              />
               <p className="error">{''}</p>
               <Button
                 size="lg"
                 onClick={() => {
                   setType('forget');
                   setVerify('google');
-                  setState('password');
+                  changeFormValue('password', 'type');
                 }}
               >
                 Continue
               </Button>
             </div>
           )}
-          {state === 'mobile' && (
+          {forgetForm.type === 'mobile' && (
             <div className="mobile">
-              <p className="label">Email / Phone Number</p>
+              <p className="label">Phone Number</p>
               <div className="input row-between">
                 <Select
                   className="select"
@@ -205,7 +228,14 @@ const Forget = () => {
                 >
                   <AreaCode>
                     {countriesList.map((ele) => (
-                      <li className="row-between" key={ele.id} onClick={() => setCountriesValue(ele)}>
+                      <li
+                        className="row-between"
+                        key={ele.id}
+                        onClick={() => {
+                          setCountriesValue(ele);
+                          changeFormValue(ele.nationalCode, 'national_code');
+                        }}
+                      >
                         <p className="row-start">
                           <img src={ele.logo || require('@/assets/images/account/flag.svg')} alt="flag" />
                           <span>{ele.countryName}</span>
@@ -215,7 +245,15 @@ const Forget = () => {
                     ))}
                   </AreaCode>
                 </Select>
-                <Input className="input-inner" size="lg" placeholder="21212" clear />
+                <Input
+                  className="input-inner"
+                  size="lg"
+                  placeholder="21212"
+                  name="mobile"
+                  value={forgetForm.mobile}
+                  onChange={changeFormValue}
+                  clear
+                />
               </div>
               <p className="error">{''}</p>
               <Button
@@ -223,14 +261,14 @@ const Forget = () => {
                 onClick={() => {
                   setType('forget');
                   setVerify('google');
-                  setState('password');
+                  changeFormValue('password', 'type');
                 }}
               >
                 Continue
               </Button>
             </div>
           )}
-          {state === 'password' && (
+          {forgetForm.type === 'password' && (
             <div className="password">
               <p className="label">Email / Phone Number</p>
               <Input

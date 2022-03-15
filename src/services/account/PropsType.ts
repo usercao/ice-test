@@ -27,6 +27,12 @@ export interface ISignUpParams {
   order_id: string;
   invite_code?: string;
 }
+
+export interface IResetPwdCheck {
+  order_id: string;
+  verify_code: string;
+  email: string;
+}
 // ===========================================
 // ============= Response ====================
 // ===========================================
@@ -80,7 +86,7 @@ export interface IUserInfo {
 }
 
 export interface ILoginUserNameReturn {
-  authType: 'EMAIL' | 'GA' | 'MOBILE';
+  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
   bindEmail: boolean;
   bindGA: boolean;
   bindMobile: boolean;
@@ -108,4 +114,10 @@ export interface IQRCodeConnect {
 export interface IQRCodeError {
   code: 30092;
   msg: 'QR Code no exit or invalid, please refresh and try again';
+}
+
+export interface IResetPwdCheckReturn {
+  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
+  need2FA: boolean;
+  requestId: string;
 }
