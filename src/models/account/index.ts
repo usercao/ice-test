@@ -6,7 +6,7 @@ export const containerType: RecoilState<'default' | 'forget' | 'login' | 'signup
   default: 'default',
 });
 
-export const verifyType: RecoilState<'google' | 'email' | 'mobile'> = atom({
+export const verifyType: RecoilState<'google' | 'email' | 'mobile' | 'id_card'> = atom({
   key: 'resetPassword',
   default: 'google',
 });
@@ -26,10 +26,14 @@ export const forgetInfo: RecoilState<{
   national_code?: string;
   mobile?: string;
   type: 'email' | 'mobile' | 'password';
+  sense: { challenge: string; captcha_response: string; captcha_id: string };
 }> = atom({
   key: 'forgetInfo',
   default: {
     type: 'email',
+    email: '',
+    mobile: '',
+    sense: { challenge: '', captcha_response: '', captcha_id: '' },
   },
 });
 

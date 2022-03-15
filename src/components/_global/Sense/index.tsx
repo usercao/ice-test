@@ -3,7 +3,7 @@ import { SENSE_URI, SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
 import { GeetestReturn } from '@/services/account/PropsType';
 import { useRecoilValue } from 'recoil';
-import { loginInfo, signUpInfo } from '@/models/account';
+import { loginInfo, signUpInfo, forgetInfo } from '@/models/account';
 import useRandomId from '@/hooks/useRandomId';
 import { useExternal, useMount } from 'ahooks';
 import { pwdVerify } from '@/utils/tools';
@@ -31,6 +31,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   const { children, onSuccess } = props;
   const loginForm = useRecoilValue(loginInfo);
   const signUpForm = useRecoilValue(signUpInfo);
+  const forgetForm = useRecoilValue(forgetInfo);
   const status = useExternal(SENSE_URI);
   const uuid = useRandomId();
   const { pathname } = useLocation();
@@ -95,9 +96,15 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
         setLevel(1);
       }
     }
-    // if (pathname === '/signup') {
-    // }
-  }, [pathname, loginForm, signUpForm]);
+    if (pathname === '/forget') {
+      const { email, mobile, type } = forgetForm;
+      if ((type === 'email' && !email) || (type === 'mobile' && !mobile)) {
+        setLevel(-1);
+      } else {
+        setLevel(1);
+      }
+    }
+  }, [pathname, loginForm, signUpForm, forgetForm]);
 
   React.useEffect(() => {
     if (status !== 'ready' || !config) return;

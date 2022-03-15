@@ -13,3 +13,6 @@ export const sendMobileLoginVerifyCode = (params: ILoginVerifyCodeParams) => {
 export const sendNotLoginCode = (params: INotLoginCodeParams) => {
   return request.post<IVerifyCodeResponse>(`${api.sendEmailNotLogin}?${qs.stringify(params)}`).then((res) => res);
 };
+export const sendNotLoginMobile = (params: INotLoginCodeParams) => {
+  return request.post<IVerifyCodeResponse>(`${api.sendMobileNotLogin}?${qs.stringify(params)}`).then((res) => res);
+};

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { containerType, verifyType, loginInfo, userInfo } from '@/models/account';
+import { containerType, verifyType, loginInfo, userInfo, forgetInfo } from '@/models/account';
 import Settings from '@/components/_global/Settings';
 import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
@@ -140,6 +140,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const setUser = useSetRecoilState(userInfo);
   const verify = useRecoilValue(verifyType);
   const loginForm = useRecoilValue(loginInfo);
+  const forgetForm = useRecoilValue(forgetInfo);
   const history = useHistory();
 
   // 验证码
@@ -170,6 +171,32 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
       },
     });
   }, [verify, loginForm, startCountDown]);
+
+  // 忘记密码
+  const [forgetCountDown, forgetIsOver, startForgetCountDown] = useSendCode('emailNotLogin');
+  const [forgetVerify, setForgetVerify] = React.useState<string>('');
+
+  const handleSendForget = React.useCallback(() => {
+    const { email, mobile, national_code, sense } = forgetForm;
+    const isEmail = verify === 'email';
+    const payload = {
+      type: 3,
+      [isEmail ? 'email' : 'mobile']: isEmail ? email : mobile,
+      [isEmail ? '' : 'national_code']: national_code,
+      ...sense,
+    };
+    startForgetCountDown({
+      sendType: isEmail ? 'emailNotLogin' : 'mobileNotLogin',
+      payload,
+      onSuccess: (e) => {
+        message.success('Send Success');
+        setOrderId(e.orderId);
+      },
+      onError: (e) => {
+        message.error(e.response.data.msg);
+      },
+    });
+  }, [forgetForm, startForgetCountDown, verify]);
 
   const handleForget = React.useCallback(async () => {
     if (verify === 'email') {
@@ -248,15 +275,25 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
               <h4>{t`hello`}</h4>
               <p className="tips">{t`hello`}</p>
               <p className="label row-between">
-                <span>Email / Phone Number</span>
-                <span>Email / Phone Number</span>
+                <span>{VERIFY_TEXT[verify]}</span>
+                <span>{verify === 'email' && forgetForm.email}</span>
+                <span>{verify === 'mobile' && forgetForm.mobile}</span>
               </p>
               <Input
                 className="input"
                 size="lg"
                 placeholder="21212"
                 maxLength={6}
-                suffix={verify !== 'google' && <p className="send">Send</p>}
+                value={forgetVerify}
+                onChange={setForgetVerify}
+                suffix={
+                  verify !== 'google' &&
+                  verify !== 'id_card' && (
+                    <p className="send" onClick={handleSendForget}>
+                      {forgetIsOver ? 'SEND' : `${forgetCountDown}s`}
+                    </p>
+                  )
+                }
                 clear
               />
               <p className="error">{''}</p>

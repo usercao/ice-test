@@ -1,16 +1,28 @@
 import { useCountDown } from 'ahooks';
 import { useCallback, useState } from 'react';
-import { sendEmailLoginVerifyCode, sendMobileLoginVerifyCode, sendNotLoginCode } from '@/services/_global/sendCode';
+import {
+  sendEmailLoginVerifyCode,
+  sendMobileLoginVerifyCode,
+  sendNotLoginCode,
+  sendNotLoginMobile,
+} from '@/services/_global/sendCode';
 
 const SEND_FUNC = {
   emailAuth: sendEmailLoginVerifyCode,
   mobileAuth: sendMobileLoginVerifyCode,
   emailNotLogin: sendNotLoginCode,
+  mobileNotLogin: sendNotLoginMobile,
 };
 
 const TIME = 6000;
 
-type SendCodeType = 'mobile' | 'mobileAuth' | 'emailAuth' | 'emailNotLogin' | 'emailAlreadyLogin' | 'emailSetPwd';
+type SendCodeType =
+  | 'mobileNotLogin'
+  | 'mobileAuth'
+  | 'emailAuth'
+  | 'emailNotLogin'
+  | 'emailAlreadyLogin'
+  | 'emailSetPwd';
 
 interface SendCodePayload {
   type: number; // 2: 登录验证码
@@ -47,9 +59,9 @@ function useSendCode(defaultType: SendCodeType): [number, boolean, (runParams: I
         const data = await func(payload);
         setOnEnd(() => end);
         setTargetDate(Date.now() + TIME);
-        onSuccess && onSuccess(data);
+        onSuccess?.(data);
       } catch (e) {
-        onError && onError(e);
+        onError?.(e);
       }
     },
     [defaultType],

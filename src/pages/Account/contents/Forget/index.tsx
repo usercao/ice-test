@@ -9,6 +9,7 @@ import { useHistory } from 'ice';
 import { useMount } from 'ahooks';
 import { getCountries } from '@/services/account';
 import { CountriesReturnType } from '@/services/account/PropsType';
+import Sense from '@/components/_global/Sense';
 
 const Wrapper = styled.div`
   align-items: flex-start;
@@ -151,14 +152,20 @@ const Forget = () => {
     }));
   };
 
+  const verifyAccount = React.useMemo(() => {
+    const { email, mobile, type } = forgetForm;
+    if ((type === 'email' && !email) || (type === 'mobile' && !mobile)) return true;
+    return false;
+  }, [forgetForm]);
+
   useMount(async () => {
     try {
       const data = await getCountries();
       setCountriesList(data);
       const defaultValue = data.find((ele) => ele.nationalCode === '52');
       setCountriesValue(defaultValue);
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     }
   });
 
@@ -166,7 +173,7 @@ const Forget = () => {
     <Container>
       <Wrapper className="col-center">
         <div className="inner">
-          <h4>{forgetForm.type === 'password' ? t`Reset Login Password` : 'hello'}</h4>
+          <h4>{forgetForm.type === 'password' ? t`Reset Login Password` : 'Forgot Password'}</h4>
           <p className="tips">{forgetForm.type === 'password' ? t`Reset Login Password` : 'hello'}</p>
           {forgetForm.type !== 'password' && (
             <div className="tabs row-start">
@@ -198,16 +205,18 @@ const Forget = () => {
                 clear
               />
               <p className="error">{''}</p>
-              <Button
-                size="lg"
-                onClick={() => {
+
+              <Sense
+                onSuccess={(e) => {
+                  changeFormValue(e, 'sense');
                   setType('forget');
-                  setVerify('google');
-                  changeFormValue('password', 'type');
+                  setVerify('email');
                 }}
               >
-                Continue
-              </Button>
+                <Button size="lg" disabled={verifyAccount}>
+                  Continue
+                </Button>
+              </Sense>
             </div>
           )}
           {forgetForm.type === 'mobile' && (
@@ -256,18 +265,20 @@ const Forget = () => {
                 />
               </div>
               <p className="error">{''}</p>
-              <Button
-                size="lg"
-                onClick={() => {
+              <Sense
+                onSuccess={(e) => {
+                  changeFormValue(e, 'sense');
                   setType('forget');
-                  setVerify('google');
-                  changeFormValue('password', 'type');
+                  setVerify('mobile');
                 }}
               >
-                Continue
-              </Button>
+                <Button size="lg" disabled={verifyAccount}>
+                  Continue
+                </Button>
+              </Sense>
             </div>
           )}
+
           {forgetForm.type === 'password' && (
             <div className="password">
               <p className="label">Email / Phone Number</p>
