@@ -216,13 +216,11 @@ const SignUp = () => {
         invite_code: inviteCode,
       };
       const data = await signUp(payload);
-      if (data.user) {
-        // 老项目抛弃之后修改
-        setSsUserInfo(data.user);
-        // 老项目抛弃之后修改
-        setUser(data.user);
-        setType('signup');
-      }
+      // 老项目抛弃之后修改
+      setSsUserInfo(data);
+      // 老项目抛弃之后修改
+      setUser(data);
+      setType('signup');
     } catch (e) {
       setErrorInfo(e.response.data.msg);
       setLoading(false);
@@ -328,6 +326,7 @@ const SignUp = () => {
               <Button
                 size="lg"
                 loading={loading}
+                disabled={!verifyCode}
                 onClick={() => {
                   handleSignUp();
                 }}
