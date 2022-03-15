@@ -1,4 +1,4 @@
-import { runApp, IAppConfig, config } from 'ice';
+import { runApp, IAppConfig } from 'ice';
 import { RecoilRoot } from 'recoil';
 import Cookies from 'js-cookie';
 import { GlobalStyle } from '@/assets/styles/global';
