@@ -5,7 +5,7 @@ import { GeetestReturn } from '@/services/account/PropsType';
 import { useRecoilValue } from 'recoil';
 import { loginInfo, signUpInfo } from '@/models/account';
 import useRandomId from '@/hooks/useRandomId';
-import { useExternal, useMount } from 'ahooks';
+import { useExternal, useMount, useSafeState } from 'ahooks';
 import { pwdVerify } from '@/utils/tools';
 import { useLocation } from 'ice';
 import styled from 'styled-components';
@@ -35,8 +35,8 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   const uuid = useRandomId();
   const { pathname } = useLocation();
 
-  const [config, setConfig] = React.useState<GeetestReturn>();
-  const [level, setLevel] = React.useState<1 | -1>(-1);
+  const [config, setConfig] = useSafeState<GeetestReturn>();
+  const [level, setLevel] = useSafeState<1 | -1>(-1);
 
   const loadSense = React.useCallback(() => {
     const option = {
@@ -69,7 +69,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
         sense.reset();
       });
     });
-  }, [config, uuid, onSuccess]);
+  }, [config, uuid, setLevel, onSuccess]);
 
   useMount(async () => {
     const data = await getGeetestInfo(SENSE_ID);
@@ -97,7 +97,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
     }
     // if (pathname === '/signup') {
     // }
-  }, [pathname, loginForm, signUpForm]);
+  }, [pathname, loginForm, signUpForm, setLevel]);
 
   React.useEffect(() => {
     if (status !== 'ready' || !config) return;
