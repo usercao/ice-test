@@ -9,6 +9,8 @@ import {
   ILoginUserNameReturn,
   IUserInfo,
   IQRCode,
+  IQRCodeConnect,
+  IQRCodeError,
 } from './PropsType';
 import qs from 'qs';
 
@@ -36,7 +38,7 @@ export const getLoginQrCode = () => {
 };
 
 export const getLoginQrCodeResult = (ticket: string) => {
-  return request.get(`${api.qrCodeResult}?ticket=${ticket}`).then((res) => res.data);
+  return request.get<IQRCodeConnect | IQRCodeError>(`${api.qrCodeResult}?ticket=${ticket}`).then((res) => res);
 };
 
 // 注册
