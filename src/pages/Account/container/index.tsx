@@ -10,6 +10,7 @@ import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
 import { loginVerify, checkEmail, checkMobile } from '@/services/account';
 import md5 from 'md5';
+import { useSafeState } from 'ahooks';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -173,9 +174,14 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     });
   }, [verify, loginForm, startCountDown]);
 
+  const [need2FA, setNeed2FA] = useSafeState<boolean>(false);
+
   const handleSendForgetCode = React.useCallback(() => {
     const { email, mobile, national_code, sense } = forgetForm;
     const isEmail = verify === 'email';
+    if (need2FA) {
+      return;
+    }
     const payload = {
       type: 3,
       [isEmail ? 'email' : 'mobile']: isEmail ? email : mobile,
@@ -193,25 +199,45 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         message.error(e.response.data.msg);
       },
     });
-  }, [forgetForm, startCountDown, verify]);
+  }, [forgetForm, need2FA, startCountDown, verify]);
 
   // 忘记密码
+  const [requestId, setRequestId] = useSafeState<string>('');
   const handleForget = React.useCallback(async () => {
     const { email, mobile, national_code } = forgetForm;
     const payload = {
       order_id: orderId,
       verify_code: verifyCode,
     };
+    const VERIFY_TYPES = {
+      GA: 'google',
+      EMAIl: 'email',
+      MOBILE: 'mobile',
+      ID_CARD: 'id_card',
+    };
+    if (need2FA) {
+      return;
+    }
     if (verify === 'email') {
       const data = await checkEmail({ ...payload, email: email || '' });
+      setRequestId(data.requestId);
       if (data.need2FA) {
-        setVerify(data.authType === 'ID_CARD' ? 'id_card' : 'google');
+        setNeed2FA(true);
+        setVerify(VERIFY_TYPES[data.authType]);
         return;
       }
       setType('default');
       return;
     }
     if (verify === 'mobile') {
+      const data = await checkMobile({ ...payload, mobile: mobile || '', national_code: national_code || '' });
+      setRequestId(data.requestId);
+      if (data.need2FA) {
+        setNeed2FA(true);
+        setVerify(VERIFY_TYPES[data.authType]);
+        return;
+      }
+      setType('default');
       return;
     }
     // is google?
@@ -219,7 +245,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     //   return;
     // }
     setType('default');
-  }, [forgetForm, orderId, verifyCode, verify, setType]);
+  }, [forgetForm, orderId, verifyCode, need2FA, verify, setType, setRequestId, setNeed2FA, setVerify]);
 
   // 登录
   const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
@@ -294,7 +320,6 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 className="input"
                 size="lg"
                 placeholder="21212"
-                maxLength={6}
                 value={verifyCode}
                 onChange={setVerifyCode}
                 suffix={

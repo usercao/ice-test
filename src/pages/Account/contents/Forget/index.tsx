@@ -173,21 +173,21 @@ const Forget = () => {
     <Container>
       <Wrapper className="col-center">
         <div className="inner">
-          <h4>{forgetForm.type === 'password' ? t`Reset Login Password` : 'Forgot Password'}</h4>
-          <p className="tips">{forgetForm.type === 'password' ? t`Reset Login Password` : 'hello'}</p>
+          <h4>{forgetForm.type === 'password' ? t`hello` : 'Forgot Password'}</h4>
+          <p className="tips">{forgetForm.type === 'password' ? t`hello` : 'hello'}</p>
           {forgetForm.type !== 'password' && (
             <div className="tabs row-start">
               <p
                 className={`${forgetForm.type === 'email' ? 'active' : 'default'}`}
                 onClick={() => changeFormValue('email', 'type')}
               >
-                {t`Email`}
+                {t`hello`}
               </p>
               <p
                 className={`${forgetForm.type === 'mobile' ? 'active' : 'default'}`}
                 onClick={() => changeFormValue('mobile', 'type')}
               >
-                {t`Phone Number`}
+                {t`hello`}
               </p>
             </div>
           )}
