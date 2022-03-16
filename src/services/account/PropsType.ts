@@ -30,12 +30,18 @@ export interface ISignupParams {
   invite_code?: string;
 }
 
-export interface IResetPwdCheck {
+export interface IResetPwdEmailCheck {
   order_id: string;
   verify_code: string;
   email: string;
 }
 
+export interface IResetPwdMobileCheck {
+  order_id: string;
+  verify_code: string;
+  mobile: string;
+  national_code: string;
+}
 // ===========================================
 // ============= Response ====================
 // ===========================================
@@ -91,7 +97,7 @@ export interface IQRCodeError {
 }
 
 export interface IResetPwdCheckReturn {
-  authType: 'EMAIL' | 'GA' | 'MOBILE' | '';
+  authType: 'EMAIL' | 'GA' | 'MOBILE' | 'ID_CARD';
   need2FA: boolean;
   requestId: string;
 }

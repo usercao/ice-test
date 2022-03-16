@@ -8,7 +8,7 @@ import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
-import { loginVerify } from '@/services/account';
+import { loginVerify, checkEmail, checkMobile } from '@/services/account';
 import md5 from 'md5';
 
 const Wrapper = styled.div`
@@ -139,7 +139,7 @@ const VERIFY_TEXT = {
 const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [type, setType] = useRecoilState(containerType);
   const setUser = useSetRecoilState(recoilUserInfo);
-  const verify = useRecoilValue(verifyType);
+  const [verify, setVerify] = useRecoilState(verifyType);
   const loginForm = useRecoilValue(loginInfo);
   const forgetForm = useRecoilValue(forgetInfo);
   const history = useHistory();
@@ -149,7 +149,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [orderId, setOrderId] = React.useState<string>('');
   const [verifyCode, setVerifyCode] = React.useState<string>('');
 
-  const handleSendCode = React.useCallback(() => {
+  const handleSendLoginCode = React.useCallback(() => {
     const { username, request_id } = loginForm;
     const isEmail = verify === 'email';
     const payload = {
@@ -173,11 +173,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     });
   }, [verify, loginForm, startCountDown]);
 
-  // 忘记密码
-  const [forgetCountDown, forgetIsOver, startForgetCountDown] = useSendCode('emailNotLogin');
-  const [forgetVerify, setForgetVerify] = React.useState<string>('');
-
-  const handleSendForget = React.useCallback(() => {
+  const handleSendForgetCode = React.useCallback(() => {
     const { email, mobile, national_code, sense } = forgetForm;
     const isEmail = verify === 'email';
     const payload = {
@@ -186,7 +182,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
       [isEmail ? '' : 'national_code']: national_code,
       ...sense,
     };
-    startForgetCountDown({
+    startCountDown({
       sendType: isEmail ? 'emailNotLogin' : 'mobileNotLogin',
       payload,
       onSuccess: (e) => {
@@ -197,10 +193,22 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         message.error(e.response.data.msg);
       },
     });
-  }, [forgetForm, startForgetCountDown, verify]);
+  }, [forgetForm, startCountDown, verify]);
 
+  // 忘记密码
   const handleForget = React.useCallback(async () => {
+    const { email, mobile, national_code } = forgetForm;
+    const payload = {
+      order_id: orderId,
+      verify_code: verifyCode,
+    };
     if (verify === 'email') {
+      const data = await checkEmail({ ...payload, email: email || '' });
+      if (data.need2FA) {
+        setVerify(data.authType === 'ID_CARD' ? 'id_card' : 'google');
+        return;
+      }
+      setType('default');
       return;
     }
     if (verify === 'mobile') {
@@ -211,8 +219,9 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     //   return;
     // }
     setType('default');
-  }, [verify, setType]);
+  }, [forgetForm, orderId, verifyCode, verify, setType]);
 
+  // 登录
   const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
   const [loginError, setLoginError] = React.useState<string>('');
 
@@ -252,6 +261,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     }
   }, [loginForm, verify, orderId, verifyCode, setUser]);
 
+  // 注册
   const handleSignup = React.useCallback(async () => {
     history.replace('/home');
   }, [history]);
@@ -285,13 +295,13 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 size="lg"
                 placeholder="21212"
                 maxLength={6}
-                value={forgetVerify}
-                onChange={setForgetVerify}
+                value={verifyCode}
+                onChange={setVerifyCode}
                 suffix={
                   verify !== 'google' &&
                   verify !== 'id_card' && (
-                    <p className="send" onClick={handleSendForget}>
-                      {forgetIsOver ? 'SEND' : `${forgetCountDown}s`}
+                    <p className="send" onClick={handleSendForgetCode}>
+                      {isOver ? 'SEND' : `${countDown}s`}
                     </p>
                   )
                 }
@@ -321,7 +331,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 maxLength={6}
                 suffix={
                   verify !== 'google' && (
-                    <p className="send" onClick={handleSendCode}>
+                    <p className="send" onClick={handleSendLoginCode}>
                       {isOver ? 'SEND' : `${countDown}s`}
                     </p>
                   )

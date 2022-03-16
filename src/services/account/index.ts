@@ -4,12 +4,15 @@ import {
   ILoginParams,
   ILoginVerifyParams,
   ISignupParams,
-  CountriesReturnType,
   GeetestReturn,
   ILoginUserNameReturn,
   IQRCode,
   IQRCodeConnect,
   IQRCodeError,
+  CountriesReturnType,
+  IResetPwdEmailCheck,
+  IResetPwdMobileCheck,
+  IResetPwdCheckReturn,
 } from './PropsType';
 import { IUserInfo } from '@/services/_global/PropsType';
 import qs from 'qs';
@@ -24,6 +27,13 @@ export const getCountries = () => {
   return request.get<CountriesReturnType>(api.countries, { params: { for_area_code: true } }).then((res) => res);
 };
 
+export const checkEmail = (params: IResetPwdEmailCheck) => {
+  return request.post<IResetPwdCheckReturn>(`${api.checkEmail}?${qs.stringify(params)}`).then((res) => res);
+};
+
+export const checkMobile = (params: IResetPwdMobileCheck) => {
+  return request.post<IResetPwdCheckReturn>(`${api.checkMobile}?${qs.stringify(params)}`).then((res) => res);
+};
 // 登录
 export const loginByUserName = (params: ILoginParams) => {
   return request.post<ILoginUserNameReturn>(`${api.usernameLogin}?${qs.stringify(params)}`).then((res) => res);
