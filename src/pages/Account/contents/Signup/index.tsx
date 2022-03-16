@@ -133,7 +133,7 @@ const Signup = () => {
     const { email, password1, checked } = signupForm;
     if (!email || !password1) return true;
     if (password1.length < 8 || password1.length > 20 || !pwdVerify(password1)) {
-      setError('密码8-20位字符, 必须包含大小写字母和数字');
+      setError(t`passwordSettingRequirements`);
       return true;
     }
     if (!checked) {
