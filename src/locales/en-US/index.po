@@ -13,62 +13,112 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/Account/contents/Login/index.tsx:302
+#: src/pages/Account/container/index.tsx:351
+msgid "Account created successfully"
+msgstr "Account created successfully"
+
+#: src/pages/Account/contents/Forget/index.tsx:184
+msgid "Email"
+msgstr "Email"
+
+#: src/pages/Account/contents/Forget/index.tsx:190
+msgid "Phone Number"
+msgstr "Phone Number"
+
+#: src/pages/Account/contents/Forget/index.tsx:176
+#: src/pages/Account/contents/Forget/index.tsx:177
+msgid "Reset Login Password"
+msgstr "Reset Login Password"
+
+#: src/pages/Account/contents/Login/index.tsx:338
 msgid "account"
 msgstr "Account"
 
-#: src/pages/Account/contents/Login/index.tsx:305
+#: src/pages/Account/contents/Login/index.tsx:347
 msgid "codeQR"
 msgstr "QR code"
 
-#: src/pages/Account/contents/Login/index.tsx:366
+#: src/pages/Account/contents/Login/index.tsx:392
+msgid "codeQRExpired"
+msgstr "QR code expired"
+
+#: src/pages/Account/contents/Login/index.tsx:393
+msgid "comfirmOnAPP"
+msgstr "Comfirm on Mexo APP"
+
+#: src/pages/Account/contents/Login/index.tsx:375
 msgid "continue"
 msgstr "Continue"
 
-#: src/pages/Account/contents/Login/index.tsx:310
+#: src/pages/Account/contents/Login/index.tsx:352
 msgid "emailOrPhone"
 msgstr "Email/Phone Number"
 
-#: src/pages/Account/contents/Login/index.tsx:317
+#: src/pages/Account/contents/Login/index.tsx:356
 msgid "enterEmailOrPhone"
 msgstr "Enter Email or Phone Number"
 
-#: src/pages/Account/contents/Login/index.tsx:328
+#: src/pages/Account/contents/Login/index.tsx:366
 msgid "enterLoginPassword"
 msgstr "Enter Password"
 
-#: src/pages/Account/contents/Login/index.tsx:371
+#: src/pages/Account/contents/Login/index.tsx:379
 msgid "forgotPassword"
 msgstr "Forgot Password"
 
-#: src/pages/Account/container/index.tsx:245
-#: src/pages/Account/container/index.tsx:246
-#: src/pages/Account/container/index.tsx:269
-#: src/pages/Account/container/index.tsx:270
-#: src/pages/Account/container/index.tsx:300
-#: src/pages/Account/container/index.tsx:301
-#: src/pages/Account/contents/Forget/index.tsx:163
-#: src/pages/Account/contents/Forget/index.tsx:164
-#: src/pages/Account/contents/Forget/index.tsx:167
-#: src/pages/Account/contents/Forget/index.tsx:170
-#: src/pages/Account/contents/Signup/index.tsx:131
-#: src/pages/Account/contents/Signup/index.tsx:132
-#: src/pages/Home/index.tsx:82
+#: src/pages/Account/container/index.tsx:286
+#: src/pages/Account/container/index.tsx:287
+#: src/pages/Account/container/index.tsx:320
+#: src/pages/Account/container/index.tsx:321
+#: src/pages/Account/container/index.tsx:352
+#: src/pages/Account/contents/Signup/index.tsx:197
+#: src/pages/Account/contents/Signup/index.tsx:198
+#: src/pages/Home/index.tsx:86
 msgid "hello"
 msgstr "Hello"
 
-#: src/pages/Account/contents/Login/index.tsx:320
+#: src/pages/Account/contents/Login/index.tsx:361
 msgid "loginPassword"
 msgstr "Login Password"
 
-#: src/pages/Account/contents/Login/index.tsx:374
+#: src/pages/Account/contents/Login/index.tsx:382
+#: src/pages/Account/contents/Signup/index.tsx:254
 msgid "notMember<0>Signup</0>"
 msgstr "Not a Member? <0>Sign Up</0>"
 
-#: src/pages/Account/contents/Login/index.tsx:299
+#: src/pages/Account/contents/Login/index.tsx:224
+#: src/pages/Account/contents/Signup/index.tsx:136
+msgid "passwordSettingRequirements"
+msgstr "Password is 8-20 characters, must contains uppercase and lowercase letters and numbers"
+
+#: src/pages/Account/contents/Login/index.tsx:405
+msgid "pleaseComfirmOnAPP"
+msgstr "Please comfirm on Mexo APP"
+
+#: src/pages/Account/contents/Login/index.tsx:407
+msgid "retry"
+msgstr "Retry"
+
+#: src/pages/Account/contents/Login/index.tsx:413
+msgid "scan<0>APP</0><1/>CodeWay"
+msgstr "Open and Log In <0>Mexo APP</0><1/>Use built-in camera to scan the QR code"
+
+#: src/pages/Account/contents/Login/index.tsx:404
+msgid "scanSuccessful"
+msgstr "Scan Successful"
+
+#: src/components/_global/Settings/index.tsx:135
+msgid "scanToDownloadApp"
+msgstr "Scan to Download Mexo"
+
+#: src/pages/Account/contents/Login/index.tsx:391
+msgid "scanToLogin"
+msgstr "Scan to Log In"
+
+#: src/pages/Account/contents/Login/index.tsx:329
 msgid "signWithAccountOrCode"
 msgstr "Log In with your Email, Phone Number or QR code"
 
-#: src/pages/Account/contents/Login/index.tsx:298
+#: src/pages/Account/contents/Login/index.tsx:328
 msgid "welcomeToMexo"
 msgstr "Welcome to Mexo"

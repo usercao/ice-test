@@ -3,7 +3,10 @@ import { LOCALE_LABEL } from '@/config/locales';
 import { useRecoilState } from 'recoil';
 import { Dropdown } from '@/components';
 import { locale } from '@/models/_global';
+import { downloadLink } from '@/services/_global';
 import { useMount } from 'ahooks';
+import QRCode from 'qrcode';
+import { t } from '@lingui/macro';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -36,6 +39,31 @@ const Wrapper = styled.div`
         color: #06ceab;
       }
     }
+  }
+`;
+
+const DropdownDownload = styled.div`
+  padding: 14px 26px;
+  background: #ffffff;
+  box-shadow: 0px 4px 10px rgba(208, 208, 208, 0.5);
+  border-radius: 6px;
+  img {
+    width: 126px;
+    height: 126px;
+  }
+  p:nth-child(2) {
+    padding: 6px 0;
+    text-align: center;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    color: rgba(0, 0, 0, 0.8);
+  }
+  p:nth-child(3) {
+    text-align: center;
+    font-weight: 400;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -82,12 +110,32 @@ const Settings: React.FC = () => {
     setLocaleModelList(array);
   }, []);
 
-  useMount(() => getLocaleList());
+  const [qrcode, setQRCode] = React.useState<string>();
+
+  const loadQRCode = React.useCallback(async () => {
+    const { pageLink } = await downloadLink();
+    // 老项目抛弃之后修改
+    const jumpLink = `${pageLink}?language=${window.localStorage.lang ?? 'en-us'}`;
+    // 老项目抛弃之后修改
+    const uri = await QRCode.toDataURL(jumpLink, { margin: 2, width: 160 });
+    setQRCode(uri);
+  }, []);
+
+  useMount(() => {
+    getLocaleList();
+    loadQRCode();
+  });
 
   return (
     <Wrapper className="settings row-end">
       <div className="download">
-        <Dropdown overlay={<i className="iconfont icon-phone" />}>111</Dropdown>
+        <Dropdown followWidth={180} placement="right" overlay={<i className="iconfont icon-phone" />}>
+          <DropdownDownload>
+            <img src={qrcode} alt="qrcode" />
+            <p>{t`scanToDownloadApp`}</p>
+            <p>IOS&Android</p>
+          </DropdownDownload>
+        </Dropdown>
       </div>
       <div className="language">
         <Dropdown followWidth={120} placement="right" overlay={<h6>{LOCALE_LABEL[localeModel]}</h6>}>
