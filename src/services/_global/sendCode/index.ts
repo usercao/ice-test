@@ -6,6 +6,7 @@ import qs from 'qs';
 export const sendEmailLoginVerifyCode = (params: ILoginVerifyCodeParams) => {
   return request.post<IVerifyCodeResponse>(`${api.sendEmailForLogin}?${qs.stringify(params)}`).then((res) => res);
 };
+
 export const sendMobileLoginVerifyCode = (params: ILoginVerifyCodeParams) => {
   return request.post<IVerifyCodeResponse>(`${api.sendMobileForLogin}?${qs.stringify(params)}`).then((res) => res);
 };

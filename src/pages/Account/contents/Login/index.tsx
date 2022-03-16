@@ -221,7 +221,7 @@ const Login = () => {
     const { username, password } = loginForm;
     if (!username || !password) return true;
     if (password.length < 8 || password.length > 20 || !pwdVerify(password)) {
-      setError('密码8-20位字符, 必须包含大小写字母和数字');
+      setError(t`passwordSettingRequirements`);
       return true;
     }
     setError('');
@@ -388,9 +388,9 @@ const Login = () => {
           {state === 'qrcode' && (
             <div className="qrcode">
               <h6>
-                {qrcodeState === -1 && <span>Scan to Log In</span>}
-                {qrcodeState === 0 && <span>QR code expired</span>}
-                {qrcodeState === 1 && <span>Confirm on App</span>}
+                {qrcodeState === -1 && <span>{t`scanToLogin`}</span>}
+                {qrcodeState === 0 && <span>{t`codeQRExpired`}</span>}
+                {qrcodeState === 1 && <span>{t`comfirmOnAPP`}</span>}
               </h6>
               <div className="code">
                 <img src={qrcode || require('@/assets/images/account/qrcode.png')} alt="qrcode" />
@@ -401,18 +401,20 @@ const Login = () => {
                 )}
                 {qrcodeState === 1 && (
                   <div className="success col-center">
-                    <p>Scan successful</p>
-                    <p>Please confirm on App</p>
+                    <p>{t`scanSuccessful`}</p>
+                    <p>{t`pleaseComfirmOnAPP`}</p>
                     <Button size="sm" onClick={loadQRCode}>
-                      Retry
+                      {t`retry`}
                     </Button>
                   </div>
                 )}
               </div>
               <p className="scan">
-                Open and Login <span> App</span>
-                <br />
-                Use built-in camera to scan the QR code.
+                <Trans>
+                  scan<span>APP</span>
+                  <br />
+                  CodeWay
+                </Trans>
               </p>
             </div>
           )}

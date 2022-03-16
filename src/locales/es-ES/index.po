@@ -13,62 +13,112 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/Account/contents/Login/index.tsx:302
+#: src/pages/Account/container/index.tsx:351
+msgid "Account created successfully"
+msgstr ""
+
+#: src/pages/Account/contents/Forget/index.tsx:184
+msgid "Email"
+msgstr ""
+
+#: src/pages/Account/contents/Forget/index.tsx:190
+msgid "Phone Number"
+msgstr ""
+
+#: src/pages/Account/contents/Forget/index.tsx:176
+#: src/pages/Account/contents/Forget/index.tsx:177
+msgid "Reset Login Password"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:338
 msgid "account"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:305
+#: src/pages/Account/contents/Login/index.tsx:347
 msgid "codeQR"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:366
+#: src/pages/Account/contents/Login/index.tsx:392
+msgid "codeQRExpired"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:393
+msgid "comfirmOnAPP"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:375
 msgid "continue"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:310
+#: src/pages/Account/contents/Login/index.tsx:352
 msgid "emailOrPhone"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:317
+#: src/pages/Account/contents/Login/index.tsx:356
 msgid "enterEmailOrPhone"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:328
+#: src/pages/Account/contents/Login/index.tsx:366
 msgid "enterLoginPassword"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:371
+#: src/pages/Account/contents/Login/index.tsx:379
 msgid "forgotPassword"
 msgstr ""
 
-#: src/pages/Account/container/index.tsx:245
-#: src/pages/Account/container/index.tsx:246
-#: src/pages/Account/container/index.tsx:269
-#: src/pages/Account/container/index.tsx:270
-#: src/pages/Account/container/index.tsx:300
-#: src/pages/Account/container/index.tsx:301
-#: src/pages/Account/contents/Forget/index.tsx:163
-#: src/pages/Account/contents/Forget/index.tsx:164
-#: src/pages/Account/contents/Forget/index.tsx:167
-#: src/pages/Account/contents/Forget/index.tsx:170
-#: src/pages/Account/contents/Signup/index.tsx:131
-#: src/pages/Account/contents/Signup/index.tsx:132
-#: src/pages/Home/index.tsx:82
+#: src/pages/Account/container/index.tsx:286
+#: src/pages/Account/container/index.tsx:287
+#: src/pages/Account/container/index.tsx:320
+#: src/pages/Account/container/index.tsx:321
+#: src/pages/Account/container/index.tsx:352
+#: src/pages/Account/contents/Signup/index.tsx:197
+#: src/pages/Account/contents/Signup/index.tsx:198
+#: src/pages/Home/index.tsx:86
 msgid "hello"
 msgstr "Hola!"
 
-#: src/pages/Account/contents/Login/index.tsx:320
+#: src/pages/Account/contents/Login/index.tsx:361
 msgid "loginPassword"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:374
+#: src/pages/Account/contents/Login/index.tsx:382
+#: src/pages/Account/contents/Signup/index.tsx:254
 msgid "notMember<0>Signup</0>"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:299
+#: src/pages/Account/contents/Login/index.tsx:224
+#: src/pages/Account/contents/Signup/index.tsx:136
+msgid "passwordSettingRequirements"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:405
+msgid "pleaseComfirmOnAPP"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:407
+msgid "retry"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:413
+msgid "scan<0>APP</0><1/>CodeWay"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:404
+msgid "scanSuccessful"
+msgstr ""
+
+#: src/components/_global/Settings/index.tsx:135
+msgid "scanToDownloadApp"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:391
+msgid "scanToLogin"
+msgstr ""
+
+#: src/pages/Account/contents/Login/index.tsx:329
 msgid "signWithAccountOrCode"
 msgstr ""
 
-#: src/pages/Account/contents/Login/index.tsx:298
+#: src/pages/Account/contents/Login/index.tsx:328
 msgid "welcomeToMexo"
 msgstr ""
