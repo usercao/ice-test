@@ -6,7 +6,7 @@ import Container from '@/pages/Account/container';
 import { Input, Button, Select } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
-import { useMount, useSafeState } from 'ahooks';
+import { useMount, useSafeState, useDebounceFn } from 'ahooks';
 import { getCountries, resetPwd } from '@/services/account';
 import { CountriesReturnType } from '@/services/account/PropsType';
 import Sense from '@/components/_global/Sense';
@@ -105,6 +105,46 @@ const Wrapper = styled.div`
       flex: 1;
       margin-left: 12px;
     }
+    .pwdOuter {
+      margin-bottom: 16px;
+      position: relative;
+      .pwdStrength {
+        width: 100%;
+        padding-left: 15px;
+        align-items: flex-start;
+        position: absolute;
+        left: 0;
+        z-index: 1;
+        background: #ffffff;
+        border-radius: 4px;
+        box-shadow: 0px 4px 10px rgba(208, 208, 208, 0.5);
+        transition: height 0.3s ease-in-out;
+        &.show {
+          height: 77px;
+        }
+        &.hide {
+          height: 0;
+          z-index: -1;
+          opacity: 0;
+        }
+        > p {
+          font-size: 12px;
+          line-height: 20px;
+          color: #384442;
+          i {
+            zoom: 0.8;
+            font-size: 12px;
+            margin-right: 8px;
+            &.icon-select {
+              color: #06ceab;
+            }
+            &.icon-close1 {
+              color: #ff7878;
+            }
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -176,6 +216,20 @@ const Forget = () => {
   // 新密码
   const [password, setPassword] = useSafeState<string>('');
   const [confirmPassword, setConfirmPassword] = useSafeState<string>('');
+  const [testPwd, setTestPwd] = useSafeState<boolean[]>([false, false, false]);
+
+  const { run } = useDebounceFn(
+    () => {
+      setTestPwd([password.length > 7, /\d/.test(password), /[A-Z]/.test(password)]);
+      console.log(password);
+    },
+    { wait: 400 },
+  );
+
+  React.useEffect(() => {
+    run();
+  }, [password, run]);
+
   const handleSubmitForget = React.useCallback(async () => {
     const { request_id, email, mobile, national_code } = forgetForm;
     const isEmail = accountType === 'email';
@@ -190,9 +244,10 @@ const Forget = () => {
       });
       setLoading(false);
     } catch (e) {
+      setError(e.response.data.msg);
       setLoading(false);
     }
-  }, [accountType, confirmPassword, forgetForm, password, setLoading]);
+  }, [accountType, confirmPassword, forgetForm, password, setError, setLoading]);
 
   return (
     <Container>
@@ -313,22 +368,39 @@ const Forget = () => {
           {forgetForm.type === 'password' && (
             <div className="password">
               <p className="label">Email / Phone Number</p>
-              <Input
-                className="input"
-                name="password"
-                type={eye[0] ? 'text' : 'password'}
-                size="lg"
-                placeholder="21212"
-                value={password}
-                onChange={setPassword}
-                suffix={
-                  <i
-                    className={`iconfont icon-${eye[0] ? 'show' : 'hide'}`}
-                    onClick={() => setEye((v) => [!v[0], v[1]])}
-                  />
-                }
-                clear
-              />
+              <div className="pwdOuter">
+                <Input
+                  className="input"
+                  name="password"
+                  type={eye[0] ? 'text' : 'password'}
+                  size="lg"
+                  placeholder="21212"
+                  value={password}
+                  onChange={setPassword}
+                  suffix={
+                    <i
+                      className={`iconfont icon-${eye[0] ? 'show' : 'hide'}`}
+                      onClick={() => setEye((v) => [!v[0], v[1]])}
+                    />
+                  }
+                  clear
+                />
+                <div className={`pwdStrength col-center ${testPwd.includes(false) ? 'show' : 'hide'}`}>
+                  <p>
+                    <i className={`iconfont icon-${testPwd[0] ? 'select' : 'close1'}`} />A minimum of 8 characters in
+                    length
+                  </p>
+                  <p>
+                    <i className={`iconfont icon-${testPwd[1] ? 'select' : 'close1'}`} />
+                    At least 1 number
+                  </p>
+                  <p>
+                    <i className={`iconfont icon-${testPwd[2] ? 'select' : 'close1'}`} />
+                    At least 1 upper case
+                  </p>
+                </div>
+              </div>
+
               <p className="label">Email / Phone Number</p>
               <Input
                 className="input"

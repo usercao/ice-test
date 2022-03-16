@@ -30,7 +30,7 @@ export const forgetInfo: RecoilState<{
 }> = atom({
   key: 'forgetInfo',
   default: {
-    type: 'email',
+    type: 'password',
     email: '',
     mobile: '',
     sense: { challenge: '', captcha_response: '', captcha_id: '' },
