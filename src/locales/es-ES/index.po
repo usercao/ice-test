@@ -21,6 +21,10 @@ msgstr ""
 msgid "account"
 msgstr ""
 
+#: src/pages/Account/container/index.tsx:377
+msgid "accountCreatedSuccessfully"
+msgstr ""
+
 #: src/pages/Account/contents/Signup/index.tsx:140
 msgid "checkAgreement"
 msgstr ""
@@ -41,6 +45,8 @@ msgstr ""
 msgid "confirm"
 msgstr ""
 
+#: src/pages/Account/container/index.tsx:337
+#: src/pages/Account/container/index.tsx:369
 #: src/pages/Account/contents/Login/index.tsx:375
 #: src/pages/Account/contents/Signup/index.tsx:264
 msgid "continue"
@@ -58,16 +64,17 @@ msgstr ""
 msgid "email<0>{0}</0>Reminder"
 msgstr ""
 
-#: src/pages/Account/contents/Signup/index.tsx:276
-msgid "emailCode"
-msgstr ""
-
 #: src/pages/Account/contents/Login/index.tsx:352
 msgid "emailOrPhone"
 msgstr ""
 
 #: src/pages/Account/contents/Signup/index.tsx:197
 msgid "emailVerification"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:136
+#: src/pages/Account/contents/Signup/index.tsx:276
+msgid "emailVerificationCode"
 msgstr ""
 
 #: src/pages/Account/contents/Signup/index.tsx:213
@@ -98,16 +105,14 @@ msgstr ""
 msgid "forgotPassword"
 msgstr ""
 
+#: src/pages/Account/container/index.tsx:135
+msgid "googleAuthenticator"
+msgstr ""
+
 #: src/pages/Account/contents/Signup/index.tsx:268
 msgid "hadAccount<0>Login</0>"
 msgstr ""
 
-#: src/pages/Account/container/index.tsx:312
-#: src/pages/Account/container/index.tsx:313
-#: src/pages/Account/container/index.tsx:345
-#: src/pages/Account/container/index.tsx:346
-#: src/pages/Account/container/index.tsx:376
-#: src/pages/Account/container/index.tsx:377
 #: src/pages/Account/contents/Forget/index.tsx:176
 #: src/pages/Account/contents/Forget/index.tsx:177
 #: src/pages/Account/contents/Forget/index.tsx:184
@@ -130,8 +135,22 @@ msgstr ""
 msgid "passwordSettingRequirements"
 msgstr ""
 
+#: src/pages/Account/container/index.tsx:137
+msgid "phoneVerificationCode"
+msgstr ""
+
 #: src/pages/Account/contents/Login/index.tsx:405
 msgid "pleaseComfirmOnAPP"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:322
+#: src/pages/Account/container/index.tsx:355
+msgid "pleaseEnterCode"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:313
+#: src/pages/Account/container/index.tsx:346
+msgid "protectAccountByVerification"
 msgstr ""
 
 #: src/pages/Account/contents/Signup/index.tsx:229
@@ -158,6 +177,8 @@ msgstr ""
 msgid "scanToLogin"
 msgstr ""
 
+#: src/pages/Account/container/index.tsx:327
+#: src/pages/Account/container/index.tsx:359
 #: src/pages/Account/contents/Signup/index.tsx:284
 msgid "send"
 msgstr ""
@@ -172,6 +193,19 @@ msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:329
 msgid "signWithAccountOrCode"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:381
+msgid "startNow"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:312
+#: src/pages/Account/container/index.tsx:345
+msgid "verification"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:378
+msgid "welcomeToCryptoWorld"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:328

@@ -132,9 +132,9 @@ const Wrapper = styled.div`
 `;
 
 const VERIFY_TEXT = {
-  google: 'Google Authenticator',
-  email: 'Email Verification Code',
-  mobile: 'Phone Verification Code',
+  google: t`googleAuthenticator`,
+  email: t`emailVerificationCode`,
+  mobile: t`phoneVerificationCode`,
 };
 
 const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
@@ -309,8 +309,8 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         {type === 'forget' && (
           <div className="verify col-center">
             <div className="inner">
-              <h4>{t`hello`}</h4>
-              <p className="tips">{t`hello`}</p>
+              <h4>{t`verification`}</h4>
+              <p className="tips">{t`protectAccountByVerification`}</p>
               <p className="label row-between">
                 <span>{VERIFY_TEXT[verify]}</span>
                 <span>{verify === 'email' && forgetForm.email}</span>
@@ -319,9 +319,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
               <Input
                 className="input"
                 size="lg"
-                placeholder="21212"
-                value={verifyCode}
-                onChange={setVerifyCode}
+                placeholder={t`pleaseEnterCode`}
                 suffix={
                   verify !== 'google' &&
                   verify !== 'id_card' && (
@@ -330,11 +328,13 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                     </p>
                   )
                 }
+                value={verifyCode}
+                onChange={setVerifyCode}
                 clear
               />
               <p className="error">{''}</p>
               <Button size="lg" onClick={handleForget}>
-                Continue
+                {t`continue`}
               </Button>
             </div>
           </div>
@@ -342,18 +342,17 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         {type === 'login' && (
           <div className="verify col-center">
             <div className="inner">
-              <h4>{t`hello`}</h4>
-              <p className="tips">{t`hello`}</p>
+              <h4>{t`verification`}</h4>
+              <p className="tips">{t`protectAccountByVerification`}</p>
               <p className="label row-between">
                 <span>{VERIFY_TEXT[verify]}</span>
                 {verify !== 'google' && <span>{loginForm.username}</span>}
               </p>
               <Input
-                value={verifyCode}
-                onChange={setVerifyCode}
                 className="input"
                 size="lg"
                 maxLength={6}
+                placeholder={t`pleaseEnterCode`}
                 suffix={
                   verify !== 'google' && (
                     <p className="send" onClick={handleSendLoginCode}>
@@ -361,11 +360,13 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                     </p>
                   )
                 }
+                value={verifyCode}
+                onChange={setVerifyCode}
                 clear
               />
               <p className="error">{loginError}</p>
               <Button size="lg" onClick={handleLogin} loading={loginLoading}>
-                Continue
+                {t`continue`}
               </Button>
             </div>
           </div>
@@ -373,11 +374,11 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         {type === 'signup' && (
           <div className="success col-center">
             <div className="inner">
-              <h4>{t`hello`}</h4>
-              <p className="tips">{t`hello`}</p>
+              <h4>{t`accountCreatedSuccessfully`}</h4>
+              <p className="tips">{t`welcomeToCryptoWorld`}</p>
               <img className="success" src={require('@/assets/images/account/successfully.webp')} alt="success" />
               <Button size="lg" onClick={handleSignup}>
-                Continue
+                {t`startNow`}
               </Button>
             </div>
           </div>

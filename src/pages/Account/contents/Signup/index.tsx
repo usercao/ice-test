@@ -273,7 +273,7 @@ const Signup = () => {
           )}
           {state === 'email' && (
             <div className="email">
-              <p className="label">{t`emailCode`}</p>
+              <p className="label">{t`emailVerificationCode`}</p>
               <Input
                 className="input"
                 size="lg"
