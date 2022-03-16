@@ -1,6 +1,12 @@
 import { request } from 'ice';
 import api from '@/config/api';
-import { ILoginVerifyCodeParams, INotLoginCodeParams, IVerifyCodeResponse } from './PropsType';
+import {
+  ILoginVerifyCodeParams,
+  INotLoginCodeParams,
+  IVerifyCodeResponse,
+  IForgetCheck,
+  IForgetCheckResponse,
+} from './PropsType';
 import qs from 'qs';
 
 export const sendEmailLoginVerifyCode = (params: ILoginVerifyCodeParams) => {
@@ -16,4 +22,7 @@ export const sendNotLoginCode = (params: INotLoginCodeParams) => {
 };
 export const sendNotLoginMobile = (params: INotLoginCodeParams) => {
   return request.post<IVerifyCodeResponse>(`${api.sendMobileNotLogin}?${qs.stringify(params)}`).then((res) => res);
+};
+export const sendForgetCheck = (params: IForgetCheck) => {
+  return request.post<IForgetCheckResponse>(`${api.sendForgetCheck}?${qs.stringify(params)}`).then((res) => res);
 };

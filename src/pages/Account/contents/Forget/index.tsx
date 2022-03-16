@@ -6,10 +6,11 @@ import Container from '@/pages/Account/container';
 import { Input, Button, Select } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
-import { useMount } from 'ahooks';
-import { getCountries } from '@/services/account';
+import { useMount, useSafeState } from 'ahooks';
+import { getCountries, resetPwd } from '@/services/account';
 import { CountriesReturnType } from '@/services/account/PropsType';
 import Sense from '@/components/_global/Sense';
+import md5 from 'md5';
 
 const Wrapper = styled.div`
   align-items: flex-start;
@@ -140,7 +141,10 @@ const Forget = () => {
   const setVerify = useSetRecoilState(verifyType);
   const history = useHistory();
   const [forgetForm, setForgetForm] = useRecoilState(forgetInfo);
+  const [accountType, setAccountType] = useSafeState<string>(forgetForm.type);
   const [eye, setEye] = React.useState<boolean[]>([false, false]);
+  const [error, setError] = useSafeState<string>('');
+  const [loading, setLoading] = useSafeState<boolean>(false);
 
   const [countriesValue, setCountriesValue] = React.useState<CountriesReturnType[number]>();
   const [countriesList, setCountriesList] = React.useState<CountriesReturnType>([]);
@@ -169,6 +173,27 @@ const Forget = () => {
     }
   });
 
+  // 新密码
+  const [password, setPassword] = useSafeState<string>('');
+  const [confirmPassword, setConfirmPassword] = useSafeState<string>('');
+  const handleSubmitForget = React.useCallback(async () => {
+    const { request_id, email, mobile, national_code } = forgetForm;
+    const isEmail = accountType === 'email';
+    try {
+      setLoading(true);
+      await resetPwd({
+        request_id,
+        password1: md5(password) as string,
+        password2: md5(confirmPassword) as string,
+        [isEmail ? 'email' : 'mobile']: isEmail ? email : mobile,
+        [isEmail ? '' : 'national_code']: isEmail ? '' : national_code,
+      });
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
+  }, [accountType, confirmPassword, forgetForm, password, setLoading]);
+
   return (
     <Container>
       <Wrapper className="col-center">
@@ -179,13 +204,19 @@ const Forget = () => {
             <div className="tabs row-start">
               <p
                 className={`${forgetForm.type === 'email' ? 'active' : 'default'}`}
-                onClick={() => changeFormValue('email', 'type')}
+                onClick={() => {
+                  changeFormValue('email', 'type');
+                  setAccountType('email');
+                }}
               >
                 {t`hello`}
               </p>
               <p
                 className={`${forgetForm.type === 'mobile' ? 'active' : 'default'}`}
-                onClick={() => changeFormValue('mobile', 'type')}
+                onClick={() => {
+                  changeFormValue('mobile', 'type');
+                  setAccountType('mobile');
+                }}
               >
                 {t`hello`}
               </p>
@@ -284,9 +315,12 @@ const Forget = () => {
               <p className="label">Email / Phone Number</p>
               <Input
                 className="input"
+                name="password"
                 type={eye[0] ? 'text' : 'password'}
                 size="lg"
                 placeholder="21212"
+                value={password}
+                onChange={setPassword}
                 suffix={
                   <i
                     className={`iconfont icon-${eye[0] ? 'show' : 'hide'}`}
@@ -298,9 +332,12 @@ const Forget = () => {
               <p className="label">Email / Phone Number</p>
               <Input
                 className="input"
+                name="confirmPassword"
                 type={eye[1] ? 'text' : 'password'}
                 size="lg"
                 placeholder="21212"
+                value={confirmPassword}
+                onChange={setConfirmPassword}
                 suffix={
                   <i
                     className={`iconfont icon-${eye[1] ? 'show' : 'hide'}`}
@@ -309,8 +346,8 @@ const Forget = () => {
                 }
                 clear
               />
-              <p className="error">{''}</p>
-              <Button size="lg" onClick={() => history.replace('/login')}>
+              <p className="error">{error}</p>
+              <Button size="lg" onClick={() => handleSubmitForget} loading={loading}>
                 Continue
               </Button>
             </div>

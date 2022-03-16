@@ -30,17 +30,31 @@ export interface ISignupParams {
   invite_code?: string;
 }
 
-export interface IResetPwdEmailCheck {
+export interface IResetPwdEmailCheckParams {
   order_id: string;
   verify_code: string;
   email: string;
 }
 
-export interface IResetPwdMobileCheck {
+export interface IResetPwdMobileCheckParams {
   order_id: string;
   verify_code: string;
   mobile: string;
   national_code: string;
+}
+
+export interface IResetPwdParams {
+  password1: string;
+  password2: string;
+  email?: string;
+  national_code?: string;
+  mobile?: string;
+  request_id: string;
+}
+export interface IResetPwd2FaCheckParams {
+  order_id: string;
+  verify_code: string;
+  request_id: string;
 }
 // ===========================================
 // ============= Response ====================

@@ -26,6 +26,7 @@ export const forgetInfo: RecoilState<{
   mobile?: string;
   type: 'email' | 'mobile' | 'password';
   sense: { challenge: string; captcha_response: string; captcha_id: string };
+  request_id: string;
 }> = atom({
   key: 'forgetInfo',
   default: {
@@ -33,5 +34,6 @@ export const forgetInfo: RecoilState<{
     email: '',
     mobile: '',
     sense: { challenge: '', captcha_response: '', captcha_id: '' },
+    request_id: '',
   },
 });

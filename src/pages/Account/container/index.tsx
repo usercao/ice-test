@@ -8,7 +8,7 @@ import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
 import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
-import { loginVerify, checkEmail, checkMobile } from '@/services/account';
+import { loginVerify, checkEmail, checkMobile, check2Fa } from '@/services/account';
 import md5 from 'md5';
 import { useSafeState } from 'ahooks';
 
@@ -142,13 +142,16 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const setUser = useSetRecoilState(recoilUserInfo);
   const [verify, setVerify] = useRecoilState(verifyType);
   const loginForm = useRecoilValue(loginInfo);
-  const forgetForm = useRecoilValue(forgetInfo);
+  const [forgetForm, setForgetForm] = useRecoilState(forgetInfo);
   const history = useHistory();
 
-  // 验证码
-  const [countDown, isOver, startCountDown] = useSendCode('emailAuth');
-  const [orderId, setOrderId] = React.useState<string>('');
+  const [customError, setCustomError] = React.useState<string>('');
+  const [orderId, setOrderId] = React.useState<string>(''); // resetpwdId
   const [verifyCode, setVerifyCode] = React.useState<string>('');
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  // 验证码
+  const [countDown, isOver, startCountDown, stopCountdown] = useSendCode('emailAuth');
 
   const handleSendLoginCode = React.useCallback(() => {
     const { username, request_id } = loginForm;
@@ -175,13 +178,27 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   }, [verify, loginForm, startCountDown]);
 
   const [need2FA, setNeed2FA] = useSafeState<boolean>(false);
+  const [forgetCheckId, setForgetCheckId] = useSafeState<string>('0');
 
   const handleSendForgetCode = React.useCallback(() => {
     const { email, mobile, national_code, sense } = forgetForm;
-    const isEmail = verify === 'email';
     if (need2FA) {
+      startCountDown({
+        sendType: 'forgetCheck',
+        payload: {
+          request_id: orderId,
+        },
+        onSuccess: (e) => {
+          message.success('Send Success');
+          setForgetCheckId(e.orderId);
+        },
+        onError: (e) => {
+          message.error(e.response.data.msg);
+        },
+      });
       return;
     }
+    const isEmail = verify === 'email';
     const payload = {
       type: 3,
       [isEmail ? 'email' : 'mobile']: isEmail ? email : mobile,
@@ -199,10 +216,9 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         message.error(e.response.data.msg);
       },
     });
-  }, [forgetForm, need2FA, startCountDown, verify]);
+  }, [forgetForm, need2FA, orderId, setForgetCheckId, startCountDown, verify]);
 
   // 忘记密码
-  const [requestId, setRequestId] = useSafeState<string>('');
   const handleForget = React.useCallback(async () => {
     const { email, mobile, national_code } = forgetForm;
     const payload = {
@@ -216,43 +232,93 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
       ID_CARD: 'id_card',
     };
     if (need2FA) {
+      try {
+        setLoading(true);
+        check2Fa({
+          verify_code: verifyCode,
+          request_id: orderId,
+          order_id: forgetCheckId,
+        });
+        setLoading(false);
+        setForgetForm((prev) => ({
+          ...prev,
+          request_id: orderId,
+          type: 'password',
+        }));
+        setType('default');
+      } catch (error) {
+        setLoading(false);
+        setCustomError(error.response.data.msg);
+      }
       return;
     }
     if (verify === 'email') {
-      const data = await checkEmail({ ...payload, email: email || '' });
-      setRequestId(data.requestId);
-      if (data.need2FA) {
-        setNeed2FA(true);
-        setVerify(VERIFY_TYPES[data.authType]);
-        return;
+      try {
+        setLoading(true);
+        const data = await checkEmail({ ...payload, email: email || '' });
+        setLoading(false);
+        if (data.need2FA) {
+          setOrderId(data.requestId);
+          setVerifyCode('');
+          setNeed2FA(true);
+          stopCountdown();
+          setVerify(VERIFY_TYPES[data.authType]);
+          setLoading(false);
+          return;
+        }
+        setForgetForm((prev) => ({
+          ...prev,
+          request_id: data.requestId,
+          type: 'password',
+        }));
+        setType('default');
+      } catch (e) {
+        setLoading(false);
+        setCustomError(e.response.data.msg);
       }
-      setType('default');
-      return;
     }
     if (verify === 'mobile') {
-      const data = await checkMobile({ ...payload, mobile: mobile || '', national_code: national_code || '' });
-      setRequestId(data.requestId);
-      if (data.need2FA) {
-        setNeed2FA(true);
-        setVerify(VERIFY_TYPES[data.authType]);
-        return;
+      try {
+        setLoading(true);
+        const data = await checkMobile({ ...payload, mobile: mobile || '', national_code: national_code || '' });
+        setLoading(false);
+        if (data.need2FA) {
+          setOrderId(data.requestId);
+          setVerifyCode('');
+          setNeed2FA(true);
+          stopCountdown();
+          setVerify(VERIFY_TYPES[data.authType]);
+          return;
+        }
+        setForgetForm((prev) => ({
+          ...prev,
+          request_id: data.requestId,
+          type: 'password',
+        }));
+        setType('default');
+      } catch (error) {
+        setLoading(false);
+        setCustomError(error.response.data.msg);
       }
-      setType('default');
-      return;
     }
-    // is google?
-    // if (verify === '') {
-    //   return;
-    // }
-    setType('default');
-  }, [forgetForm, orderId, verifyCode, need2FA, verify, setType, setRequestId, setNeed2FA, setVerify]);
+  }, [
+    forgetForm,
+    orderId,
+    verifyCode,
+    need2FA,
+    verify,
+    forgetCheckId,
+    setForgetForm,
+    setType,
+    setNeed2FA,
+    stopCountdown,
+    setVerify,
+  ]);
 
   // 登录
-  const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
-  const [loginError, setLoginError] = React.useState<string>('');
 
   const handleLogin = React.useCallback(async () => {
-    setLoginLoading(true);
+    setLoading(true);
     const { username, request_id } = loginForm;
     const payload = {
       type: 0,
@@ -274,7 +340,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
     }
     try {
       const data = await loginVerify(payload);
-      setLoginLoading(false);
+      setLoading(false);
       if (data) {
         // 老项目抛弃之后修改
         window.sessionStorage.userinfo = JSON.stringify(data);
@@ -282,8 +348,8 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         setUser(data);
       }
     } catch (e) {
-      setLoginError(e.response.data.msg);
-      setLoginLoading(false);
+      setCustomError(e.response.data.msg);
+      setLoading(false);
     }
   }, [loginForm, verify, orderId, verifyCode, setUser]);
 
@@ -313,8 +379,8 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
               <p className="tips">{t`protectAccountByVerification`}</p>
               <p className="label row-between">
                 <span>{VERIFY_TEXT[verify]}</span>
-                <span>{verify === 'email' && forgetForm.email}</span>
-                <span>{verify === 'mobile' && forgetForm.mobile}</span>
+                {verify === 'email' && <span>{forgetForm.email}</span>}
+                {verify === 'mobile' && <span>{forgetForm.mobile}</span>}
               </p>
               <Input
                 className="input"
@@ -332,8 +398,8 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 onChange={setVerifyCode}
                 clear
               />
-              <p className="error">{''}</p>
-              <Button size="lg" onClick={handleForget}>
+              <p className="error">{customError}</p>
+              <Button size="lg" onClick={handleForget} loading={loading}>
                 {t`continue`}
               </Button>
             </div>
@@ -364,8 +430,8 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 onChange={setVerifyCode}
                 clear
               />
-              <p className="error">{loginError}</p>
-              <Button size="lg" onClick={handleLogin} loading={loginLoading}>
+              <p className="error">{customError}</p>
+              <Button size="lg" onClick={handleLogin} loading={loading}>
                 {t`continue`}
               </Button>
             </div>

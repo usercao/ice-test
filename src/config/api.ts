@@ -15,6 +15,7 @@ export default {
   sendMobileForLogin: `${ICE_OLD_API_URI}/user/send_sms_verify_code/authorize_advance`,
   sendEmailNotLogin: `${ICE_OLD_API_URI}/common/send_email_verify_code`,
   sendMobileNotLogin: `${ICE_OLD_API_URI}/common/send_sms_verify_code`,
+  sendForgetCheck: `${ICE_OLD_API_URI}/user/send_verify_code/find_pwd`,
   // forget
   countries: `${ICE_FEW_API_URI}/basic/countries`,
   checkEmail: `${ICE_OLD_API_URI}/user/email_find_pwd_check1`,

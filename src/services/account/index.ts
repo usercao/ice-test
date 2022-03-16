@@ -10,9 +10,11 @@ import {
   IQRCodeConnect,
   IQRCodeError,
   CountriesReturnType,
-  IResetPwdEmailCheck,
-  IResetPwdMobileCheck,
+  IResetPwdEmailCheckParams,
+  IResetPwdMobileCheckParams,
   IResetPwdCheckReturn,
+  IResetPwd2FaCheckParams,
+  IResetPwdParams,
 } from './PropsType';
 import { IUserInfo } from '@/services/_global/PropsType';
 import qs from 'qs';
@@ -27,12 +29,19 @@ export const getCountries = () => {
   return request.get<CountriesReturnType>(api.countries, { params: { for_area_code: true } }).then((res) => res);
 };
 
-export const checkEmail = (params: IResetPwdEmailCheck) => {
+export const checkEmail = (params: IResetPwdEmailCheckParams) => {
   return request.post<IResetPwdCheckReturn>(`${api.checkEmail}?${qs.stringify(params)}`).then((res) => res);
 };
 
-export const checkMobile = (params: IResetPwdMobileCheck) => {
+export const checkMobile = (params: IResetPwdMobileCheckParams) => {
   return request.post<IResetPwdCheckReturn>(`${api.checkMobile}?${qs.stringify(params)}`).then((res) => res);
+};
+
+export const check2Fa = (params: IResetPwd2FaCheckParams) => {
+  return request.post(`${api.check2Fa}?${qs.stringify(params)}`).then((res) => res);
+};
+export const resetPwd = (params: IResetPwdParams) => {
+  return request.post(`${api.resetPwd}?${qs.stringify(params)}`).then((res) => res);
 };
 // 登录
 export const loginByUserName = (params: ILoginParams) => {

@@ -20,11 +20,17 @@ export interface INotLoginCodeParams extends ICaptcha {
   type: number; // 注册: 1
 }
 
-export interface IVerifyCodeResponse {
-  index: string;
-  orderId: 2;
+export interface IForgetCheck {
+  request_id: string;
 }
 
 // ===========================================
 // ============= Response ====================
 // ===========================================
+export interface IVerifyCodeResponse {
+  index: string | number;
+  orderId: string | number;
+}
+export interface IForgetCheckResponse {
+  orderId: string;
+}
