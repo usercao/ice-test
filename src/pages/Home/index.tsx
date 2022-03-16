@@ -66,7 +66,7 @@ const Home = () => {
           history.push('/login');
         }}
       >
-        {isOver ? '开始' : `${countDown}s`}
+        {isOver ? '开始' : `${countDown}S`}
       </button>
       {/* <p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
       <p>abcdefghijklmnopqrstuvwxyz</p>

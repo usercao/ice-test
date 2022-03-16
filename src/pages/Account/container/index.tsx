@@ -326,7 +326,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                   verify !== 'google' &&
                   verify !== 'id_card' && (
                     <p className="send" onClick={handleSendForgetCode}>
-                      {isOver ? 'SEND' : `${countDown}s`}
+                      {isOver ? t`send` : `${countDown}S`}
                     </p>
                   )
                 }
@@ -357,7 +357,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
                 suffix={
                   verify !== 'google' && (
                     <p className="send" onClick={handleSendLoginCode}>
-                      {isOver ? 'SEND' : `${countDown}s`}
+                      {isOver ? t`send` : `${countDown}S`}
                     </p>
                   )
                 }

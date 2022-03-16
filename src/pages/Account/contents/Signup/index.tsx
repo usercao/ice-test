@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import { useSessionStorageState } from 'ahooks';
 import { containerType, signupInfo } from '@/models/account';
-import { userInfo as recoilUserInfo } from '@/models/_global';
+import { userInfo as recoilUserInfo, indexConfig as recoilIndexConfig } from '@/models/_global';
 import Container from '@/pages/Account/container';
 import { Input, Button, Checkbox, message } from '@/components';
 import Sense from '@/components/_global/Sense';
@@ -113,8 +113,8 @@ const Signup = () => {
   const setType = useSetRecoilState(containerType);
   const setUser = useSetRecoilState(recoilUserInfo);
   const [signupForm, setSignupInfo] = useRecoilState(signupInfo);
+  const indexConfig = useRecoilValue(recoilIndexConfig);
   const history = useHistory();
-  console.log(signupForm);
 
   const [state, setState] = React.useState<'account' | 'email'>('account');
   const [eye, setEye] = React.useState<boolean>(false);
@@ -137,7 +137,7 @@ const Signup = () => {
       return true;
     }
     if (!checked) {
-      setError('请勾选协议');
+      setError(t`checkAgreement`);
       return true;
     }
     setError('');
@@ -157,7 +157,7 @@ const Signup = () => {
     startCountDown({
       payload,
       onSuccess: (e) => {
-        message.success('Send Success');
+        message.success(t`sendSuccess`);
         setOrderId(e.orderId);
       },
       onError: (e) => {
@@ -194,35 +194,43 @@ const Signup = () => {
     <Container>
       <Wrapper className="col-center">
         <div className="inner">
-          <h4>{t`hello`}</h4>
-          <p className="tips">{state === 'account' ? t`hello` : <span>3231331313</span>}</p>
+          <h4>{state === 'account' ? t`creatAccount` : t`emailVerification`}</h4>
+          <p className="tips">
+            {state === 'account' ? (
+              t`signUpByEmail`
+            ) : (
+              <Trans>
+                email<span>{signupForm.email}</span>Reminder
+              </Trans>
+            )}
+          </p>
           {state === 'account' && (
             <form className="account">
-              <p className="label">Email / Phone Number</p>
+              <p className="label">{t`email`}</p>
               <Input
                 className="input"
                 size="lg"
-                placeholder="Enter Email Address"
+                placeholder={t`enterEmailAdress`}
                 value={signupForm.email}
                 onChange={(e) => setSignupInfo((v) => ({ ...v, email: e }))}
                 clear
               />
-              <p className="label">Login Password</p>
+              <p className="label">{t`loginPassword`}</p>
               <Input
                 className="input"
                 type={eye ? 'text' : 'password'}
                 size="lg"
-                placeholder="Enter Password"
+                placeholder={t`enterPassword`}
                 suffix={<i className={`iconfont icon-${eye ? 'show' : 'hide'}`} onClick={() => setEye((v) => !v)} />}
                 value={signupForm.password1}
                 onChange={(e) => setSignupInfo((v) => ({ ...v, password1: e }))}
                 clear
               />
-              <p className="label">Referral ID (Optional)</p>
+              <p className="label">{t`referralCodeOptional`}</p>
               <Input
                 className="input"
                 size="lg"
-                placeholder="Enter Referral ID "
+                placeholder={t`enterReferralCode`}
                 value={inviteCode}
                 onChange={setInviteCode}
                 clear
@@ -233,10 +241,16 @@ const Signup = () => {
                 onChange={(e) => setSignupInfo((v) => ({ ...v, checked: e }))}
               >
                 <p>
-                  <span>I have read and agreed </span>
-                  <a onClick={() => console.log(111)}>Terms of Use </a>
-                  <span>and </span>
-                  <a onClick={() => console.log(111)}>Privacy Agreement</a>
+                  <Trans>
+                    <span>readAndAgree</span>
+                    <a href={indexConfig?.userAgreement} target="_blank" rel="noreferrer">
+                      TermOfUse
+                    </a>
+                    <span>And</span>
+                    <a href={indexConfig?.privacyAgreement} target="_blank" rel="noreferrer">
+                      PrivacyAgreement
+                    </a>
+                  </Trans>
                 </p>
               </Checkbox>
               <p className="error">{error}</p>
@@ -247,27 +261,27 @@ const Signup = () => {
                 }}
               >
                 <Button size="lg" disabled={verifyForm}>
-                  Continue
+                  {t`continue`}
                 </Button>
               </Sense>
               <p className="jump">
                 <Trans>
-                  notMember<span onClick={() => history.push('/login')}>Signup</span>
+                  hadAccount<span onClick={() => history.push('/login')}>Login</span>
                 </Trans>
               </p>
             </form>
           )}
           {state === 'email' && (
             <div className="email">
-              <p className="label">Email Verification Code</p>
+              <p className="label">{t`emailCode`}</p>
               <Input
                 className="input"
                 size="lg"
-                placeholder="Enter Email Verification Code"
+                placeholder={t`enterEmailCode`}
                 maxLength={6}
                 suffix={
                   <p className="send" onClick={handleSendCode}>
-                    {isOver ? 'SEND' : `${countDown}s`}
+                    {isOver ? t`send` : `${countDown}S`}
                   </p>
                 }
                 value={verifyCode}
@@ -276,7 +290,7 @@ const Signup = () => {
               />
               <p className="error">{error}</p>
               <Button size="lg" loading={loading} disabled={!verifyCode} onClick={submitSignup}>
-                Confirm
+                {t`confirm`}
               </Button>
             </div>
           )}

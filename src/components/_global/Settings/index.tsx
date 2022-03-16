@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { LOCALE_LABEL } from '@/config/locales';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { Dropdown } from '@/components';
-import { locale } from '@/models/_global';
-import { downloadLink } from '@/services/_global';
-import { useMount } from 'ahooks';
+import { locale, indexConfig as recoilIndexConfig } from '@/models/_global';
+import { downloadLink, indexConfig } from '@/services/_global';
+import { useMount, useTimeout } from 'ahooks';
 import QRCode from 'qrcode';
 import { t } from '@lingui/macro';
 import styled from 'styled-components';
@@ -110,6 +110,18 @@ const Settings: React.FC = () => {
     setLocaleModelList(array);
   }, []);
 
+  const setIndexConfig = useSetRecoilState(recoilIndexConfig);
+
+  const loadIndexConfig = React.useCallback(async () => {
+    const basic_data = await indexConfig();
+    setIndexConfig(basic_data);
+  }, [setIndexConfig]);
+
+  useMount(() => {
+    getLocaleList();
+    loadIndexConfig();
+  });
+
   const [qrcode, setQRCode] = React.useState<string>();
 
   const loadQRCode = React.useCallback(async () => {
@@ -121,10 +133,9 @@ const Settings: React.FC = () => {
     setQRCode(uri);
   }, []);
 
-  useMount(() => {
-    getLocaleList();
+  useTimeout(() => {
     loadQRCode();
-  });
+  }, 3000);
 
   return (
     <Wrapper className="settings row-end">

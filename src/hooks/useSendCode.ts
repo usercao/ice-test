@@ -14,7 +14,7 @@ const SEND_FUNC = {
   mobileNotLogin: sendNotLoginMobile,
 };
 
-const TIME = 6000;
+const TIME = 60000;
 
 type SendCodeType =
   | 'mobileNotLogin'

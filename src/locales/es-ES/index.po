@@ -13,25 +13,16 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/Account/container/index.tsx:351
-msgid "Account created successfully"
-msgstr ""
-
-#: src/pages/Account/contents/Forget/index.tsx:184
-msgid "Email"
-msgstr ""
-
-#: src/pages/Account/contents/Forget/index.tsx:190
-msgid "Phone Number"
-msgstr ""
-
-#: src/pages/Account/contents/Forget/index.tsx:176
-#: src/pages/Account/contents/Forget/index.tsx:177
-msgid "Reset Login Password"
+#: src/pages/Account/contents/Signup/index.tsx:244
+msgid "<0>readAndAgree</0><1>TermOfUse</1><2>And</2><3>PrivacyAgreement</3>"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:338
 msgid "account"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:140
+msgid "checkAgreement"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:347
@@ -46,12 +37,45 @@ msgstr ""
 msgid "comfirmOnAPP"
 msgstr ""
 
+#: src/pages/Account/contents/Signup/index.tsx:293
+msgid "confirm"
+msgstr ""
+
 #: src/pages/Account/contents/Login/index.tsx:375
+#: src/pages/Account/contents/Signup/index.tsx:264
 msgid "continue"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:197
+msgid "creatAccount"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:209
+msgid "email"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:202
+msgid "email<0>{0}</0>Reminder"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:276
+msgid "emailCode"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:352
 msgid "emailOrPhone"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:197
+msgid "emailVerification"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:213
+msgid "enterEmailAdress"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:280
+msgid "enterEmailCode"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:356
@@ -62,27 +86,42 @@ msgstr ""
 msgid "enterLoginPassword"
 msgstr ""
 
+#: src/pages/Account/contents/Signup/index.tsx:223
+msgid "enterPassword"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:233
+msgid "enterReferralCode"
+msgstr ""
+
 #: src/pages/Account/contents/Login/index.tsx:379
 msgid "forgotPassword"
 msgstr ""
 
-#: src/pages/Account/container/index.tsx:286
-#: src/pages/Account/container/index.tsx:287
-#: src/pages/Account/container/index.tsx:320
-#: src/pages/Account/container/index.tsx:321
-#: src/pages/Account/container/index.tsx:352
-#: src/pages/Account/contents/Signup/index.tsx:197
-#: src/pages/Account/contents/Signup/index.tsx:198
+#: src/pages/Account/contents/Signup/index.tsx:268
+msgid "hadAccount<0>Login</0>"
+msgstr ""
+
+#: src/pages/Account/container/index.tsx:312
+#: src/pages/Account/container/index.tsx:313
+#: src/pages/Account/container/index.tsx:345
+#: src/pages/Account/container/index.tsx:346
+#: src/pages/Account/container/index.tsx:376
+#: src/pages/Account/container/index.tsx:377
+#: src/pages/Account/contents/Forget/index.tsx:176
+#: src/pages/Account/contents/Forget/index.tsx:177
+#: src/pages/Account/contents/Forget/index.tsx:184
+#: src/pages/Account/contents/Forget/index.tsx:190
 #: src/pages/Home/index.tsx:86
 msgid "hello"
 msgstr "Hola!"
 
 #: src/pages/Account/contents/Login/index.tsx:361
+#: src/pages/Account/contents/Signup/index.tsx:218
 msgid "loginPassword"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:382
-#: src/pages/Account/contents/Signup/index.tsx:254
 msgid "notMember<0>Signup</0>"
 msgstr ""
 
@@ -93,6 +132,10 @@ msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:405
 msgid "pleaseComfirmOnAPP"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:229
+msgid "referralCodeOptional"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:407
@@ -107,12 +150,24 @@ msgstr ""
 msgid "scanSuccessful"
 msgstr ""
 
-#: src/components/_global/Settings/index.tsx:135
+#: src/components/_global/Settings/index.tsx:146
 msgid "scanToDownloadApp"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:391
 msgid "scanToLogin"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:284
+msgid "send"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:160
+msgid "sendSuccess"
+msgstr ""
+
+#: src/pages/Account/contents/Signup/index.tsx:200
+msgid "signUpByEmail"
 msgstr ""
 
 #: src/pages/Account/contents/Login/index.tsx:329

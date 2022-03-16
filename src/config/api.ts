@@ -5,6 +5,7 @@ const { ICE_OLD_API_URI, ICE_FEW_API_URI, ICE_NEW_API_URI } = config;
 export default {
   // _global
   downloadLink: `${ICE_NEW_API_URI}/sys/download/link`,
+  indexConfig: `${ICE_FEW_API_URI}/basic/index_config`,
 
   // 极验
   geetest: `${ICE_NEW_API_URI}/basic/geev3/register`,
