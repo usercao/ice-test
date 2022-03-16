@@ -373,7 +373,7 @@ const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
         {type === 'signup' && (
           <div className="success col-center">
             <div className="inner">
-              <h4>{t`Account created successfully`}</h4>
+              <h4>{t`hello`}</h4>
               <p className="tips">{t`hello`}</p>
               <img className="success" src={require('@/assets/images/account/successfully.webp')} alt="success" />
               <Button size="lg" onClick={handleSignup}>
