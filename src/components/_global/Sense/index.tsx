@@ -3,7 +3,7 @@ import { SENSE_URI, SENSE_ID } from '@/config/const';
 import { getGeetestInfo } from '@/services/account';
 import { GeetestReturn } from '@/services/account/PropsType';
 import { useRecoilValue } from 'recoil';
-import { loginInfo, signUpInfo, forgetInfo } from '@/models/account';
+import { loginInfo, signupInfo, forgetInfo } from '@/models/account';
 import useRandomId from '@/hooks/useRandomId';
 import { useExternal, useMount, useSafeState } from 'ahooks';
 import { pwdVerify } from '@/utils/tools';
@@ -30,7 +30,7 @@ interface SenseProps {
 const Sense: React.FC<SenseProps> = (props: SenseProps) => {
   const { children, onSuccess } = props;
   const loginForm = useRecoilValue(loginInfo);
-  const signUpForm = useRecoilValue(signUpInfo);
+  const signupForm = useRecoilValue(signupInfo);
   const forgetForm = useRecoilValue(forgetInfo);
   const status = useExternal(SENSE_URI);
   const uuid = useRandomId();
@@ -104,7 +104,7 @@ const Sense: React.FC<SenseProps> = (props: SenseProps) => {
         setLevel(1);
       }
     }
-  }, [pathname, loginForm, signUpForm, forgetForm, setLevel]);
+  }, [pathname, loginForm, signupForm, forgetForm, setLevel]);
   React.useEffect(() => {
     if (status !== 'ready' || !config) return;
     loadSense();

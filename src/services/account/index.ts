@@ -3,7 +3,7 @@ import api from '@/config/api';
 import {
   ILoginParams,
   ILoginVerifyParams,
-  ISignUpParams,
+  ISignupParams,
   CountriesReturnType,
   GeetestReturn,
   ILoginUserNameReturn,
@@ -42,6 +42,6 @@ export const getLoginQrCodeResult = (ticket: string) => {
 };
 
 // 注册
-export const signUp = (params: ISignUpParams) => {
-  return request.post<IUserInfo>(`${api.signUp}?${qs.stringify(params)}`).then((res) => res);
+export const signup = (params: ISignupParams) => {
+  return request.post<IUserInfo>(`${api.signup}?${qs.stringify(params)}`).then((res) => res);
 };

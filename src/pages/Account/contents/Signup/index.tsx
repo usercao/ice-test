@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useSessionStorageState } from 'ahooks';
-import { containerType, userInfo, signUpInfo } from '@/models/account';
+import { containerType, userInfo, signupInfo } from '@/models/account';
 import Container from '@/pages/Account/container';
 import { Input, Button, Checkbox, message } from '@/components';
 import Sense from '@/components/_global/Sense';
@@ -10,7 +10,7 @@ import { pwdVerify } from '@/utils/tools';
 import { t, Trans } from '@lingui/macro';
 import { useHistory } from 'ice';
 import useSendCode from '@/hooks/useSendCode';
-import { signUp } from '@/services/account';
+import { signup } from '@/services/account';
 import md5 from 'md5';
 
 const Wrapper = styled.div`
@@ -111,7 +111,7 @@ interface senseInfoType {
 const Signup = () => {
   const setType = useSetRecoilState(containerType);
   const setUser = useSetRecoilState(userInfo);
-  const [signupForm, setSignupInfo] = useRecoilState(signUpInfo);
+  const [signupForm, setSignupInfo] = useRecoilState(signupInfo);
   const history = useHistory();
   console.log(signupForm);
 
@@ -177,7 +177,7 @@ const Signup = () => {
         verify_code: verifyCode,
         invite_code: inviteCode,
       };
-      const data = await signUp(payload);
+      const data = await signup(payload);
       // 老项目抛弃之后修改
       setSessionInfo(data);
       // 老项目抛弃之后修改
