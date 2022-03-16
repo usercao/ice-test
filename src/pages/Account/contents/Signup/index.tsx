@@ -2,7 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useSessionStorageState } from 'ahooks';
-import { containerType, userInfo, signupInfo } from '@/models/account';
+import { containerType, signupInfo } from '@/models/account';
+import { userInfo as recoilUserInfo } from '@/models/_global';
 import Container from '@/pages/Account/container';
 import { Input, Button, Checkbox, message } from '@/components';
 import Sense from '@/components/_global/Sense';
@@ -110,7 +111,7 @@ interface senseInfoType {
 
 const Signup = () => {
   const setType = useSetRecoilState(containerType);
-  const setUser = useSetRecoilState(userInfo);
+  const setUser = useSetRecoilState(recoilUserInfo);
   const [signupForm, setSignupInfo] = useRecoilState(signupInfo);
   const history = useHistory();
   console.log(signupForm);

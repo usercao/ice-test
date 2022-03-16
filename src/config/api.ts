@@ -3,8 +3,11 @@ import { config } from 'ice';
 const { ICE_OLD_API_URI, ICE_FEW_API_URI, ICE_NEW_API_URI } = config;
 
 export default {
+  // _global
+  downloadLink: `${ICE_NEW_API_URI}/sys/download/link`,
+
   // 极验
-  geetest: `${ICE_OLD_API_URI}/v1/basic/geev3/register`,
+  geetest: `${ICE_NEW_API_URI}/basic/geev3/register`,
 
   // send code
   sendEmailForLogin: `${ICE_OLD_API_URI}/user/send_email_verify_code/authorize_advance`,

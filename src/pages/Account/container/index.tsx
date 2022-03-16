@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { containerType, verifyType, loginInfo, userInfo, forgetInfo } from '@/models/account';
+import { containerType, verifyType, loginInfo, forgetInfo } from '@/models/account';
+import { userInfo as recoilUserInfo } from '@/models/_global';
 import Settings from '@/components/_global/Settings';
 import { Input, Button, message } from '@/components';
 import { t } from '@lingui/macro';
@@ -137,7 +138,7 @@ const VERIFY_TEXT = {
 
 const Container: React.FC = ({ children }: { children: React.ReactNode }) => {
   const [type, setType] = useRecoilState(containerType);
-  const setUser = useSetRecoilState(userInfo);
+  const setUser = useSetRecoilState(recoilUserInfo);
   const verify = useRecoilValue(verifyType);
   const loginForm = useRecoilValue(loginInfo);
   const forgetForm = useRecoilValue(forgetInfo);

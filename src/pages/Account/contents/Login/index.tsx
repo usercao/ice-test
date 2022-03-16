@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { containerType, verifyType, loginInfo, userInfo as recoilUserInfo } from '@/models/account';
+import { containerType, verifyType, loginInfo } from '@/models/account';
+import { userInfo as recoilUserInfo } from '@/models/_global';
 import Container from '@/pages/Account/container';
 import { pwdVerify } from '@/utils/tools';
 import { Input, Button, message } from '@/components';

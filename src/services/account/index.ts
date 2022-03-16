@@ -7,11 +7,11 @@ import {
   CountriesReturnType,
   GeetestReturn,
   ILoginUserNameReturn,
-  IUserInfo,
   IQRCode,
   IQRCodeConnect,
   IQRCodeError,
 } from './PropsType';
+import { IUserInfo } from '@/services/_global/PropsType';
 import qs from 'qs';
 
 // 获取极验配置数据
