@@ -13,6 +13,10 @@ export default {
   sendMobileNotLogin: `${ICE_OLD_API_URI}/common/send_sms_verify_code`,
   // forget
   countries: `${ICE_FEW_API_URI}/basic/countries`,
+  checkEmail: `${ICE_OLD_API_URI}/user/email_find_pwd_check1`,
+  checkMobile: `${ICE_OLD_API_URI}/user/mobile_find_pwd_check1`,
+  check2Fa: `${ICE_OLD_API_URI}/user/find_pwd_check2`,
+  resetPwd: `${ICE_OLD_API_URI}/user/find_pwd`,
 
   // login
   usernameLogin: `${ICE_OLD_API_URI}/user/authorize`,
