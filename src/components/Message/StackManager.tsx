@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom/client';
 import StackItem from './StackItem';
 import { NotificationProps, NotificationReturnInstance } from './PropsType';
 
+// React 18 introduces new root API ( ReactDOM.createRoot ) | Saeloun Blog
+// https://blog.saeloun.com/2021/07/15/react-18-adds-new-root-api.html
 export default class StackManager {
   private notifyList: Array<React.ComponentElement<NotificationProps, StackItem>> = [];
   private component: React.FunctionComponent<NotificationProps>;
