@@ -9,15 +9,16 @@ const Wrapper = styled.div`
   transition: all 0.3s ease-in-out;
   input {
     /* 清除默认样式 */
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     border: none;
-    border-radius: 0px;
+    border-radius: 0;
     background: transparent;
     appearance: none;
     -webkit-appearance: none;
     transition: all 0.3s ease-in-out;
-    color: #384442;
+    color: ${(props) => props.theme.textBaseColor};
+    transition: all 0.3s ease-in-out;
     &:focus {
       outline: none;
     }
@@ -26,16 +27,21 @@ const Wrapper = styled.div`
     height: inherit;
     font-weight: 500;
     &::placeholder {
-      color: rgba(56, 68, 66, 0.4);
+      color: ${(props) => props.theme.textFirstColor};
       font-weight: 400;
-    }
-    /* 自动填充 */
-    &:-webkit-autofill {
-      box-shadow: 0 0 0px 1000px #ffffff inset;
-      -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
-      -webkit-text-fill-color: #ffffff;
+      transition: all 0.3s ease-in-out;
     }
   }
+  /* chrome autocomplete background color */
+  input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: ${(props) => props.theme.textBaseColor};
+    transition: background-color 99999s 0s, color 99999s 0s;
+  }
+  /* input[data-autocompleted] {
+    background-color: transparent !important;
+  } */
+  /* chrome autocomplete background color */
   label {
     position: absolute;
     left: 0;
@@ -44,14 +50,27 @@ const Wrapper = styled.div`
     bottom: 0;
     pointer-events: none;
     transition: all 0.3s ease-in-out;
-    border: 1px solid #e8e8e8;
+    border: 1px solid ${(props) => props.theme.colorFirstAssist};
+    transition: all 0.3s ease-in-out;
   }
-  &:not(.danger, .disabled):hover input:focus + label {
+  &:not(.danger, .disabled):hover label,
+  input:focus + label {
     border: 1px solid #06ceab;
   }
-  img {
+  .clear {
+    padding: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: ${(props) => props.theme.textSecondColor};
+    border-radius: 50%;
     user-select: none;
     cursor: pointer;
+    transform: scale(0.8);
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      color: #06ceab;
+      background: rgba(6, 206, 171, 0.1);
+    }
   }
   /* base */
   &.danger {
@@ -67,19 +86,22 @@ const Wrapper = styled.div`
     user-select: none;
     cursor: not-allowed;
     input {
-      color: #849a96;
+      color: ${(props) => props.theme.textThirdColor};
       cursor: not-allowed;
       z-index: 1;
+      transition: all 0.3s ease-in-out;
       &::placeholder {
-        color: rgba(132, 154, 150, 0.4);
+        color: ${(props) => props.theme.textThirdColor};
+        transition: all 0.3s ease-in-out;
       }
     }
     label {
-      background: #f1f1f1;
+      background: ${(props) => props.theme.colorSecondAssist};
+      transition: all 0.3s ease-in-out;
     }
   }
   &.sm {
-    padding: 8px;
+    padding: 0 8px;
     min-width: 80px;
     height: 30px;
     input {
@@ -88,14 +110,9 @@ const Wrapper = styled.div`
     label {
       border-radius: 4px;
     }
-    img {
-      margin-left: 8px;
-      width: 14px;
-      height: 14px;
-    }
   }
   &.md {
-    padding: 10px;
+    padding: 0 10px;
     height: 38px;
     input {
       font-size: 12px;
@@ -103,25 +120,15 @@ const Wrapper = styled.div`
     label {
       border-radius: 5px;
     }
-    img {
-      margin-left: 10px;
-      width: 16px;
-      height: 16px;
-    }
   }
   &.lg {
-    padding: 12px;
+    padding: 0 12px;
     height: 42px;
     input {
       font-size: 16px;
     }
     label {
       border-radius: 6px;
-    }
-    img {
-      margin-left: 12px;
-      width: 20px;
-      height: 20px;
     }
   }
 `;
@@ -160,12 +167,13 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   className?: string;
   type?: inputType;
   size?: SizeType;
+  danger?: boolean;
   disabled?: boolean;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   clear?: boolean;
-  danger?: boolean;
   onChange?: (...args: any[]) => any;
+  onFocus?: (...args: any[]) => any;
   onBlur?: (...args: any[]) => any;
   onClear?: (...args: any[]) => any;
   onPressEnter?: React.KeyboardEventHandler<HTMLInputElement>;
@@ -176,13 +184,14 @@ const Input: React.FC<InputProps> = React.forwardRef((props: InputProps, ref) =>
     className,
     type = 'text',
     size = 'md',
+    danger = false,
     disabled = false,
     prefix,
     suffix,
     clear = false,
-    danger = false,
     value,
     onChange,
+    onFocus,
     onBlur,
     onClear,
     onPressEnter,
@@ -209,6 +218,10 @@ const Input: React.FC<InputProps> = React.forwardRef((props: InputProps, ref) =>
     onChange?.(e.target.value, e.target.name);
   };
 
+  const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onFocus?.(e.target.value, e.target.name);
+  };
+
   const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
     onBlur?.(e.target.value, e.target.name);
   };
@@ -226,18 +239,19 @@ const Input: React.FC<InputProps> = React.forwardRef((props: InputProps, ref) =>
     <Wrapper className={classes}>
       {prefix}
       <input
+        autoComplete="off"
+        ref={inputRef}
         type={type}
         disabled={disabled}
-        ref={inputRef}
         value={value}
         onChange={handleChange}
+        onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyPress={handleEnter}
-        autoComplete="off"
         {...rest}
       />
       <label htmlFor={uuid} />
-      {clear && value && <img src={require('@/assets/images/_global/clear.svg')} alt="clear" onClick={handleClear} />}
+      {!disabled && clear && value && <i className="iconfont icon-select-cancel clear" onClick={handleClear} />}
       {suffix}
     </Wrapper>
   );

@@ -24,8 +24,8 @@ const TooltipGlobalStyle = createGlobalStyle`
 
 const PortalWrapper = styled(motion.div)<{ width: number }>`
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   width: 100%;
   z-index: 1200;
   .inner {

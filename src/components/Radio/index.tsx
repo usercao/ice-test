@@ -72,7 +72,6 @@ const Radio: React.FC<RadioProps> = React.forwardRef((props: RadioProps, ref) =>
 
   React.useEffect(() => {
     if (!inputRef || !inputRef.current) {
-      return;
     }
   }, [inputRef]);
 
@@ -105,7 +104,7 @@ const Radio: React.FC<RadioProps> = React.forwardRef((props: RadioProps, ref) =>
         onChange={(e) => onChange?.(e.target.checked)}
       />
       <label htmlFor={UUID} className="row-start">
-        <div className="radio__target"></div>
+        <div className="radio__target" />
         <div className="radio__children">{props.children}</div>
       </label>
     </Wrapper>

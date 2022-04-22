@@ -19,6 +19,9 @@ export type { ScrollbarProps } from './Scrollbar';
 export { default as Modal } from './Modal';
 export type { ModalProps } from './Modal';
 
+export { default as Switch } from './Switch';
+export type { SwitchProps } from './Switch';
+
 // export { default as Radio } from './Radio';
 // export type { RadioProps } from './Radio';
 

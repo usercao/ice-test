@@ -18,7 +18,7 @@ const SEND_FUNC = {
 
 const TIME = 60000;
 
-type SendCodeType =
+export type SendCodeType =
   | 'mobileNotLogin'
   | 'mobileAuth'
   | 'emailAuth'
@@ -27,7 +27,7 @@ type SendCodeType =
   | 'emailAlreadyLogin'
   | 'emailSetPwd';
 
-interface SendCodePayload {
+export interface SendCodePayload {
   type?: number; // 2: 登录验证码
   mobile?: string;
   national_code?: string;

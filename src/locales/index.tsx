@@ -5,13 +5,13 @@ import { SupportedLocale } from '@/config/locales';
 import { useActiveLocale } from '@/hooks/useActiveLocale';
 import { en, es, pt, PluralCategory } from 'make-plural/plurals';
 import { useSetRecoilState } from 'recoil';
-import { locale as localeModel } from '@/models/_global';
+import { recoilLocale } from '@/models/_global';
 
 type LocalePlural = {
   [key in SupportedLocale]: (n: number | string, ord?: boolean) => PluralCategory;
 };
 
-const plurals: LocalePlural = { 'en-US': en, 'es-ES': es, 'pt-BR': pt };
+const plurals: LocalePlural = { 'en-US': en, 'es-ES': es, 'pt-PT': pt };
 
 async function dynamicActivate(locale: SupportedLocale) {
   const { messages } = await import(`./${locale}/index.ts`);
@@ -23,7 +23,7 @@ async function dynamicActivate(locale: SupportedLocale) {
 const I18n: React.FC = ({ children }: { children: React.ReactNode }) => {
   const locale = useActiveLocale();
   const [loadLocale, setLoadLocale] = React.useState(false);
-  const setLocaleModel = useSetRecoilState(localeModel);
+  const setLocaleModel = useSetRecoilState(recoilLocale);
 
   const handleDynamicActivate = React.useCallback(async () => {
     try {

@@ -14,7 +14,6 @@ const Trigger = styled(motion.div)`
 
 export interface DropdownProps {
   followID?: string;
-  followWidth?: number;
   placement?: 'left' | 'right';
   overlay?: React.ReactNode;
 }
@@ -27,28 +26,25 @@ interface TriggerProps extends DropdownProps {
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const { followRef, followID, followWidth, placement = 'left', menuID, children, onClose } = props;
+  const { followRef, followID, placement = 'left', menuID, children, onClose } = props;
   const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
 
   const [position, setPosition] = React.useState<{
     right?: number;
     top: number;
     left?: number;
-    width: number;
-  }>({ top: 0, width: 160 });
+  }>({ top: 0 });
 
   React.useEffect(() => {
     if (!followRef.current) return;
     const { offsetTop, offsetHeight, offsetLeft, offsetWidth } = followRef.current;
     const { innerWidth } = window;
 
-    const about = {
-      [`${placement}`]: placement === 'left' ? offsetLeft : innerWidth - (offsetLeft + offsetWidth),
-    };
-    const site = { top: offsetTop + offsetHeight, width: followWidth || offsetWidth };
+    const about = { [`${placement}`]: placement === 'left' ? offsetLeft : innerWidth - (offsetLeft + offsetWidth) };
+    const site = { top: offsetTop + offsetHeight };
 
     setPosition({ ...about, ...site });
-  }, [placement, followWidth, followRef]);
+  }, [placement, followRef]);
 
   const memoizedOption = React.useMemo(
     () => (
@@ -86,7 +82,7 @@ const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   return (
     <React.Fragment>
-      <div ref={followRef}>{overlay && cloneElement(overlay)}</div>
+      {overlay && cloneElement(overlay, { ref: followRef })}
       <AnimatePresence>
         {state && <Portal {...props} followRef={followRef} menuID={uuid} onClose={setFalse} />}
       </AnimatePresence>

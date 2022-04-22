@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   /* global */
   label {
     display: block;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    border: 1px solid ${(props) => props.theme.textThirdColor};
     border-radius: 4px;
     transition: all 0.3s ease-in-out;
     &::after {
@@ -27,6 +27,12 @@ const Wrapper = styled.div`
       background-repeat: no-repeat;
       background-size: 9px 6px;
       background-position: center;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+  &:not(.checked) {
+    label::after {
+      opacity: 0;
     }
   }
   .text {
@@ -35,7 +41,8 @@ const Wrapper = styled.div`
   }
   p,
   span {
-    color: rgba(0, 0, 0, 0.6);
+    color: ${(props) => props.theme.textSecondColor};
+    transition: all 0.3s ease-in-out;
   }
   a {
     color: #06ceab;
@@ -119,7 +126,7 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps
 
   return (
     <Wrapper className={classes}>
-      <input ref={checkboxRef} type="checkbox" id={uuid} disabled={disabled} onClick={handleChange} />
+      <input type="checkbox" id={uuid} ref={checkboxRef} disabled={disabled} onClick={handleChange} />
       <label htmlFor={uuid} />
       {children && cloneElement(children, { className: 'text', onClick: handleChange })}
     </Wrapper>

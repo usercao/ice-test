@@ -1,23 +1,15 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { tuple } from '../_type/type';
-import styled, { keyframes } from 'styled-components';
-
-const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
+import IconSpin from '@/assets/images/_global/IconSpin';
+import styled from 'styled-components';
 
 const Wrapper = styled.button`
   /* 清除默认样式 */
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   border: none;
-  border-radius: 0px;
+  border-radius: 0;
   background: transparent;
   appearance: none;
   -webkit-appearance: none;
@@ -35,14 +27,43 @@ const Wrapper = styled.button`
     transition: all 0.3s ease-in-out;
   }
   /* base */
-  &.default {
+  &.primary {
+    background: #06ceab;
+    span {
+      color: #ffffff;
+    }
+    &:not(.loading, .disabled):hover {
+      background: #149e86;
+    }
+  }
+  &.second {
     background: rgba(6, 206, 171, 0.1);
     span {
       color: #06ceab;
     }
-    &:not(.disabled, .loading):hover {
+    &:not(.loading, .disabled):hover {
+      background: rgba(6, 206, 171, 0.2);
+    }
+  }
+  &.solid {
+    border: 1px solid #06ceab;
+    span {
+      color: #06ceab;
+    }
+    &:not(.loading, .disabled):hover {
+      border: 1px solid #149e86;
       span {
-        color: rgba(6, 206, 171, 0.8);
+        color: #149e86;
+      }
+    }
+  }
+  &.text {
+    span {
+      color: #06ceab;
+    }
+    &:not(.loading, .disabled):hover {
+      span {
+        color: #149e86;
       }
     }
   }
@@ -51,71 +72,21 @@ const Wrapper = styled.button`
     span {
       color: #ee6929;
     }
-    &:not(.disabled, .loading):hover {
-      span {
-        color: rgba(238, 105, 41, 0.8);
-      }
+    &:not(.loading, .disabled):hover {
+      background: rgba(238, 105, 41, 0.2);
     }
   }
-  &.primary {
-    background: #06ceab;
-    span {
-      color: #ffffff;
-    }
-    &:not(.disabled, .loading):hover {
-      background: rgba(6, 206, 171, 0.8);
-      span {
-        color: rgba(255, 255, 255, 0.8);
-      }
-    }
-  }
-  &.solid {
-    border: 1px solid #06ceab;
-    span {
-      color: #06ceab;
-    }
-    &:not(.disabled, .loading):hover {
-      border: 1px solid rgba(6, 206, 171, 0.8);
-      span {
-        color: rgba(6, 206, 171, 0.8);
-      }
-    }
-  }
-  /* &.text {
-    background: transparent;
-    span {
-    }
-  } */
   &.disabled {
     cursor: not-allowed;
-    background: #f6f6f8;
+    background: ${(props) => props.theme.backgroundColorDisabled};
     span {
-      color: #b1b1b1;
+      color: ${(props) => props.theme.textThirdColor};
     }
   }
   &.loading {
     cursor: not-allowed;
-    i {
+    svg {
       margin-right: 6px;
-      display: inline-block;
-      font-size: 12px;
-      animation: ${rotate} 2s linear infinite;
-    }
-    &.default,
-    &.solid {
-      i {
-        color: #06ceab;
-      }
-    }
-    &.danger {
-      i {
-        color: #ee6929;
-      }
-    }
-    &.primary {
-      i {
-        color: #ffffff;
-      }
     }
   }
   &.sm {
@@ -123,16 +94,14 @@ const Wrapper = styled.button`
     height: 30px;
     border-radius: 4px;
     span {
-      font-size: 12px;
-      line-height: 28px;
+      font-size: 14px;
     }
   }
   &.md {
     height: 38px;
     border-radius: 5px;
     span {
-      font-size: 12px;
-      line-height: 36px;
+      font-size: 14px;
     }
   }
   &.lg {
@@ -140,29 +109,41 @@ const Wrapper = styled.button`
     border-radius: 6px;
     span {
       font-size: 16px;
-      line-height: 40px;
     }
   }
 `;
 
-const ButtonTypes = tuple('default', 'danger', 'primary', 'ghost', 'solid', 'link', 'text');
+const ButtonTypes = tuple('primary', 'second', 'solid', 'text', 'danger');
 
 type ButtonType = typeof ButtonTypes[number];
 
 type SizeType = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'prefix' | 'suffix'> {
   className?: string;
   type?: ButtonType;
   size?: SizeType;
-  disabled?: boolean;
   loading?: boolean;
+  disabled?: boolean;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLElement>;
 }
 
 const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref) => {
-  const { className, type = 'primary', size = 'md', disabled, loading, children, onClick, ...rest } = props;
+  const {
+    className,
+    type = 'primary',
+    size = 'md',
+    loading = false,
+    disabled = false,
+    prefix,
+    suffix,
+    children,
+    onClick,
+    ...rest
+  } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const buttonRef = (ref as any) || React.createRef<HTMLElement>();
@@ -173,12 +154,23 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref)
   //   }
   // }, [buttonRef]);
 
-  const classes = classNames(className, {
+  const classes = classNames(className, 'row-center', {
     [`${type}`]: type,
     [`${size}`]: size,
-    disabled,
     loading,
+    disabled,
   });
+
+  const loadingColor = React.useMemo(() => {
+    switch (type) {
+      case 'primary':
+        return '#ffffff';
+      case 'danger':
+        return '#ee6929';
+      default:
+        return '#06ceab';
+    }
+  }, [type]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>) => {
     if (loading || disabled) {
@@ -190,8 +182,10 @@ const Button: React.FC<ButtonProps> = React.forwardRef((props: ButtonProps, ref)
 
   return (
     <Wrapper className={classes} ref={buttonRef} onClick={handleClick} {...rest}>
-      {!disabled && loading && <i className="iconfont icon-loading" />}
+      {prefix}
+      {!disabled && loading && <IconSpin color={loadingColor} />}
       {children && <span>{children}</span>}
+      {suffix}
     </Wrapper>
   );
 });

@@ -1,4 +1,33 @@
-import { getRealSymbol, getSymbolConfig, SymbolProps, getRealPriceConfig } from '../config/symbol-config';
+import dayjs from 'dayjs';
+import UTC from 'dayjs/plugin/utc';
+import Cookies from 'js-cookie';
+
+dayjs.extend(UTC);
+
+// UTC时间格式化
+export const filterTime = (value: string | number, format: 'DD/MM/YYYY' | 'DD/MM/YYYY HH:mm:ss' = 'DD/MM/YYYY') => {
+  const stamp = typeof value === 'number' ? value : Number(value);
+  return dayjs.utc(stamp).local().format(format);
+};
+
+// 首字母大写
+export const filterTitleCase = (value: string) => {
+  return value.toLowerCase().replace(/^\S/, (s) => s.toUpperCase());
+};
+
+// 邮箱校验
+export const verifyEmail = (value: string) => {
+  const regexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z]{2,4})$/;
+  return !regexp.test(value);
+};
+
+// 密码校验
+export const verifyPassword = (value: string) => {
+  if (value.length < 8) return true;
+  if (value.length > 20) return true;
+  const regexp = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
+  return !regexp.test(value);
+};
 
 const objectProto = Object.prototype;
 const objectToString = objectProto.toString;
@@ -25,7 +54,12 @@ const reIsOctal = /^0o[0-7]+$/i;
 /** Built-in method references without a dependency on `root`. */
 const freeParseInt = parseInt;
 
-export const pwdVerify = (pwd) => /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(pwd);
+export const getCookieLan = () => {
+  const locale = Cookies.get('locale') || 'en-US';
+  if (!locale.indexOf('-')) return locale;
+  const [a, b] = locale.split('-');
+  return `${a}-${b.toUpperCase()}`;
+};
 export const isString = (val) => typeof val === 'string';
 export const isUndefined = (value) => value === undefined;
 export const isObjectLike = (value) => !!value && typeof value === 'object';
@@ -79,7 +113,6 @@ export const toInteger = (value) => {
   const result = toFinite(value);
   const remainder = result % 1;
 
-  // eslint-disable-next-line no-self-compare
   return result === result ? (remainder ? result - remainder : result) : 0;
 };
 
@@ -179,34 +212,6 @@ export const fuzzAddress = (str: string, before = 6, after = 4, fuzz = '....') =
 
 export const getSymbolImg = (symbol: string, theme: 'dark' | 'light' = 'dark') => {
   return `https://t1.bycsi.com/assets/image/coins/${theme}/${symbol?.toLowerCase()}.svg`;
-};
-
-/*
-  获取交易对SYMBOL
-*/
-// export const getPairSymbolName = (pair: Pair, idx = 0): string => {
-//   return idx === 0 ? getRealSymbol(pair?.token0?.symbol) : getRealSymbol(pair?.token1?.symbol);
-// };
-
-/*
-  获取Pool币种转换后SYMBOL
-*/
-export const getPoolSymbolName = (name: string | undefined): string => {
-  return getRealSymbol(name);
-};
-
-/*
-  获取Pool币种转换后SYMBOL_CONFIG
-*/
-export const getPoolSymbolConfig = (name: string | undefined): SymbolProps => {
-  return getSymbolConfig(name);
-};
-
-/*
-  获取Pool交易对转换后PRICE_CONFIG
-*/
-export const getPoolRealPriceConfig = (name0: string | undefined, name1: string | undefined): number => {
-  return getRealPriceConfig(name0, name1);
 };
 
 /*

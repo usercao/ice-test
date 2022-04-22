@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2022-01-19 17:52+0800\n"
+"POT-Creation-Date: 2022-03-25 10:38+0800\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: es-ES\n"
+"Language: pt-PT\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
@@ -15,47 +15,47 @@ msgstr ""
 
 #: src/pages/Account/contents/Signup/index.tsx:249
 msgid "<0>readAndAgree</0><1>TermOfUse</1><2>And</2><3>PrivacyAgreement</3>"
-msgstr "<0>Leí y acepté </0><1>Términos de Uso </1><2>Y </2><3>Política de Privacidad</3>"
+msgstr "<0>Eu li e aceitei </0><1>Termos de uso </1><2>e </2><3>Política de Privacidade</3>"
 
 #: src/layouts/BasicLayout/components/Footer.tsx:133
 msgid "IncorrectSubscriptionEmail"
-msgstr "Incorrecta dirección de email de suscripción"
+msgstr "Incorreto endereço de e-mail para subscrever"
 
 #: src/pages/Account/contents/Login/index.tsx:358
 msgid "account"
-msgstr "Cuenta"
+msgstr "Conta"
 
 #: src/pages/Account/container/index.tsx:543
 msgid "accountCreatedSuccessfully"
-msgstr "Cuenta creada con éxito"
+msgstr "Conta criada com sucesso"
 
 #: src/layouts/BasicLayout/components/Header.tsx:538
 msgid "announcementCenter"
-msgstr "Centro de Anuncios"
+msgstr "Centro de Anúncios"
 
 #: src/components/_global/PasswordTips/index.tsx:70
 msgid "atLeast1Number"
-msgstr "Al menos 1 número"
+msgstr "Pelo menos 1 número"
 
 #: src/components/_global/PasswordTips/index.tsx:74
 msgid "atLeast1UpperCase"
-msgstr "Al menos 1 mayúscula"
+msgstr "Pelo menos 1 letra maiúscula"
 
 #: src/components/_global/PasswordTips/index.tsx:59
 msgid "atLeast8Characters"
-msgstr "Un mínimo de 8 caracteres"
+msgstr "Mínimo 8 caracteres"
 
 #: src/components/_global/PasswordTips/index.tsx:64
 msgid "atMost20Characters"
-msgstr "Un máximo de 20 caracteres"
+msgstr "Máximo 20 caracteres"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:9
 msgid "balance"
-msgstr "Balance"
+msgstr "Saldo"
 
 #: src/pages/Account/contents/Forget/index.tsx:245
 msgid "changePasswordTips"
-msgstr "El retiro se desactivará durante 24 horas una vez que se cambie la contraseña"
+msgstr "A retirada será desativada por 24 horas assim que a senha for alterada"
 
 #: src/pages/Account/contents/Login/index.tsx:368
 msgid "codeQR"
@@ -67,7 +67,7 @@ msgstr "código QR expirado"
 
 #: src/pages/Account/contents/Login/index.tsx:416
 msgid "comfirmOnAPP"
-msgstr "Confirmar en Mexo APP"
+msgstr "Confirmar em Mexo APP"
 
 #: src/pages/Account/contents/Signup/index.tsx:316
 msgid "confirm"
@@ -75,7 +75,7 @@ msgstr "Confirmar"
 
 #: src/pages/Account/contents/Forget/index.tsx:374
 msgid "confirmPassword"
-msgstr "Confirmar Contraseña"
+msgstr "Confirmar Senha"
 
 #: src/pages/Account/container/index.tsx:484
 #: src/pages/Account/container/index.tsx:535
@@ -89,46 +89,46 @@ msgstr "Continuar"
 
 #: src/pages/Account/contents/Signup/index.tsx:205
 msgid "creatAccount"
-msgstr "Crear Cuenta Mexo"
+msgstr "Criar Conta Mexo"
 
 #: src/components/_global/Settings/index.tsx:243
 msgid "currency"
-msgstr "Divisa"
+msgstr "Moeda"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:29
 msgid "earn"
-msgstr "Gana"
+msgstr "Ganho"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:66
 msgid "earnRecords"
-msgstr "Historial de Gana"
+msgstr "Históricos de Ganho"
 
 #: src/pages/Account/contents/Forget/index.tsx:252
 #: src/pages/Account/contents/Forget/index.tsx:264
 #: src/pages/Account/contents/Signup/index.tsx:209
 msgid "email"
-msgstr "Email"
+msgstr "E-mail"
 
 #: src/pages/Account/contents/Signup/index.tsx:287
 msgid "email<0>{0}</0>Reminder"
-msgstr "Ingresa el código de verificación de 6 dígitos enviado para <0>{0}</0>. El código será válido por 30 minutos"
+msgstr "Insira o código de verificação de 6 dígitos que foi enviado para <0>{0}</0>. O código é válido por 30 minutos."
 
 #: src/pages/Account/contents/Login/index.tsx:373
 msgid "emailOrPhone"
-msgstr "Email/Número de Teléfono"
+msgstr "E-mail/Número de Telefone"
 
 #: src/pages/Account/contents/Signup/index.tsx:151
 msgid "emailSettingRequirements"
-msgstr "Inválida dirección de emai"
+msgstr "Inválido endereço de e-mail"
 
 #: src/pages/Account/contents/Signup/index.tsx:284
 msgid "emailVerification"
-msgstr "Verificación de Email"
+msgstr "Verificação de E-mail"
 
 #: src/pages/Account/container/index.tsx:211
 #: src/pages/Account/contents/Signup/index.tsx:292
 msgid "emailVerificationCode"
-msgstr "Código de Verificación de Email"
+msgstr "Código de Verificação de E-mail"
 
 #: src/pages/Account/contents/Forget/index.tsx:379
 #: src/pages/Personal/contents/Interface/index.tsx:462
@@ -162,27 +162,27 @@ msgstr "Código de Verificación de Email"
 #: src/pages/Personal/contents/Security/index.tsx:1764
 #: src/pages/Personal/contents/Security/index.tsx:1772
 msgid "enterConfirmPassword"
-msgstr "Confirmar Contraseña de Acceso"
+msgstr "Confirmar Senha de Acesso"
 
 #: src/pages/Account/contents/Forget/index.tsx:268
 msgid "enterEmailAddress"
-msgstr "Ingresa Dirección de Email"
+msgstr "Insira Endereço de E-mail"
 
 #: src/pages/Account/contents/Signup/index.tsx:213
 msgid "enterEmailAdress"
-msgstr "Ingresa Dirección de Email"
+msgstr "Insira de Endereço de E-mail"
 
 #: src/pages/Account/contents/Signup/index.tsx:296
 msgid "enterEmailCode"
-msgstr "Ingresa Código de Verificación de Email"
+msgstr "Insira Código de Verificação de E-mail"
 
 #: src/pages/Account/contents/Login/index.tsx:377
 msgid "enterEmailOrPhone"
-msgstr "Ingresa Email o Número de Teléfono"
+msgstr "Insira E-mail ou Número de Telefone"
 
 #: src/pages/Account/contents/Login/index.tsx:387
 msgid "enterLoginPassword"
-msgstr "Ingresa Contraseña de Acceso"
+msgstr "Insira Senha de Acesso"
 
 #: src/pages/Account/contents/Forget/index.tsx:360
 #: src/pages/Personal/contents/Interface/index.tsx:445
@@ -190,11 +190,11 @@ msgstr "Ingresa Contraseña de Acceso"
 #: src/pages/Personal/contents/Security/index.tsx:744
 #: src/pages/Personal/contents/Security/index.tsx:1598
 msgid "enterNewPassword"
-msgstr "Ingresa la Nueva Contraseña"
+msgstr "Insira Nova Senha de Acesso"
 
 #: src/pages/Account/contents/Signup/index.tsx:223
 msgid "enterPassword"
-msgstr "Ingresa Contraseña"
+msgstr "Insira Senha"
 
 #: src/pages/Account/contents/Forget/index.tsx:333
 #: src/pages/Personal/contents/Interface/index.tsx:742
@@ -202,36 +202,36 @@ msgstr "Ingresa Contraseña"
 #: src/pages/Personal/contents/Security/index.tsx:1041
 #: src/pages/Personal/contents/Security/index.tsx:1206
 msgid "enterPhoneNumber"
-msgstr "Ingresa Número de Teléfono"
+msgstr "Insira Número de Telefone"
 
 #: src/pages/Account/contents/Signup/index.tsx:238
 msgid "enterReferralCode"
-msgstr "Ingresa Código de Referido"
+msgstr "Insira Código de Convite"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:46
 msgid "fiatOrders"
-msgstr "Órdenes Fiat P2P"
+msgstr "Ordens Fiat P2P"
 
 #: src/pages/Account/contents/Forget/index.tsx:244
 #: src/pages/Account/contents/Login/index.tsx:402
 msgid "forgotPassword"
-msgstr "Olvidé la Contraseña"
+msgstr "Esqueci a Senha"
 
 #: src/pages/Account/container/index.tsx:210
 msgid "googleAuthenticator"
-msgstr "Google Autenticador"
+msgstr "Google Autenticador "
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:56
 msgid "gridTradingOrders"
-msgstr "Órdenes de Grid Trading"
+msgstr "Ordens de Grid Trading"
 
 #: src/pages/Account/contents/Signup/index.tsx:273
 msgid "hadAccount<0>Login</0>"
-msgstr "¿Ya tienes una cuenta?<0>Iniciar Sesión</0>"
+msgstr "Já tem uma conta? <0>Acessar</0>"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:83
 msgid "identity"
-msgstr "Verificación de Identidad"
+msgstr "Verificação de Identidade"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:89
 msgid "interface"
@@ -243,53 +243,53 @@ msgstr "Idioma"
 
 #: src/layouts/BasicLayout/components/Header.tsx:432
 msgid "login"
-msgstr "Iniciar Sesión"
+msgstr "Acessar"
 
 #: src/pages/Account/contents/Login/index.tsx:382
 #: src/pages/Account/contents/Signup/index.tsx:218
 msgid "loginPassword"
-msgstr "Contraseña de Acceso"
+msgstr "Senha de Acesso"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:101
 msgid "logout"
-msgstr "Cerrar Sesión"
+msgstr "Sair"
 
 #: src/pages/Account/contents/Forget/index.tsx:355
 msgid "newPassword"
-msgstr "Nueva Contraseña de Acceso"
+msgstr "Nova Senha de Acesso"
 
 #: src/pages/Account/contents/Login/index.tsx:405
 msgid "notMember<0>Signup</0>"
-msgstr "¿Aún no eres miembro? <0>Registrarte</0>"
+msgstr "Não é um Membro? <0>Cadastre-se</0>"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:36
 msgid "orders"
-msgstr "Órdenes"
+msgstr "Ordens"
 
 #: src/pages/Account/contents/Login/index.tsx:230
 msgid "passwordSettingRequirements"
-msgstr "La contraseña tiene 8-20 caracteres, debe contener números y letras mayúsculas y minúsculas"
+msgstr "A senha é de 8-20 caracteres, deve conter letras maiúsculas e minúsculas e números"
 
 #: src/pages/Account/contents/Forget/index.tsx:208
 msgid "passwordsAreInconsistent"
-msgstr "Las dos contraseñas son inconsistentes. Por favor, inténtalo de nuevo"
+msgstr "As duas senhas são inconsistentes, Favor Inserir novamente"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:19
 msgid "perpContract"
-msgstr "Contrato Perpetuo"
+msgstr "Contrato Perpétuo"
 
 #: src/pages/Account/contents/Forget/index.tsx:258
 #: src/pages/Account/contents/Forget/index.tsx:289
 msgid "phone"
-msgstr "Número de Teléfono"
+msgstr "Número de Telefone"
 
 #: src/pages/Account/container/index.tsx:212
 msgid "phoneVerificationCode"
-msgstr "Código de Verificación de Teléfono"
+msgstr "Código de Verificação de Telefone"
 
 #: src/pages/Account/contents/Login/index.tsx:428
 msgid "pleaseComfirmOnAPP"
-msgstr "Por favor, confirma en Mexo APP"
+msgstr "Por favor, comfirme em Mexo APP"
 
 #: src/pages/Account/container/index.tsx:456
 #: src/pages/Account/container/index.tsx:505
@@ -332,60 +332,60 @@ msgstr "Por favor, confirma en Mexo APP"
 #: src/pages/Personal/contents/Security/index.tsx:1718
 #: src/pages/Personal/contents/Security/index.tsx:1784
 msgid "pleaseEnterCode"
-msgstr "Por favor, ingresa el código"
+msgstr "Insira o Código"
 
 #: src/layouts/BasicLayout/components/Footer.tsx:161
 msgid "pleaseEnterSubscriptionEmail"
-msgstr "Por favor, ingresa la dirección de tu email de suscripción"
+msgstr "Insira seu endereço de e-mail para subscrever"
 
 #: src/pages/Account/container/index.tsx:447
 #: src/pages/Account/container/index.tsx:496
 msgid "protectAccountByVerification"
-msgstr "Proteger tu cuenta con verificaciones de seguridad"
+msgstr "Proteger sua conta com verificações de segurança"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:51
 msgid "quickTradeOrders"
-msgstr "Órdenes de Compra Rápida"
+msgstr "Ordens de Compra Rápida"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:95
 msgid "referral"
-msgstr "Mis Referidos"
+msgstr "Meus Convites"
 
 #: src/pages/Account/contents/Signup/index.tsx:234
 msgid "referralCodeOptional"
-msgstr "Código de Referido (Opcional)"
+msgstr "Código de Convite (Opcional) "
 
 #: src/components/_global/SendCode/index.tsx:109
 msgid "resend"
-msgstr "Reenviar"
+msgstr "Reenivar"
 
 #: src/pages/Account/contents/Forget/index.tsx:244
 msgid "resetPassword"
-msgstr "Restablecer Contraseña de Acceso"
+msgstr "Redefinir Senha de Acesso"
 
 #: src/pages/Account/contents/Forget/index.tsx:229
 msgid "resetSuccessfullyToLoginAgain"
-msgstr "La contraseña se restableció con éxito, vuelve a iniciar sesión"
+msgstr "Senha Redefinida Com Sucesso, faça login novamente"
 
 #: src/pages/Account/contents/Login/index.tsx:430
 msgid "retry"
-msgstr "Reintentar"
+msgstr "Retentar"
 
 #: src/pages/Account/contents/Login/index.tsx:436
 msgid "scan<0>APP</0><1/>CodeWay"
-msgstr "Abrir e Iniciar Sesión <0>Mexo APP</0><1/>Usa la cámara integrada para escanear el código QR"
+msgstr "Abrir e Acessar <0>Mexo APP</0><1/>Use a câmera embutida para ler o código QR"
 
 #: src/pages/Account/contents/Login/index.tsx:427
 msgid "scanSuccessful"
-msgstr "Escaneado con éxito"
+msgstr "Ler com sucesso"
 
 #: src/components/_global/Settings/index.tsx:196
 msgid "scanToDownloadApp"
-msgstr "Escanear para Descargar Mexo"
+msgstr "Ler para Download Mexo"
 
 #: src/pages/Account/contents/Login/index.tsx:414
 msgid "scanToLogin"
-msgstr "Escanear para Iniciar Sesión"
+msgstr "Ler para Acessar"
 
 #: src/pages/Account/contents/Forget/index.tsx:303
 #: src/pages/Personal/contents/Interface/index.tsx:713
@@ -397,7 +397,7 @@ msgstr "Buscar"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:77
 msgid "security"
-msgstr "Seguridad"
+msgstr "Segurança"
 
 #: src/components/_global/SendCode/index.tsx:109
 msgid "send"
@@ -405,61 +405,61 @@ msgstr "Enviar"
 
 #: src/components/_global/SendCode/index.tsx:61
 msgid "sendSuccess"
-msgstr "Enviado con éxito"
+msgstr "Enviado com sucesso"
 
 #: src/pages/Account/contents/Signup/index.tsx:207
 msgid "signUpByEmail"
-msgstr "Registrarte con email"
+msgstr "Cadastre-se com seu e-mail"
 
 #: src/pages/Account/contents/Login/index.tsx:348
 msgid "signWithAccountOrCode"
-msgstr "Iniciar Sesión con Email, Número de Teléfono o código QR"
+msgstr "Acessar com seu E-mail, Número de Telefone ou código QR"
 
 #: src/layouts/BasicLayout/components/Header.tsx:434
 msgid "signup"
-msgstr "Registrarte"
+msgstr "Cadastrar-se"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:41
 msgid "spotOrders"
-msgstr "Órdenes Spot"
+msgstr "Ordens à Vista"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:61
 msgid "stablecoinOrders"
-msgstr "Órdenes de Stablecoin"
+msgstr "Ordens de Moeda Estável"
 
 #: src/pages/Account/container/index.tsx:547
 msgid "startNow"
-msgstr "Empezar Ahora"
+msgstr "Começar agora"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:24
 msgid "subAccount"
-msgstr "Subcuenta"
+msgstr "Subconta"
 
 #: src/layouts/BasicLayout/components/Footer.tsx:165
 msgid "subscribe"
-msgstr "Suscribirte"
+msgstr "Subscrever"
 
 #: src/layouts/BasicLayout/components/Footer.tsx:167
 msgid "subscribeTips"
-msgstr "Un boletín de trading para elevar tu logro financiero al nivel siguiente"
+msgstr "Um boletim informativo comercial para levar seu sucesso financeiro ao próximo nível."
 
 #: src/layouts/BasicLayout/components/Footer.tsx:137
 msgid "subscribedSuccessfully"
-msgstr "Suscrito con éxito"
+msgstr "Subscreveu Com Sucesso"
 
 #: src/pages/Account/container/index.tsx:445
 #: src/pages/Account/container/index.tsx:494
 msgid "verification"
-msgstr "Verificación"
+msgstr "Verificação"
 
 #: src/layouts/BasicLayout/components/menu-list.tsx:14
 msgid "wallet"
-msgstr "Cartera"
+msgstr "Carteira"
 
 #: src/pages/Account/container/index.tsx:544
 msgid "welcomeToCryptoWorld"
-msgstr "Bienvenido al Mundo Cripto"
+msgstr "Bem-vindo ao Mundo Cripto"
 
 #: src/pages/Account/contents/Login/index.tsx:347
 msgid "welcomeToMexo"
-msgstr "Bienvenido a Mexo"
+msgstr "Bem-vindo a Mexo"

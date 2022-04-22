@@ -13,13 +13,13 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ special: boolean }>`
   margin: 24px auto 0 auto;
   padding: 20px;
   width: max-content;
   max-width: 40vw;
-  background: #ffffff;
-  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.08), 0px 9px 28px rgba(0, 0, 0, 0.05), 0px 12px 48px rgba(0, 0, 0, 0.03);
+  background: ${(props) => (props.special ? '#292c2f' : '#ffffff')};
+  box-shadow: 0px 4px 10px ${(props) => (props.special ? 'rgba(0, 0, 0, 0.5)' : 'rgba(208, 208, 208, 0.5)')};
   border-radius: 6px;
   i {
     margin-right: 8px;
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    color: #384442;
+    color: ${(props) => (props.special ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)')};
   }
   .icon-success {
     color: #06ceab;
@@ -57,10 +57,12 @@ const Message: React.FC<NotificationProps> = React.forwardRef((props: Notificati
   //   }
   // }, [messageRef]);
 
+  const localeTheme = window.localStorage.getItem('ice_theme') === '"dark"';
+
   return (
     <React.Fragment>
       <GlobalStyle />
-      <Wrapper ref={messageRef} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <Wrapper ref={messageRef} special={localeTheme} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         <i className={`iconfont icon-${icon}`} />
         <span>{content}</span>
       </Wrapper>

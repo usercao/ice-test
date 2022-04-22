@@ -1,4 +1,4 @@
-## Mexo
+## ICEJS
 
 > A React TypeScript project
 
