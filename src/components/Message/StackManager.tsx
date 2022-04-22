@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import StackItem from './StackItem';
 import { NotificationProps, NotificationReturnInstance } from './PropsType';
 
@@ -13,9 +14,13 @@ export default class StackManager {
     this.component = component;
   }
 
+  // javascript - Deprecation notice: ReactDOM.render is no longer supported in React 18 - Stack Overflow
+  // https://stackoverflow.com/questions/71668256/deprecation-notice-reactdom-render-is-no-longer-supported-in-react-18
   private render() {
     const list = this.notifyList;
-    ReactDOM.render(<>{list}</>, this.getContainerDom(true));
+    // ReactDOM.render(<>{list}</>, this.getContainerDom(true));
+    const root = ReactDOM.createRoot(this.getContainerDom(true) as HTMLElement);
+    root.render(<>{list}</>);
   }
 
   private getContainerDom(create?: boolean) {
@@ -65,7 +70,9 @@ export default class StackManager {
     this.notifyList.length = 0;
     const div = this.getContainerDom();
     if (div) {
-      ReactDOM.unmountComponentAtNode(div);
+      // ReactDOM.unmountComponentAtNode(div);
+      const root = ReactDOM.createRoot(div as HTMLElement);
+      root.unmount();
       document.body.removeChild(div);
     }
   }
