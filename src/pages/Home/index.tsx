@@ -2,10 +2,14 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Modal, message } from '@/components';
 import { useHistory } from 'ice';
+import { t, Trans } from '@lingui/macro';
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
+  button {
+    margin: 20px;
+  }
 `;
 
 const Home = () => {
@@ -15,6 +19,8 @@ const Home = () => {
 
   return (
     <Wrapper className="col-center">
+      <Trans>hello</Trans>
+      <p>{t`world`}</p>
       <button
         onClick={() => {
           message.success('');
