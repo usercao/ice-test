@@ -1,37 +1,87 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Modal } from '@/components';
-import { useHistory } from 'ice';
+import { Button, Modal } from '@/components';
 
 const Wrapper = styled.div`
-  overflow: auto;
+  main {
+    width: 100%;
+    min-height: 100vh;
+    .box {
+      width: 400px;
+      .row + .row {
+        margin-top: 24px;
+      }
+      h4 {
+        font-weight: 700;
+        font-size: 34px;
+        color: #06ceab;
+      }
+      img,
+      .backdrop {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 4px solid #06ceab;
+      }
+      img + img {
+        margin-left: 12px;
+      }
+      .backdrop {
+        background-image: url(${require('@/assets/images/test/test.png')});
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+      }
+      button {
+        margin-top: 34px;
+      }
+    }
+  }
 `;
 
-const Home = () => {
-  const history = useHistory();
+const IMG_NAME = 'test';
 
-  const [modalVisible, setModalVisible] = React.useState<boolean>(false);
+const IMG_LIST = [
+  { id: 'a', img: new URL(`/src/assets/images/test/${IMG_NAME}.png`, import.meta.url).href },
+  { id: 'b', img: new URL(`/src/assets/images/test/${IMG_NAME}.png`, import.meta.url).href },
+  { id: 'c', img: new URL(`/src/assets/images/test/${IMG_NAME}.png`, import.meta.url).href },
+];
+
+const Home = () => {
+  const [visible, setVisible] = React.useState<boolean>(false);
 
   return (
-    <Wrapper className="col-center">
-      {/* <button onClick={() => history.push('/login')}>登录</button> */}
-      {/* <Scrollbar
-        trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
-        thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 4 })}
-        onScroll={(e: React.UIEvent<HTMLDivElement>) => {
-          const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-          console.log(scrollTop + clientHeight === scrollHeight);
-        }}
-      >
-        <div>212121212121</div>
-      </Scrollbar> */}
-      {/* <i className="iconfont icon-phone"></i> */}
-      <button onClick={() => setModalVisible(true)}>弹窗</button>
-      <Modal visible={modalVisible} title="212121" cancel="1111" ok="222">
-        <div onClick={() => setModalVisible(false)} style={{ width: 400, height: 400 }}>
-          close
+    <Wrapper>
+      <main className="col-center">
+        <div className="box">
+          {/* ---------------- import ---------------- */}
+          <div className="row row-between">
+            <h4>1</h4>
+            <img src={require('@/assets/images/test/test.png')} alt="test" />
+          </div>
+          <div className="row row-between">
+            <h4>2</h4>
+            <img src={new URL(`/src/assets/images/test/${IMG_NAME}.png`, import.meta.url).href} alt="test" />
+          </div>
+          <div className="row row-between">
+            <h4>3</h4>
+            <div className="backdrop" />
+          </div>
+          <div className="row row-between">
+            <h4>4</h4>
+            <div className="list row-end">
+              {IMG_LIST.map((ele) => (
+                <img key={ele.id} src={ele.img} alt="test" />
+              ))}
+            </div>
+          </div>
+          {/* ---------------- import ---------------- */}
+          <Button onClick={() => setVisible(true)}>Modal</Button>
         </div>
-      </Modal>
+        <Modal visible={visible} title="Modal" cancel="cancel" ok="ok" onCancel={() => setVisible(false)}>
+          <div style={{ width: 400, height: 400, textAlign: 'center' }}>close</div>
+        </Modal>
+      </main>
     </Wrapper>
   );
 };
