@@ -1,15 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Modal, message } from '@/components';
+import { Modal } from '@/components';
 import { useHistory } from 'ice';
-import { t, Trans } from '@lingui/macro';
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100vh;
-  button {
-    margin: 20px;
-  }
+  overflow: auto;
 `;
 
 const Home = () => {
@@ -19,15 +14,7 @@ const Home = () => {
 
   return (
     <Wrapper className="col-center">
-      <Trans>hello</Trans>
-      <p>{t`world`}</p>
-      <button
-        onClick={() => {
-          message.success('');
-        }}
-      >
-        message
-      </button>
+      {/* <button onClick={() => history.push('/login')}>登录</button> */}
       {/* <Scrollbar
         trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
         thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 4 })}
@@ -39,7 +26,7 @@ const Home = () => {
         <div>212121212121</div>
       </Scrollbar> */}
       {/* <i className="iconfont icon-phone"></i> */}
-      <button onClick={() => setModalVisible(true)}>modal</button>
+      <button onClick={() => setModalVisible(true)}>弹窗</button>
       <Modal visible={modalVisible} title="212121" cancel="1111" ok="222">
         <div onClick={() => setModalVisible(false)} style={{ width: 400, height: 400 }}>
           close

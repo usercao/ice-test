@@ -10,6 +10,9 @@ export type { SelectProps } from './Select';
 export { default as Dropdown } from './Dropdown';
 export type { DropdownProps } from './Dropdown';
 
+export { default as Radio } from './Radio';
+export type { RadioProps } from './Radio';
+
 export { default as Checkbox } from './Checkbox';
 export type { CheckboxProps } from './Checkbox';
 
@@ -22,8 +25,8 @@ export type { ModalProps } from './Modal';
 export { default as Switch } from './Switch';
 export type { SwitchProps } from './Switch';
 
-// export { default as Radio } from './Radio';
-// export type { RadioProps } from './Radio';
+export { default as Table } from './Table';
+export type { TableProps } from './Table';
 
 // export { default as Tooltip } from './Tooltip';
 // export type { TooltipProps } from './Tooltip';

@@ -16,7 +16,6 @@ const Wrapper = styled.div`
     background: transparent;
     appearance: none;
     -webkit-appearance: none;
-    transition: all 0.3s ease-in-out;
     color: ${(props) => props.theme.textBaseColor};
     transition: all 0.3s ease-in-out;
     &:focus {
@@ -49,7 +48,6 @@ const Wrapper = styled.div`
     top: 0;
     bottom: 0;
     pointer-events: none;
-    transition: all 0.3s ease-in-out;
     border: 1px solid ${(props) => props.theme.colorFirstAssist};
     transition: all 0.3s ease-in-out;
   }

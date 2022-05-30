@@ -13,76 +13,65 @@ const Wrapper = styled.div`
   }
   /* global */
   label {
-    display: block;
-    border: 1px solid ${(props) => props.theme.textThirdColor};
-    border-radius: 4px;
-    transition: all 0.3s ease-in-out;
-    &::after {
-      content: '';
-      display: block;
-      margin: 4.5px 0 0 4px;
-      width: 9px;
-      height: 6px;
-      background-image: url(${require('@/assets/images/_global/check.svg')});
-      background-repeat: no-repeat;
-      background-size: 9px 6px;
-      background-position: center;
+    display: flex;
+    cursor: pointer;
+    user-select: none;
+    .choose {
+      position: relative;
+      border: 1px solid ${(props) => props.theme.textThirdColor};
+      border-radius: 4px;
       transition: all 0.3s ease-in-out;
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease-in-out;
+      }
+    }
+    .content {
+      flex: 1;
+      word-break: break-word;
+      color: ${(props) => props.theme.textBaseColor};
     }
   }
   &:not(.checked) {
-    label::after {
+    svg {
       opacity: 0;
     }
   }
-  .text {
-    flex: 1;
-    user-select: none;
-  }
-  p,
-  span {
-    color: ${(props) => props.theme.textSecondColor};
-    transition: all 0.3s ease-in-out;
-  }
-  a {
-    color: #06ceab;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      color: rgba(6, 206, 171, 0.6);
-    }
-  }
   &:not(.disabled):hover {
-    label {
+    .choose {
       border: 1px solid rgba(6, 206, 171, 0.8);
     }
   }
   /* base */
   &.checked {
-    label {
+    .choose {
       border: 1px solid #06ceab;
       background: #06ceab;
     }
   }
   &.disabled {
-    cursor: not-allowed;
     label {
       cursor: not-allowed;
+    }
+    .content {
+      color: ${(props) => props.theme.textThirdColor};
     }
   }
   &.sm {
   }
   &.md {
     label {
-      margin-right: 9px;
-      width: 18px;
-      height: 18px;
-    }
-    p,
-    a,
-    span {
+      font-weight: 500;
       font-size: 14px;
       line-height: 18px;
+    }
+    .choose {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
     }
   }
   &.lg {
@@ -99,6 +88,18 @@ export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputE
   children?: React.ReactNode;
   onChange?: (...args: any[]) => any;
 }
+
+const IconCheck: React.FC<React.SVGAttributes<SVGElement>> = (props) => {
+  return (
+    <svg width="9" height="6" viewBox="0 0 9 6" {...props}>
+      <path
+        // eslint-disable-next-line max-len
+        d="M6.846.23L3 4.078 1.308 2.385a1.314 1.314 0 0 0-1.077 0c-.308.307-.308.923 0 1.23L2.385 5.77a.744.744 0 0 0 1.077 0l4.461-4.461a.744.744 0 0 0 0-1.077.744.744 0 0 0-1.077 0z"
+        fill="#fff"
+      />
+    </svg>
+  );
+};
 
 const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps, ref) => {
   const { className, size = 'md', disabled = false, checked = false, children, onChange } = props;
@@ -119,16 +120,20 @@ const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props: CheckboxProps
     disabled,
   });
 
-  const handleChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if ((e.target as HTMLInputElement).localName === 'a' || disabled) return;
-    onChange?.(!checked, 'checkbox');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
+    onChange?.(e.target.checked, 'checkbox');
   };
 
   return (
     <Wrapper className={classes}>
-      <input type="checkbox" id={uuid} ref={checkboxRef} disabled={disabled} onClick={handleChange} />
-      <label htmlFor={uuid} />
-      {children && cloneElement(children, { className: 'text', onClick: handleChange })}
+      <input type="checkbox" id={uuid} ref={checkboxRef} disabled={disabled} onChange={handleChange} />
+      <label htmlFor={uuid}>
+        <div className="choose">
+          <IconCheck />
+        </div>
+        {cloneElement(typeof children === 'string' ? <span>{children}</span> : children, { className: 'content' })}
+      </label>
     </Wrapper>
   );
 });

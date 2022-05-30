@@ -13,4 +13,13 @@ export default {
   // CSS Sourcemap support during dev (experimental) 2.9.0
   vite: { css: { devSourcemap: true } },
   vitePlugins: [vitePluginRequire()],
+  // plugins: [
+  //   [
+  //     'build-plugin-ice-i18n',
+  //     {
+  //       locales: ['zh-CN', 'en-US', 'es-ES', 'pt-PT'],
+  //       defaultLocale: 'zh-CN',
+  //     },
+  //   ],
+  // ],
 };

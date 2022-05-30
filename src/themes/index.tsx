@@ -14,9 +14,11 @@ const ThemeProvider: React.FC = ({ children }: { children: React.ReactNode }) =>
 
   return (
     <Provider theme={LOCALE_THEMES[localeTheme]}>
-      <GlobalStyle />
-      <IconfontStyle />
-      {cloneElement(children)}
+      <React.Fragment>
+        <GlobalStyle />
+        <IconfontStyle />
+        {cloneElement(children)}
+      </React.Fragment>
     </Provider>
   );
 };

@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 import UTC from 'dayjs/plugin/utc';
+import BigNumber from 'bignumber.js';
+import { uniq, uniqBy } from 'lodash-es';
 import Cookies from 'js-cookie';
 
 dayjs.extend(UTC);
@@ -15,6 +17,23 @@ export const filterTitleCase = (value: string) => {
   return value.toLowerCase().replace(/^\S/, (s) => s.toUpperCase());
 };
 
+// 数字精度 -> X尾随零
+export const fliterPrecision = (params: string | number, decimal = 4) => {
+  const result = new BigNumber(params).decimalPlaces(decimal, BigNumber.ROUND_DOWN).toString();
+  return result;
+};
+
+// 数字千位分割
+export const fliterThousands = (params: string | number) => {
+  return new BigNumber(params).toFormat();
+};
+
+// 隐藏文本信息
+export const fliterHideText = (params: string, before = 4, after = 4, fuzz = '****') => {
+  if (!params || params.length <= before + after) return params;
+  return `${params.slice(0, before)}${fuzz}${params.slice(-after)}`;
+};
+
 // 邮箱校验
 export const verifyEmail = (value: string) => {
   const regexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.([a-zA-Z]{2,4})$/;
@@ -26,250 +45,77 @@ export const verifyPassword = (value: string) => {
   if (value.length < 8) return true;
   if (value.length > 20) return true;
   const regexp = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/;
+  // const regexp = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/;
   return !regexp.test(value);
 };
 
-const objectProto = Object.prototype;
-const objectToString = objectProto.toString;
-// const numberTag = '[object Number]';
-const symbolTag = '[object Symbol]';
-// const funcTag = '[object Function]';
-// const genTag = '[object GeneratorFunction]';
-// const nullTag = '[object Null]';
-// const undefinedTag = '[object Undefined]';
+// IP校验
+export const verifyIP = (value: string) => {
+  const regexp = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  // const regexp = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}/;
+  return !regexp.test(value);
+};
 
-/** Used as references for various `Number` constants. */
-const NAN = 0 / 0;
-const INFINITY = 1 / 0;
-const MAX_INTEGER = 1.7976931348623157e308;
+// 数组元素重复校验
+export const verifyRepeat = (value: any[], key?: string) => {
+  const temp = value.filter((x) => (key ? x[key] : x));
+  const shake = key ? uniqBy(temp, key) : uniq(temp);
+  return !(shake.length === temp.length);
+};
 
-/** Used to match leading and trailing whitespace. */
-const reTrim = /^\s+|\s+$/g;
-/** Used to detect bad signed hexadecimal string values. */
-const reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-/** Used to detect binary string values. */
-const reIsBinary = /^0b[01]+$/i;
-/** Used to detect octal string values. */
-const reIsOctal = /^0o[0-7]+$/i;
-/** Built-in method references without a dependency on `root`. */
-const freeParseInt = parseInt;
+// UUID(RFC4122) -> https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid#answer-2117523
+export const uuidv4 = () => {
+  const UINT36 = '10000000-1000-4000-8000-100000000000';
+  // eslint-disable-next-line no-bitwise
+  const random = (x: string) => ((Number(x) ^ crypto.getRandomValues(new Uint8Array(1))[0]) & 15) >> (Number(x) / 4);
+  return UINT36.replace(/[018]/g, (x) => random(x)!.toString(16));
+};
 
+// 兼容老项目语言环境
 export const getCookieLan = () => {
   const locale = Cookies.get('locale') || 'en-US';
   if (!locale.indexOf('-')) return locale;
   const [a, b] = locale.split('-');
   return `${a}-${b.toUpperCase()}`;
 };
-export const isString = (val) => typeof val === 'string';
-export const isUndefined = (value) => value === undefined;
-export const isObjectLike = (value) => !!value && typeof value === 'object';
-export const isPlainObject = (val) => !!val && typeof val === 'object' && val.constructor === Object;
-export const isObject = (value) => {
-  const type = typeof value;
-  return !!value && (type === 'object' || type === 'function');
-};
 
-export const isSymbol = (value) => {
-  return typeof value === 'symbol' || (isObjectLike(value) && objectToString.call(value) === symbolTag);
-};
-
-export const toNumber = (value) => {
-  if (typeof value === 'number') {
-    return value;
+// blob下载
+export const download = (fileName: string, content: any) => {
+  if (!('download' in document.createElement('a'))) {
+    return 'Please Replace Browser';
   }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    const other = typeof value.valueOf === 'function' ? value.valueOf() : value;
-    value = isObject(other) ? `${other}` : other;
-  }
-  if (typeof value !== 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, '');
-  const isBinary = reIsBinary.test(value);
-  return isBinary || reIsOctal.test(value)
-    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-    : reIsBadHex.test(value)
-    ? NAN
-    : +value;
+  const blob = new Blob([content], { type: '' });
+  const link = document.createElement('a');
+  link.download = fileName;
+  link.style.display = 'none';
+  link.href = URL.createObjectURL(blob);
+  document.body.appendChild(link);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  document.body.removeChild(link);
+  return '';
 };
 
-export const toFinite = (value) => {
-  if (!value) {
-    return value === 0 ? value : 0;
-  }
-  value = toNumber(value);
-  if (value === INFINITY || value === -INFINITY) {
-    const sign = value < 0 ? -1 : 1;
-    return sign * MAX_INTEGER;
-  }
-  // eslint-disable-next-line no-self-compare
-  return value === value ? value : 0;
-};
+// 价格/数据单位计算
+// export const toNumUnit = (num, precision = 2) => {
+//   const unitMap = {
+//     1000: 'K',
+//     1000000: 'M',
+//     1000000000: 'B',
+//   };
 
-export const toInteger = (value) => {
-  const result = toFinite(value);
-  const remainder = result % 1;
+//   let exponent = 1;
+//   Object.keys(unitMap)
+//     .reverse()
+//     .some((unit) => {
+//       if (toNumber(num) >= toNumber(unit)) {
+//         exponent = toNumber(unit);
+//         return true;
+//       }
+//       return false;
+//     });
 
-  return result === result ? (remainder ? result - remainder : result) : 0;
-};
-
-export const isInteger = (value) => typeof value === 'number' && value === toInteger(value);
-
-/*
-  trunc
-*/
-export const intercept = (number, decimal = 8) => {
-  let num = Number(number);
-  if (isNaN(num) || !isFinite(num)) {
-    num = 0;
-  }
-  let numStr = '';
-  if (isInteger(num)) {
-    if (decimal > 0) {
-      numStr = `${num}.`;
-      for (let i = 0; i < decimal; i += 1) {
-        numStr = `${numStr}0`;
-      }
-    } else {
-      numStr = `${num}`;
-    }
-  } else {
-    numStr = String(num);
-    if (numStr.indexOf('e-') >= 0 || numStr.indexOf('E-') >= 0) {
-      numStr = num.toFixed(decimal + 1);
-    }
-    const numStrSp = numStr.split('.');
-    const arrInit = numStrSp[0];
-    if (decimal === 0) {
-      // fix num=11.1,decimal=0 return 11.
-      return `${arrInit}`;
-    }
-    const arrDecimal = numStrSp[1];
-    if (arrDecimal.length < decimal) {
-      numStr = `${arrInit}.${arrDecimal}`;
-      for (let i = 0; i < decimal - arrDecimal.length; i += 1) {
-        numStr = `${numStr}0`;
-      }
-    } else {
-      numStr = `${arrInit}.${arrDecimal.substr(0, decimal)}`;
-    }
-  }
-  return Number(numStr).toString();
-};
-
-/**
- * @param value
- * @param accuracy
- * @returns {string}
- */
-export const toThousands = (value, accuracy = 0, symbol = true) => {
-  const amount = intercept(value, accuracy);
-  let regexp = '(\\d)(?=(\\d{3})+\\.)';
-  if (amount.indexOf('.') === -1) {
-    regexp = '(\\d)(?=(\\d{3})+$)';
-  }
-  const match = symbol ? '$1,' : '$1';
-  // return amount.replace(new RegExp(regexp, 'g'), '$1,')
-  return amount.replace(new RegExp(regexp, 'g'), match);
-};
-
-/*
-  价格/数据单位计算
-*/
-export const toNumUnit = (num, precision = 2) => {
-  const unitMap = {
-    1000: 'K',
-    1000000: 'M',
-    1000000000: 'B',
-  };
-
-  let exponent = 1;
-  Object.keys(unitMap)
-    .reverse()
-    .some((unit) => {
-      if (toNumber(num) >= toNumber(unit)) {
-        exponent = toNumber(unit);
-        return true;
-      }
-      return false;
-    });
-
-  const output = intercept(num / exponent, precision);
-  const unitStr = `${unitMap[exponent] || ''}`;
-  return unitStr ? `${output}${unitStr}` : `${output}`;
-};
-
-/*
-  将地址处理为展示前6位和后四位
-*/
-export const fuzzAddress = (str: string, before = 6, after = 4, fuzz = '....') => {
-  if (!str || str.length <= before + after) return str;
-  return `${str.slice(0, before)}${fuzz}${str.slice(-after)}`;
-};
-
-export const getSymbolImg = (symbol: string, theme: 'dark' | 'light' = 'dark') => {
-  return `https://t1.bycsi.com/assets/image/coins/${theme}/${symbol?.toLowerCase()}.svg`;
-};
-
-/*
-  获取交易对 logo
-*/
-// export const getPairLogo = (pair: Pair, idx = 0): string => {
-//   return idx === 0 ? pair?.token0?.logo : pair?.token1?.logo;
+//   const output = intercept(num / exponent, precision);
+//   const unitStr = `${unitMap[exponent] || ''}`;
+//   return unitStr ? `${output}${unitStr}` : `${output}`;
 // };
-
-/*
-  判断是否是正确的qty/price格式
-*/
-export const hasValidNumber = (val, precision = 2) => {
-  const reg = new RegExp(`(^[1-9]\\d*(\\.\\d{0,${precision}})?$)|(^0(\\.\\d{0,${precision}})?$)`);
-  return reg.test(val);
-};
-
-/*
-  用来矫正 value 和最大值、最大余额
-*/
-export const getMaxNumber = (value = 0, max = 999_999_999_999, balance = max, precision = 2) => {
-  const realMax = Math.min(max, balance);
-  if (value > realMax) {
-    return Number(intercept(realMax, precision));
-  }
-  return value;
-};
-
-/*
-  根据num正负值获取需要展示颜色的className
- */
-export const getUpDownClassName = (num, upClassName = 'long', downClassName = 'short') => {
-  const value = Number(num);
-  if ((value && value < 0) || (typeof num === 'string' && num.charAt(0) === '-')) {
-    return downClassName;
-  } else {
-    return upClassName;
-  }
-};
-
-/*
-  判断多空颜色
-*/
-export function isLong(type, side) {
-  if (type?.toLowerCase() === 'open') {
-    if (side === 1 || side?.toLowerCase?.() === 'short') {
-      return 'short';
-    } else {
-      return 'long';
-    }
-  } else if (side === 1 || side?.toLowerCase?.() === 'short') {
-    return 'long';
-  } else {
-    return 'short';
-  }
-}
-
-export function subAddress(address, prev = 6, last = 4) {
-  const subbedAddress = `${address.substring(0, prev)}...${address.substring(address.length - last, address.length)}`;
-  return subbedAddress.toUpperCase();
-}

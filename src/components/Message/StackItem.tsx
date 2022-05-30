@@ -7,7 +7,7 @@ import { NotificationStackItemProps } from './PropsType';
 
 export default class StackItem extends React.Component<NotificationStackItemProps, {}> {
   static defaultProps = {
-    stayTime: 5000,
+    stayTime: 5_000,
   };
   private timeout: number;
   state = { visible: false };

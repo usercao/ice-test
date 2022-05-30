@@ -77,6 +77,7 @@ const Wrapper = styled.button`
     }
   }
   &.disabled {
+    border: none;
     cursor: not-allowed;
     background: ${(props) => props.theme.backgroundColorDisabled};
     span {

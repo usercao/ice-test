@@ -14,6 +14,9 @@ const Wrapper = styled.div`
   color: ${(props) => props.theme.textBaseColor};
   border: 1px solid ${(props) => props.theme.colorFirstAssist};
   transition: all 0.3s ease-in-out;
+  &.follow {
+    position: relative;
+  }
   > .placeholder {
     color: ${(props) => props.theme.textFirstColor};
     transition: all 0.3s ease-in-out;
@@ -129,7 +132,7 @@ export interface SelectProps {
   danger?: boolean;
   disabled?: boolean;
   placeholder?: string;
-  followID?: string;
+  follow?: boolean;
   followWidth?: number;
   followHeight?: number;
   overlay?: React.ReactNode;
@@ -150,26 +153,31 @@ interface PositionOptions {
 }
 
 const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
-  const { followRef, followID, followWidth, followHeight, size = 'md', matchRender, children, onClose } = props;
-  const DOM = (followID ? document.getElementById(followID) : document.body) as HTMLElement;
+  const { followRef, follow = false, followWidth, followHeight, size = 'md', matchRender, children, onClose } = props;
+  const DOM = (follow && followRef.current ? followRef.current : document.body) as HTMLElement;
 
   const [position, setPosition] = React.useState<PositionOptions>({ top: 0, left: 0, width: 160 });
 
-  React.useEffect(() => {
+  const selectPosition = React.useCallback(() => {
     if (!followRef.current) return;
     const { offsetTop, offsetHeight, offsetLeft, offsetWidth } = followRef.current;
     const site: PositionOptions = {
-      top: offsetTop + offsetHeight + 4,
-      left: offsetLeft,
+      top: (follow ? 0 : offsetTop) + offsetHeight + 4,
+      left: follow ? -1 : offsetLeft,
       width: followWidth || offsetWidth,
     };
     if (followHeight) site.height = followHeight;
 
     setPosition(site);
-  }, [followWidth, followHeight, followRef]);
+  }, [follow, followHeight, followRef, followWidth]);
 
-  const memoizedOption = React.useMemo(
-    () => (
+  React.useEffect(() => {
+    selectPosition();
+  }, [followRef, selectPosition]);
+
+  const selectTrigger = React.useMemo(() => {
+    if (!followRef.current) return;
+    return (
       <Trigger
         className={classNames({ [`${size}`]: size })}
         style={position}
@@ -177,7 +185,7 @@ const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
         {...fadeConfig}
       >
         <Scrollbar
-          trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
+          trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0, right: 2, border: 0 })}
           thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
           trackGap={[4, 4, 4, 4]}
         >
@@ -185,16 +193,16 @@ const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
           {children && cloneElement(children, { onClick: onClose })}
         </Scrollbar>
       </Trigger>
-    ),
-    [size, position, matchRender, children, onClose],
-  );
+    );
+  }, [followRef, size, position, matchRender, children, onClose]);
+
   useClickAway(() => onClose?.(), followRef);
 
-  return createPortal(memoizedOption, DOM);
+  return createPortal(selectTrigger, DOM);
 };
 
 const Select: React.FC<SelectProps> = (props: SelectProps) => {
-  const { className, size = 'md', danger = false, disabled = false, placeholder, overlay } = props;
+  const { className, follow = false, size = 'md', danger = false, disabled = false, placeholder, overlay } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
   const followRef = React.createRef<HTMLDivElement>();
@@ -208,6 +216,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
   const [visible, setVisible] = React.useState<boolean>(false);
 
   const classes = classNames(className, 'row-between', {
+    follow,
     [`${size}`]: size,
     hidden: visible,
     danger,
@@ -227,7 +236,11 @@ const Select: React.FC<SelectProps> = (props: SelectProps) => {
   return (
     <React.Fragment>
       <Wrapper className={classes} ref={followRef} onClick={handleOpen}>
-        {overlay ? cloneElement(overlay) : <span className="placeholder">{placeholder}</span>}
+        {(overlay as React.ReactElement)?.props.children ? (
+          cloneElement(overlay)
+        ) : (
+          <span className="placeholder">{placeholder}</span>
+        )}
         <div className="arrow row-center">
           <svg width="8" height="5" viewBox="0 0 8 5" style={{ transform: `rotateZ(${visible ? -180 : 0}deg)` }}>
             <path

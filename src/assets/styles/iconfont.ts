@@ -17,6 +17,50 @@ export const IconfontStyle = styled.createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  .icon-idcard:before {
+    content: '\\e664';
+  }
+
+  .icon-passport:before {
+    content: '\\e665';
+  }
+
+  .icon-drive:before {
+    content: '\\e663';
+  }
+
+  .icon-stable:before {
+    content: '\\e61f';
+  }
+
+  .icon-grid:before {
+    content: '\\e615';
+  }
+
+  .icon-spot:before {
+    content: '\\e614';
+  }
+
+  .icon-earn:before {
+    content: '\\e613';
+  }
+
+  .icon-p2p:before {
+    content: '\\e612';
+  }
+
+  .icon-quick:before {
+    content: '\\e611';
+  }
+
+  .icon-plus:before {
+    content: '\\e60c';
+  }
+
+  .icon-minus:before {
+    content: '\\e60d';
+  }
+
   .icon-download:before {
     content: '\\e661';
   }

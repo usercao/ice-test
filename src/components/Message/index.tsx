@@ -17,7 +17,7 @@ function showMessage(options: MessageOptions, icon: MessageIcon) {
   const newOptions = handleOptions(options);
   newOptions.icon = icon;
   if (!newOptions.stayTime && newOptions.stayTime !== 0) {
-    newOptions.stayTime = newOptions.icon === 'loading' ? 0 : 3000;
+    newOptions.stayTime = newOptions.icon === 'loading' ? 0 : 3_000;
   }
   return managerInstance.open(newOptions);
 }

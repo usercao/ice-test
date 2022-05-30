@@ -13,10 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/Home/index.tsx:22
-msgid "hello"
-msgstr "Hello"
+#: src/components/Table/index.tsx:83
+msgid "loading"
+msgstr "loading"
 
-#: src/pages/Home/index.tsx:23
-msgid "world"
-msgstr "World"
+#: src/components/Table/index.tsx:99
+msgid "noData"
+msgstr "No data"

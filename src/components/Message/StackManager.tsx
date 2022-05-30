@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-// import ReactDOM from 'react-dom/client';
 import StackItem from './StackItem';
 import { NotificationProps, NotificationReturnInstance } from './PropsType';
 
-// React 18 introduces new root API ( ReactDOM.createRoot ) | Saeloun Blog
-// https://blog.saeloun.com/2021/07/15/react-18-adds-new-root-api.html
 export default class StackManager {
   private notifyList: Array<React.ComponentElement<NotificationProps, StackItem>> = [];
   private component: React.FunctionComponent<NotificationProps>;
@@ -16,13 +13,9 @@ export default class StackManager {
     this.component = component;
   }
 
-  // javascript - Deprecation notice: ReactDOM.render is no longer supported in React 18 - Stack Overflow
-  // https://stackoverflow.com/questions/71668256/deprecation-notice-reactdom-render-is-no-longer-supported-in-react-18
   private render() {
     const list = this.notifyList;
     ReactDOM.render(<>{list}</>, this.getContainerDom(true));
-    // const root = ReactDOM.createRoot(this.getContainerDom(true) as HTMLElement);
-    // root.render(<>{list}</>);
   }
 
   private getContainerDom(create?: boolean) {
@@ -73,8 +66,6 @@ export default class StackManager {
     const div = this.getContainerDom();
     if (div) {
       ReactDOM.unmountComponentAtNode(div);
-      // const root = ReactDOM.createRoot(div as HTMLElement);
-      // root.unmount();
       document.body.removeChild(div);
     }
   }

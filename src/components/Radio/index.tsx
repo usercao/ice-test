@@ -1,111 +1,146 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import { cloneElement } from '../_util/reactNode';
+import useRandomId from '@/hooks/useRandomId';
 import styled from 'styled-components';
-import { useMount } from 'ahooks';
 
 const Wrapper = styled.div`
-  cursor: pointer;
-  .radio__children {
-    cursor: pointer;
-  }
+  display: flex;
+  /* 清除默认样式 */
   input {
     display: none;
+    opacity: 0;
   }
-  &.square {
-    label .radio__target {
-      border-radius: 2px;
-    }
-    input:checked + label {
-      .radio__target {
-        border: none;
-        background: rgba(255, 196, 18, 1);
-        position: relative;
-        &::before {
-          content: '';
-          position: absolute;
-          background: #000000;
-          width: 6px;
-          height: 2px;
-          transform: translate(1px, 7px) rotateZ(45deg);
-          border-radius: 10px;
-        }
-        &::after {
-          content: '';
-          position: absolute;
-          background: #000000;
-          width: 10px;
-          height: 2px;
-          transform: translate(4px, 6px) rotateZ(-45deg);
-          border-radius: 10px;
-        }
-      }
-    }
-  }
-  label .radio__target {
-    display: block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.1581);
+  /* global */
+  label {
+    display: flex;
     cursor: pointer;
     user-select: none;
-    transition: all 0.1s linear;
+    .choose {
+      position: relative;
+      border: 1px solid ${(props) => props.theme.textThirdColor};
+      border-radius: 50%;
+      transition: all 0.3s ease-in-out;
+      svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease-in-out;
+      }
+    }
+    .content {
+      flex: 1;
+      word-break: break-word;
+      color: ${(props) => props.theme.textBaseColor};
+    }
   }
-  input:checked + label .radio__target {
-    border: 4px solid rgba(255, 196, 18, 1);
+  &:not(.checked) {
+    svg {
+      opacity: 0;
+    }
+  }
+  &:not(.disabled):hover {
+    .choose {
+      border: 1px solid rgba(6, 206, 171, 0.8);
+    }
+  }
+  /* base */
+  &.checked {
+    .choose {
+      border: 1px solid #06ceab;
+    }
+  }
+  &.disabled {
+    label {
+      cursor: not-allowed;
+    }
+    .content {
+      color: ${(props) => props.theme.textThirdColor};
+    }
+  }
+  &.sm {
+  }
+  &.md {
+    label {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 18px;
+    }
+    .choose {
+      margin-right: 10px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+  &.lg {
   }
 `;
 
-export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'prefix' | 'suffix'> {
+type SizeType = 'sm' | 'md' | 'lg';
+
+export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'checked'> {
   className?: string;
-  type?: 'default' | 'square';
-  checked?: boolean;
+  size?: SizeType;
+  disabled?: boolean;
+  value: string | number;
+  checked?: string | number;
+  children?: React.ReactNode;
   onChange?: (...args: any[]) => any;
 }
 
+const IconCircle: React.FC<React.SVGAttributes<SVGElement>> = (props) => {
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" {...props}>
+      <circle cx="5" cy="5" r="5" fill="#06ceab" />
+    </svg>
+  );
+};
+
 const Radio: React.FC<RadioProps> = React.forwardRef((props: RadioProps, ref) => {
-  const { className, checked = false, type = 'default', onChange } = props;
+  const { className, size = 'md', disabled = false, value, checked, children, onChange } = props;
 
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
-  const inputRef = (ref as any) || React.createRef<HTMLInputElement>();
-  const [UUID, setUUID] = React.useState('A');
+  const radioRef = (ref as any) || React.createRef<HTMLInputElement>();
+  const uuid = useRandomId();
 
-  React.useEffect(() => {
-    if (!inputRef || !inputRef.current) {
-    }
-  }, [inputRef]);
+  // React.useEffect(() => {
+  //   if (!radioRef || !radioRef.current) {
+  //     return;
+  //   }
+  // }, [radioRef]);
 
-  const classes = classNames(className, type, {
-    // disabled: disabled,
+  const visible = React.useMemo(() => String(checked) === String(value), [checked, value]);
+
+  const classes = classNames(className, {
+    [`${size}`]: size,
+    checked: visible,
+    disabled,
   });
 
-  function randomRangeId(num = 8) {
-    const charStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let returnStr = '';
-    for (let i = 0; i < num; i++) {
-      const index = Math.round(Math.random() * (charStr.length - 1));
-      returnStr += charStr.substring(index, index + 1);
-    }
-    return returnStr;
-  }
-
-  useMount(() => {
-    const uuid = randomRangeId();
-    setUUID(uuid);
-  });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (disabled) return;
+    const final = typeof value === 'number' ? Number(e.target.value) : e.target.value;
+    onChange?.(final, 'radio');
+  };
 
   return (
     <Wrapper className={classes}>
       <input
-        type="checkbox"
-        id={UUID}
-        checked={checked}
-        ref={inputRef}
-        onChange={(e) => onChange?.(e.target.checked)}
+        type="radio"
+        name="group"
+        id={uuid}
+        ref={radioRef}
+        disabled={disabled}
+        value={value}
+        checked={visible}
+        onChange={handleChange}
       />
-      <label htmlFor={UUID} className="row-start">
-        <div className="radio__target" />
-        <div className="radio__children">{props.children}</div>
+      <label htmlFor={uuid}>
+        <div className="choose">
+          <IconCircle />
+        </div>
+        {cloneElement(typeof children === 'string' ? <span>{children}</span> : children, { className: 'content' })}
       </label>
     </Wrapper>
   );

@@ -1,1 +1,1 @@
-/*eslint-disable*/export const messages={"hello":"Olá","world":"Mundo"};
+/*eslint-disable*/export const messages={"loading":"carregando","noData":"Sem dados"};

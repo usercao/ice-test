@@ -14,7 +14,7 @@ const PortalWrapper = styled(motion.div)`
   bottom: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.2);
-  z-index: 999999;
+  z-index: 999998;
   > .inner {
     position: absolute;
     top: 50%;
@@ -57,9 +57,15 @@ const PortalWrapper = styled(motion.div)`
         }
       }
     }
-    .content {
+    /* .content {
       .ms-container {
         max-height: calc(80vh - 152px);
+      }
+    } */
+    .content {
+      max-height: calc(80vh - 152px);
+      .ms-container {
+        max-height: inherit;
       }
     }
     .footer {
@@ -74,8 +80,11 @@ const PortalWrapper = styled(motion.div)`
 export interface ModalProps {
   className?: string;
   visible?: boolean;
+  forceRender?: React.ReactNode;
   title?: React.ReactNode;
   closable?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
   cancel?: React.ReactNode;
   ok?: React.ReactNode;
   children?: React.ReactNode;
@@ -84,7 +93,10 @@ export interface ModalProps {
 }
 
 const Portal: React.FC<ModalProps> = (props: ModalProps) => {
-  const { className, title, closable = true, cancel, ok, children, onCancel, onOk, ...rest } = props;
+  const { className, forceRender, title, closable = true, cancel, ok, children, onCancel, onOk, ...rest } = props;
+
+  // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/28884
+  const forceRef = React.createRef<HTMLDivElement>();
 
   const handleCancel = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
@@ -100,7 +112,21 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
     [onOk],
   );
 
+  const [forceHeight, setForceHeight] = React.useState<number>(0);
+
+  const forcePosition = React.useCallback(() => {
+    if (!forceRef.current) return;
+    const { offsetHeight } = forceRef.current;
+    if (forceHeight !== 0) return;
+    setForceHeight(offsetHeight);
+  }, [forceRef, forceHeight]);
+
+  React.useEffect(() => {
+    forcePosition();
+  }, [forceRef, forcePosition]);
+
   const renderHeader = React.useMemo(() => {
+    if (forceRender) return cloneElement(forceRender, { ref: forceRef });
     if (!title && !closable) return null;
     return (
       <div className="header row-between">
@@ -108,7 +134,7 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         {closable && <i className="iconfont icon-select-cancel clear" onClick={handleCancel} />}
       </div>
     );
-  }, [title, closable, handleCancel]);
+  }, [forceRender, forceRef, title, closable, handleCancel]);
 
   const renderFooter = React.useMemo(() => {
     if (!cancel && !ok) return null;
@@ -134,7 +160,7 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         <PortalWrapper className={className} {...fadeConfig}>
           <div className="inner">
             {renderHeader}
-            <div className="content">
+            <div className="content" style={{ maxHeight: `calc(80vh - 152px - ${forceHeight}px)` }}>
               <Scrollbar
                 trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
                 thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
@@ -148,7 +174,7 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
         </PortalWrapper>
       </RemoveScroll>
     ),
-    [className, renderHeader, children, renderFooter],
+    [className, forceHeight, renderHeader, children, renderFooter],
   );
 
   return createPortal(memoizedOption, document.body);
