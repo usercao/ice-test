@@ -1,4 +1,5 @@
-import vitePluginRequire from 'vite-plugin-require';
+// import vitePluginRequire from 'vite-plugin-require';
+import viteRequire from 'vite-require';
 
 export default {
   store: false,
@@ -12,7 +13,8 @@ export default {
   babelPresets: ['@babel/preset-typescript'],
   // CSS Sourcemap support during dev (experimental) 2.9.0
   vite: { css: { devSourcemap: true } },
-  vitePlugins: [vitePluginRequire()],
+  // vitePlugins: [vitePluginRequire(), viteRequire],
+  vitePlugins: [viteRequire()],
   // plugins: [
   //   [
   //     'build-plugin-ice-i18n',
