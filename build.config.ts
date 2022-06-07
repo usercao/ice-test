@@ -1,5 +1,5 @@
 // import vitePluginRequire from 'vite-plugin-require';
-import viteRequire from 'vite-require';
+import { viteRequire } from 'vite-require';
 
 export default {
   store: false,
