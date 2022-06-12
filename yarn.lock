@@ -7240,6 +7240,13 @@ vite-plugin-component-style@^1.0.4:
     fs-extra "^10.0.0"
     magic-string "^0.25.7"
 
+vite-plugin-dynamic-import@^0.9.8:
+  version "0.9.8"
+  resolved "https://registry.npmjs.org/vite-plugin-dynamic-import/-/vite-plugin-dynamic-import-0.9.8.tgz#b1a28483f6e43c09861c0cf398f72eb7c81fb1e3"
+  integrity sha512-9AItjtvHmtl96Ooph8+PJwEEpomr/9VyJc6hQ3DiXillMNJlgp4kBV5V5qkMi6kbVE7Fa+DF9Y7HSZ7N42NuWw==
+  dependencies:
+    fast-glob "^3.2.11"
+
 vite-plugin-eslint-report@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/vite-plugin-eslint-report/-/vite-plugin-eslint-report-1.0.1.tgz#809fd82effea0d672bef3057d973d2b6fdb0ab13"
@@ -7263,12 +7270,13 @@ vite-plugin-ts-types@^1.0.0:
     "@babel/code-frame" "^7.12.13"
     chalk "^4.1.1"
 
-vite-require@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/vite-require/-/vite-require-0.1.1.tgz#b7aec1643c2d581afd6e1c55416496cbeffda874"
-  integrity sha512-K7Ut77qxls06wbYyJwECt9lxtOij9Txp/GFTHMnIAfihCxPS78m85DwmmJ30xfqiV4APku74k3Cxnx9JCnC/3A==
+vite-require@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/vite-require/-/vite-require-0.1.2.tgz#6ebeb06937862c7dcb19c94860e49f45ddf0e623"
+  integrity sha512-rVsxEsPHY52oMXqCo5czdg6nb0KSKF1i9g7YiYuc5+QdzW37ljXkSp1MnGQESe962Uha9nJclBFhot4xGLBgKw==
   dependencies:
     fast-glob "^3.2.11"
+    vite-plugin-dynamic-import "^0.9.8"
 
 vite@^2.0.0, vite@^2.4.2:
   version "2.9.10"
