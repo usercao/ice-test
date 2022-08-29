@@ -184,11 +184,7 @@ const Portal: React.FC<TriggerProps> = (props: TriggerProps) => {
         onClick={(e) => e.stopPropagation()}
         {...fadeConfig}
       >
-        <Scrollbar
-          trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0, right: 2, border: 0 })}
-          thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
-          trackGap={[4, 4, 4, 4]}
-        >
+        <Scrollbar>
           {matchRender}
           {children && cloneElement(children, { onClick: onClose })}
         </Scrollbar>

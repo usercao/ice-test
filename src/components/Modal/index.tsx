@@ -161,13 +161,7 @@ const Portal: React.FC<ModalProps> = (props: ModalProps) => {
           <div className="inner">
             {renderHeader}
             <div className="content" style={{ maxHeight: `calc(80vh - 152px - ${forceHeight}px)` }}>
-              <Scrollbar
-                trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0 })}
-                thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
-                trackGap={[4, 4, 4, 4]}
-              >
-                {children && cloneElement(children)}
-              </Scrollbar>
+              <Scrollbar>{cloneElement(children)}</Scrollbar>
             </div>
             {renderFooter}
           </div>

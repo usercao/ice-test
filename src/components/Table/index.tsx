@@ -105,9 +105,6 @@ const TableBody: React.FC<TbodyProps> = (props) => {
   const renderScroll = React.useMemo(() => {
     return (
       <Scrollbar
-        trackStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 0, right: 2, border: 0 })}
-        thumbStyle={(horizontal) => ({ [horizontal ? 'height' : 'width']: 3 })}
-        trackGap={[4, 4, 4, 4]}
         onScroll={(e: React.UIEvent<HTMLDivElement>) => {
           const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
           if (scrollTop + clientHeight === scrollHeight) {
