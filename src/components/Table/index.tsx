@@ -95,7 +95,6 @@ const TableBody: React.FC<TbodyProps> = (props) => {
         {renderLoading}
         {type === 'end' && dataSource.length === 0 && (
           <div className="empty">
-            <img src={require('@/assets/images/personal/interface/nodata.png')} alt="icon" />
             <h6>{empty ?? t`noData`}</h6>
           </div>
         )}
