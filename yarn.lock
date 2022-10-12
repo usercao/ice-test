@@ -7544,10 +7544,10 @@ vite-plugin-eslint-report@^1.0.0:
     "@rollup/pluginutils" "^4.1.1"
     lodash.debounce "^4.0.8"
 
-vite-plugin-require@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/vite-plugin-require/-/vite-plugin-require-1.0.5.tgz#138175953c192905197e59d7791ab8132d0fa6ca"
-  integrity sha512-XXhRc+PdUyTG4UXiJeRh1/pKZ0UrRtKpl4c8Ay20AO3vqskIn12rTb8Hi7DmYh/OJQ3ZeLVCU/BTPln3TYiWGQ==
+vite-plugin-require@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/vite-plugin-require/-/vite-plugin-require-1.0.7.tgz#0da56b3df80267acb9daae0eb25afa60980b80b1"
+  integrity sha512-pNdJiSouUlMHs6oBZzLk0UXXMQdp1kltPvvqscWjnl6NwUm0Jgp+93ZHQLDQA+HPb2SFXJFIKVI0JGLpdRK4aw==
   dependencies:
     "@babel/generator" "^7.15.4"
     "@babel/parser" "^7.15.6"
