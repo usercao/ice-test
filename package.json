@@ -57,7 +57,7 @@
     "eslint": "^7.30.0",
     "ice.js": "^2.0.0",
     "stylelint": "^13.7.2",
-    "vite-plugin-require": "^1.0.1",
+    "vite-plugin-require": "^1.0.5",
     "vite-require": "^0.2.3"
   },
   "resolutions": {
